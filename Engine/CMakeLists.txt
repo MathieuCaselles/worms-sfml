@@ -12,5 +12,4 @@ target_include_directories(Engine PUBLIC
 
 target_sources(Engine PRIVATE
   test.cpp
-  test.h
-)
+  test.h)

@@ -14,4 +14,4 @@ target_include_directories(Worms PUBLIC
 
 target_sources(Worms PRIVATE
   main.cpp
-)
+  Terrain/Terrain.h Terrain/Terrain.cpp)

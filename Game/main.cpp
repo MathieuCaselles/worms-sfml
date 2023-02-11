@@ -4,6 +4,8 @@
 #include <iostream>
 #include <chrono>
 
+#include "Terrain//Terrain.h"
+
 int main()
 {
     // Create the main window
@@ -15,6 +17,10 @@ int main()
     auto time = std::chrono::high_resolution_clock::now();
     sf::Clock chrono;
     bool left = false;
+
+    Terrain insaneTerrain(window);
+
+
     while (window.isOpen())
     {
         auto newTime = std::chrono::high_resolution_clock::now();
@@ -48,14 +54,14 @@ int main()
         if ( left  ) {
           move.x *= -1;
         }
-        std::cout << dt.count()	 << "\n";
+        //std::cout << dt.count()	 << "\n";
         rect.move(move * static_cast<float>(dt.count()));
-
 
 
         // Clear screen
         window.clear();
-        window.draw(rect);
+        insaneTerrain.draw();
+        //window.draw(rect);
         // Update the window
         window.display();
 
