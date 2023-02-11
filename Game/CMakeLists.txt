@@ -14,4 +14,4 @@ target_include_directories(Worms PUBLIC
 
 target_sources(Worms PRIVATE
   main.cpp
-)
+ "Scenes/SceneEnum.h" "Scenes/MainMenuScene.h" "Scenes/MainMenuScene.cpp")

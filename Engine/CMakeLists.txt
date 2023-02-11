@@ -4,6 +4,7 @@ add_library(Engine)
 add_library(Worms::Engine ALIAS Engine)
 target_link_libraries(Engine PUBLIC
     project_options
+    Worms::Tools
     sfml-graphics sfml-audio sfml-system
 )
 target_include_directories(Engine PUBLIC
@@ -11,6 +12,8 @@ target_include_directories(Engine PUBLIC
 )
 
 target_sources(Engine PRIVATE
-  test.cpp
-  test.h
+  "Components/GraphicsComponent.h" "Components/InputComponent.h" "Components/PhysicsComponent.h"
+  "Game/Game.h" "Game/Game.cpp"
+  "GameObject/GameObject.h"
+  "Scene/Scene.h" "Scene/Scene.cpp"
 )
