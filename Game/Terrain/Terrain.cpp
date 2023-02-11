@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Engine/VectorUtils.h"
+
 Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	_renderWindow(renderWindow),
 	_imageHeightMapColor(sf::Color::Red)
