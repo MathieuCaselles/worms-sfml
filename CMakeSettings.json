@@ -10,7 +10,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeExecutable": "C:/dev/CMake/bin/cmake.exe"
+      "cmakeExecutable": "your_path"
     }
   ]
 }
