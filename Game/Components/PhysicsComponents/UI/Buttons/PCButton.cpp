@@ -1,11 +1,12 @@
 #include "PCButton.h"
 
-#include "../../../GameObjects/UI/Button.h"
+#include <Game/GameObjects/UI/Buttons/Button.h>
+
 PCButton::PCButton() : m_callbackIsCalled(false)
 {
 }
 
-void PCButton::updateImplementation(const float& deltaTime, IGameObject& gameObject, IScene& scene)
+void PCButton::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
 	Button& button = reinterpret_cast<Button&>(gameObject);
 

@@ -19,7 +19,7 @@ Button::Button(float x, float y, float width, float height, std::string text, sf
 	initShape(x, y, width, height);
 
 
-	if (!m_font.loadFromFile("../../../Assets/Fonts/MinecraftFont.ttf")) {
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
 		throw("ERROR::BUTTTON::COULD NOT LOAD FONT");
 	}
 
@@ -30,10 +30,32 @@ Button::Button(float x, float y, float width, float height, std::string text, sf
 	m_text.setCharacterSize(20);
 
 	const float centerXOfButtons = m_shape.getPosition().x + m_shape.getGlobalBounds().width / 2.f - m_text.getGlobalBounds().width / 2.f;
-	const float centerYOfButtons = m_shape.getPosition().y + m_shape.getGlobalBounds().height / 2.f - m_text.getGlobalBounds().height / 1.5f;
+	const float centerYOfButtons = m_shape.getPosition().y + m_shape.getGlobalBounds().height / 2.f - m_text.getGlobalBounds().height / 2.f;
 
 	m_text.setPosition(centerXOfButtons, centerYOfButtons);
 
+}
+
+Button::Button(float x, float y, float width, float height, std::string text, float sizeText, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick) :
+	m_buttonState(BUTTON_IDLE), m_idleColor(idleColor), m_hoverColor(hoverColor), m_pressedColor(activeColor), m_callbackOnLeftClick(onLeftClick), m_callbackOnRightClick(nullptr)
+{
+	initShape(x, y, width, height);
+
+
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::BUTTTON::COULD NOT LOAD FONT");
+	}
+
+	m_text.setFont(m_font);
+
+	m_text.setString(text);
+	m_text.setFillColor(sf::Color::White);
+	m_text.setCharacterSize(sizeText);
+
+	const float centerXOfButtons = m_shape.getPosition().x + m_shape.getGlobalBounds().width / 2.f - m_text.getGlobalBounds().width / 2.f;
+	const float centerYOfButtons = m_shape.getPosition().y + m_shape.getGlobalBounds().height / 2.f - m_text.getGlobalBounds().height / 2.f;
+
+	m_text.setPosition(centerXOfButtons, centerYOfButtons);
 }
 
 

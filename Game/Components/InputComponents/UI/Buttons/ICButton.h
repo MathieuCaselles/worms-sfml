@@ -3,13 +3,10 @@
 
 #include <Engine/Components/InputComponent.h>
 
-class IGameObject;
-
-
 struct ICButton : Engine::IInputComponent 
 {
 	ICButton();
-	void processInputImplementation(IGameObject& gameObject, sf::Event& inputEvent, IScene& scene) override;
+	void processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene) override;
 };
 
 #endif // ICEXAMPLEBUTTON_H

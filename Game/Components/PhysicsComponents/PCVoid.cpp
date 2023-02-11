@@ -4,6 +4,6 @@ PCVoid::PCVoid()
 {
 }
 
-void PCVoid::updateImplementation(const float& deltaTime, IGameObject& gameObject, IScene& scene)
+void PCVoid::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
 }

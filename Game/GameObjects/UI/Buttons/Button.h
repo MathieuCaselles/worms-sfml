@@ -4,19 +4,20 @@
 #include <functional>
 #include <Engine/GameObject/GameObject.h>
 
-#include "../../Components/InputComponents/UI/ICButton.h"
-#include "../../Components/PhysicsComponents/UI/PCButton.h"
-#include "../../Components/GraphicsComponents/UI/GCButton.h"
+#include <Game/Components/InputComponents/UI/Buttons/ICButton.h>
+#include <Game/Components/PhysicsComponents/UI/Buttons/PCButton.h>
+#include <Game/Components/GraphicsComponents/UI/Buttons/GCButton.h>
 
 
 enum button_states { BUTTON_IDLE = 0, BUTTON_HOVER, BUTTON_PRESSED };
 
 
-class Button: public GameObject<ICButton, PCButton, GCButton> {
+class Button: public Engine::GameObject<ICButton, PCButton, GCButton> {
 public:
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick);
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick, std::function<void(Button* button)> const& onRightClick);
 	Button(float x, float y, float width, float height, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
+	Button(float x, float y, float width, float height, std::string text, float sizeText, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
 	~Button();
 
 	const int& getButtonState();

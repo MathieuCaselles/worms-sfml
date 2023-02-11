@@ -3,13 +3,11 @@
 
 #include <Engine/Components/InputComponent.h>
 
-class IGameObject;
-
 
 struct ICVoid : Engine::IInputComponent
 {
 	ICVoid();
-	void processInputImplementation(IGameObject& gameObject, sf::Event& inputEvent, IScene& scene) override;
+	void processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene) override;
 };
 
 #endif // ICVOID_H

@@ -4,6 +4,6 @@ GCVoid::GCVoid()
 {
 }
 
-void GCVoid::renderImplementation(IGameObject& gameObject, sf::RenderWindow& window)
+void GCVoid::renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window)
 {
 }

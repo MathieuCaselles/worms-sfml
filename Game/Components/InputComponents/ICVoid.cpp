@@ -4,6 +4,6 @@ ICVoid::ICVoid()
 {
 }
 
-void ICVoid::processInputImplementation(IGameObject& gameObject, sf::Event& inputEvent, IScene& scene)
+void ICVoid::processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene)
 {
 }

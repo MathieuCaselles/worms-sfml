@@ -3,13 +3,10 @@
 
 #include <Engine/Components/GraphicsComponent.h>
 
-class IGameObject;
-
-
 struct GCVoid : Engine::IGraphicsComponent
 {
 	GCVoid();
-	void renderImplementation(IGameObject& gameObject, sf::RenderWindow& window) override;
+	void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };
 
 #endif // GCVOID_H

@@ -3,13 +3,11 @@
 
 #include <Engine/Components/GraphicsComponent.h>
 
-class IGameObject;
-
 
 struct GCButton : Engine::IGraphicsComponent
 {
 	GCButton();
-	virtual void renderImplementation(IGameObject& gameObject, sf::RenderWindow& window) override;
+	virtual void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };
 
 #endif // GCEXAMPLEBUTTON_H

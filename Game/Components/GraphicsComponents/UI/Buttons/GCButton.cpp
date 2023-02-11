@@ -1,13 +1,13 @@
 #include "GCButton.h"
 
-#include "../../../GameObjects/UI/Button.h"
-
+#include <Game/GameObjects/UI/Buttons/Button.h>
+#include <iostream>
 
 GCButton::GCButton()
 {
 }
 
-void GCButton::renderImplementation(IGameObject& gameObject, sf::RenderWindow& window)
+void GCButton::renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window)
 {
 	Button& button = reinterpret_cast<Button&>(gameObject);
 

@@ -39,6 +39,7 @@ namespace Engine {
 
 		void render(sf::RenderWindow& window) override
 		{
+
 			this->renderImplementation(*this, window);
 		}
 
