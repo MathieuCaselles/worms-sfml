@@ -1,5 +1,4 @@
-#ifndef GCVOID_H
-#define GCVOID_H
+#pragma once
 
 #include <Engine/Components/GraphicsComponent.h>
 
@@ -9,4 +8,3 @@ struct GCVoid : Engine::IGraphicsComponent
 	void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };
 
-#endif // GCVOID_H

@@ -1,5 +1,5 @@
-#ifndef ICEXAMPLEBUTTON_H
-#define ICEXAMPLEBUTTON_H
+#pragma once
+
 
 #include <Engine/Components/InputComponent.h>
 
@@ -9,4 +9,3 @@ struct ICButton : Engine::IInputComponent
 	void processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene) override;
 };
 
-#endif // ICEXAMPLEBUTTON_H

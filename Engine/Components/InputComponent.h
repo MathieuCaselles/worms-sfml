@@ -1,5 +1,5 @@
-#ifndef INPUTCOMPONENT_H
-#define INPUTCOMPONENT_H
+#pragma once
+
 #include <SFML/Graphics.hpp>
 namespace Engine {
     class IGameObject;
@@ -12,4 +12,3 @@ namespace Engine {
     };
 }
 
-#endif // INPUTCOMPONENT_H

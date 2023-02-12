@@ -1,5 +1,5 @@
-#ifndef PHYSICSCOMPONENT_H
-#define PHYSICSCOMPONENT_H
+#pragma once
+
 #include <SFML/Graphics.hpp>
 namespace Engine {
 
@@ -16,4 +16,3 @@ struct IPhysicsComponent
 
 }
 
-#endif // PHYSICSCOMPONENT_H

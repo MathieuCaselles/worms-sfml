@@ -1,5 +1,5 @@
-#ifndef SINGLETON_H
-#define SINGLETON_H
+#pragma once
+
 #include <mutex>
 #include <iostream>
 
@@ -45,4 +45,3 @@ namespace Tools {
     std::once_flag Singleton<T>::m_onceFlag;
 
 }
-#endif // SINGLETON_H

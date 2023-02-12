@@ -1,5 +1,5 @@
-#ifndef ICVOID_H
-#define ICVOID_H
+#pragma once
+
 
 #include <Engine/Components/InputComponent.h>
 
@@ -10,4 +10,3 @@ struct ICVoid : Engine::IInputComponent
 	void processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene) override;
 };
 
-#endif // ICVOID_H

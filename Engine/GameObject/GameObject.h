@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_H
-#define GAMEOBJECT_H
+#pragma once
+
 
 #include "Tools/DesignPatterns/Composite.h"
 
@@ -45,4 +45,3 @@ namespace Engine {
 
 	};
 }
-#endif // GAMEOBJECT_H
