@@ -1,6 +1,9 @@
 #include "MainMenuScene.h"
 #include <Game/GameObjects/UI/Buttons/Button.h>
 
+#include "SceneEnum.h"
+#include "Engine/Game/Game.h"
+
 MainMenuScene::MainMenuScene()
 {
 	initBackground();
@@ -10,8 +13,7 @@ MainMenuScene::MainMenuScene()
 	addGameObjects(new Button(1400, 400, 230, 80, "Jouer", 40.f,
 		sf::Color(252, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {
-			//Engine::Game* game = Engine::Game::GetInstance();
-			//game->setCurrentScene(ScenesEnum::SceneAuChoix);
+			Engine::Game::GetInstance()->setCurrentScene(ScenesEnum::GAME_MENU);
 		}));
 
 	addGameObjects(new Button(1400, 600, 230, 80, "Quitter", 40.f,
