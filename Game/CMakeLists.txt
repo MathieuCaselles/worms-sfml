@@ -20,4 +20,4 @@ target_sources(Worms PRIVATE
  "Components/PhysicsComponents/PCVoid.h" "Components/PhysicsComponents/PCVoid.cpp" "Components/PhysicsComponents/UI/Buttons/PCButton.h" "Components/PhysicsComponents/UI/Buttons/PCButton.cpp"
  "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
 
-)
+ "Scenes/GameScene.h" "Scenes/GameScene.cpp")
