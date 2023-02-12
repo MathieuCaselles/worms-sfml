@@ -20,4 +20,4 @@ target_sources(Engine PRIVATE
   "Game/Game.h" "Game/Game.cpp"
   "GameObject/GameObject.h"
   "Scene/Scene.h" "Scene/Scene.cpp"
-  "Dictionary/Dictionary.h" )
+    "Dictionary/Dictionary.h")

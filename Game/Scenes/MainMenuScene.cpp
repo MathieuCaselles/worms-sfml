@@ -1,8 +1,11 @@
 #include "MainMenuScene.h"
 #include <Game/GameObjects/UI/Buttons/Button.h>
+#include <Engine/Dictionary/Dictionary.h>
 
 MainMenuScene::MainMenuScene()
 {
+	using TextureDictionary = Dictionary<sf::Texture, "aled", "png">;
+
 	initBackground();
 	initTitle();
 	initOst();
