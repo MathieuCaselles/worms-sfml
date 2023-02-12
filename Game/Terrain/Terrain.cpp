@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Engine/VectorUtils.h"
+#include "Engine/PolygonHelper.h"
 
 Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	_renderWindow(renderWindow),

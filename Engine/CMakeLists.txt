@@ -13,4 +13,4 @@ target_include_directories(Engine PUBLIC
 target_sources(Engine PRIVATE
   test.cpp
   test.h
-  VectorUtils.h)
+  VectorUtils.h "PolygonHelper.h")
