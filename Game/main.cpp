@@ -11,6 +11,7 @@ int main()
     game->addScenes(new MainMenuScene(), new GameScene());
     game->setCurrentScene(ScenesEnum::MAIN_MENU);
     game->run(sf::VideoMode(1920, 1080), "Pathfinder", sf::Style::Fullscreen);
+    delete game;
 
     return 0;
 }
