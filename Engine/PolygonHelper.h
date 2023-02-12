@@ -20,23 +20,21 @@ public:
 
 		indexVector.reserve(vertices.size());
 
-		for (int i = 0; i < vertices.size(); ++i)
+		for (int i = 0; i < static_cast<int>(vertices.size()); ++i)
 		{
 			indexVector.push_back(i);
 		}
 
 		// ------
-		const int totalTrianglesCount = vertices.size() - 2;
+		const int totalTrianglesCount = static_cast<int>(vertices.size()) - 2;
 		const int totalTrianglesIndexCount = totalTrianglesCount * 3;
 
 		outTrianglesIndexes.clear();
-		outTrianglesIndexes.resize(totalTrianglesIndexCount);
-
-		int currentTriangleIndexCount = 0;
+		outTrianglesIndexes.reserve(totalTrianglesIndexCount);
 
 		while(indexVector.size() > 3)
 		{
-			for (int i = 0; i < indexVector.size(); ++i)
+			for (int i = 0; i < static_cast<int>(indexVector.size()); ++i)
 			{
 				const int currentVertexIndex = indexVector[i];
 				const int previousVertexIndex = getItemSafely(indexVector, i - 1);
@@ -70,17 +68,18 @@ public:
 
 				if(isEar)
 				{
-					outTrianglesIndexes[currentTriangleIndexCount++] = previousVertexIndex;
-					outTrianglesIndexes[currentTriangleIndexCount++] = currentVertexIndex;
-					outTrianglesIndexes[currentTriangleIndexCount++] = nextVertexIndex;
+					outTrianglesIndexes.push_back(previousVertexIndex);
+					outTrianglesIndexes.push_back(currentVertexIndex);
+					outTrianglesIndexes.push_back(nextVertexIndex);
 					indexVector.erase(indexVector.begin() + i);
+					break;
 				}
 			}
 		}
 
-		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[0];
-		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[1];
-		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[2];
+		outTrianglesIndexes.push_back(indexVector[0]);
+		outTrianglesIndexes.push_back(indexVector[1]);
+		outTrianglesIndexes.push_back(indexVector[2]);
 
 		return true;
 	}
@@ -117,8 +116,8 @@ public:
 	template<typename T>
 	static T getItemSafely(const std::vector<T>& inVector, int itemIndex)
 	{
-		return itemIndex >= inVector.size() ? inVector[itemIndex % inVector.size()] :
-			   itemIndex < 0 ?				  inVector[itemIndex % inVector.size() + inVector.size()] :
+		return itemIndex >= static_cast<int>(inVector.size()) ? inVector[itemIndex % inVector.size()] :
+			   itemIndex < 0 ?									inVector[itemIndex + inVector.size()] :
 		       inVector[itemIndex];
 	}
 

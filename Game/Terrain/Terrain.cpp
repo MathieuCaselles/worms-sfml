@@ -6,6 +6,9 @@
 #include "Engine/VectorUtils.h"
 #include "Engine/PolygonHelper.h"
 
+constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 100;
+constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
+
 Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	_renderWindow(renderWindow),
 	_imageHeightMapColor(sf::Color::Red)
@@ -16,55 +19,48 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 		std::cout << "Can not load terrain image !" << std::endl;
 		return;
 	}
+	// -------- Convex shape construction
+	std::vector<Point2D> allTerrainVertexPoints;
 
-	std::vector<Point2D> allTerrainVertexPoints = getAllVertexPointsFromBaseImage();
+	allTerrainVertexPoints.emplace_back(0, 0);
+	getAllVertexPointsFromBaseImage(allTerrainVertexPoints);
+	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, 0);
+
+	// ----
 	std::vector<Point2D> allTerrainVertexPointsReversed;
-
-	allTerrainVertexPointsReversed.reserve(allTerrainVertexPoints.size());
+	allTerrainVertexPointsReversed.reserve(allTerrainVertexPoints.size() + 2);
+	allTerrainVertexPointsReversed.emplace_back(0, _renderWindow.getSize().y);
 	for (int i = 0; i < allTerrainVertexPoints.size(); ++i)
 	{
 		allTerrainVertexPointsReversed.push_back(allTerrainVertexPoints[allTerrainVertexPoints.size() - 1 - i]);
 	}
-
-	// ---- Convex shape construction
-	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
-	allTerrainVertexPoints.emplace_back(0, _renderWindow.getSize().y);
-
-	allTerrainVertexPointsReversed.emplace_back(0, _renderWindow.getSize().y);
 	allTerrainVertexPointsReversed.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
 
-	const int terrainPointsCount = static_cast<int>(allTerrainVertexPoints.size());
-	_convexShapeTerrain.setPointCount(terrainPointsCount);
-
-	for (int i = 0; i < terrainPointsCount; ++i)
-	{
-		_convexShapeTerrain.setPoint(i, allTerrainVertexPoints[i]);
-	}
-
-	//_convexShapeTerrain.setOrigin(0, _renderWindow.getSize().y);
-	_convexShapeTerrain.setFillColor(sf::Color(50, 10, 10));
-
-	// Polygon drawing
-	sf::CircleShape octagon(80, 8);
-	octagon.setPosition(200, 200);
+	// -------- Insane Polygon construction
+	sf::CircleShape insanePolygon(80, 50);
+	insanePolygon.setPosition(400, 400);
 
 	std::vector<Point2D> allTerrainVertexPointsCircle;
-	allTerrainVertexPointsCircle.reserve(octagon.getPointCount());
+	allTerrainVertexPointsCircle.reserve(insanePolygon.getPointCount());
 
-	for (int insanePoint = octagon.getPointCount(); insanePoint > 0 ; --insanePoint)
-	{
-		allTerrainVertexPointsCircle.push_back(octagon.getPoint(insanePoint));
-	}
+	for (int insanePoint = insanePolygon.getPointCount(); insanePoint > 0 ; --insanePoint)
+		allTerrainVertexPointsCircle.push_back(insanePolygon.getPoint(insanePoint));
 
-	PolygonHelper::triangulate(allTerrainVertexPointsReversed, _trianglesVertices);
+	//for (int insanePoint = 0; insanePoint < insanePolygon.getPointCount(); ++insanePoint)
+	//	allTerrainVertexPointsCircle.push_back(insanePolygon.getPoint(insanePoint));
+
+	// -------- Terrain drawing
+	std::vector<Point2D>& vectorToTriangulate = allTerrainVertexPoints;
+
+	PolygonHelper::triangulate(vectorToTriangulate, _trianglesVertices);
 
 	for (int i = 0; i < _trianglesVertices.size(); i += 3)
 	{
 		sf::VertexArray newTriangle{ sf::Triangles, 3 };
 
-		newTriangle[0].position = allTerrainVertexPointsReversed[_trianglesVertices[i]];
-		newTriangle[1].position = allTerrainVertexPointsReversed[_trianglesVertices[i+1]];
-		newTriangle[2].position = allTerrainVertexPointsReversed[_trianglesVertices[i+2]];
+		newTriangle[0].position = vectorToTriangulate[_trianglesVertices[i]];
+		newTriangle[1].position = vectorToTriangulate[_trianglesVertices[i+1]];
+		newTriangle[2].position = vectorToTriangulate[_trianglesVertices[i+2]];
 
 		const sf::Color randomColor = PolygonHelper::getRandomTerrainColor();
 
@@ -86,10 +82,8 @@ void Terrain::draw()
 	}
 }
 
-std::vector<Terrain::Point2D> Terrain::getAllVertexPointsFromBaseImage()
+void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints)
 {
-	std::vector<Point2D> allVertexPoints;
-
 	const float windowW = static_cast<float>(_renderWindow.getSize().x);
 	const float windowH = static_cast<float>(_renderWindow.getSize().y);
 
@@ -111,8 +105,6 @@ std::vector<Terrain::Point2D> Terrain::getAllVertexPointsFromBaseImage()
 			}
 		}
 	}
-
-	return allVertexPoints;
 }
 
 sf::Vector2f Terrain::getEdgeFromPoints(const Point2D& pointA, const Point2D& pointB)

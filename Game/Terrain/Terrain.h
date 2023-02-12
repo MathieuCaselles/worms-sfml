@@ -2,9 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 100;
-constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
-
 class Terrain
 {
 public:
@@ -24,11 +21,10 @@ private:
 	// ---- Final convex shape
 	//std::vector<Point2D> _allTerrainVertexPoints;
 
-	sf::ConvexShape _convexShapeTerrain;
 	std::vector<int> _trianglesVertices;
 	std::vector<sf::VertexArray> _triangles;
 
-	std::vector<Point2D> getAllVertexPointsFromBaseImage();
+	void getAllVertexPointsFromBaseImage(std::vector<Terrain::Point2D>& allVertexPoints);
 	sf::Vector2f getEdgeFromPoints(const Point2D& pointA, const Point2D& pointB);
 
 	bool isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude);
