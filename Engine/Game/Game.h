@@ -1,5 +1,4 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "Tools/DesignPatterns/Singleton.h"
 #include <SFML/Graphics.hpp>
@@ -43,7 +42,6 @@ namespace Engine {
     };
 }
 
-#endif // GAME_H
 namespace Engine {
     template<typename ...Args>
     inline void Game::addScenes(Args ...scenes)

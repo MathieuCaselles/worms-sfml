@@ -1,5 +1,4 @@
-#ifndef GCEXAMPLEBUTTON_H
-#define GCEXAMPLEBUTTON_H
+#pragma once
 
 #include <Engine/Components/GraphicsComponent.h>
 
@@ -10,4 +9,3 @@ struct GCButton : Engine::IGraphicsComponent
 	virtual void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };
 
-#endif // GCEXAMPLEBUTTON_H

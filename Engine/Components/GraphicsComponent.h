@@ -1,5 +1,5 @@
-#ifndef GRAPHICSCOMPONENT_H
-#define GRAPHICSCOMPONENT_H
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
 namespace Engine {
@@ -15,4 +15,3 @@ struct IGraphicsComponent
 
 
 }
-#endif // GRAPHICSCOMPONENT_H

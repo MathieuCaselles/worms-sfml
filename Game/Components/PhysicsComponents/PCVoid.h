@@ -1,5 +1,5 @@
-#ifndef PCVOID_H
-#define PCVOID_H
+#pragma once
+
 
 #include <Engine/Components/PhysicsComponent.h>
 
@@ -13,4 +13,3 @@ private:
 	bool m_callbackIsCalled;
 };
 
-#endif // PCVOID_H

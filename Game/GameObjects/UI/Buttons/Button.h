@@ -1,5 +1,4 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#pragma once
 
 #include <functional>
 #include <Engine/GameObject/GameObject.h>
@@ -54,5 +53,4 @@ protected:
 };
 
 
-#endif // BUTTON_H
 
