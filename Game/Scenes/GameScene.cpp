@@ -5,11 +5,11 @@
 GameScene::GameScene()
 {
 	initBackground();
-	initAnnounce();
+	initTitle();
 
-	addGameObjects(new Button(50, 50, 230, 80, "Options", 40.f,
+	addGameObjects(new Button(50, 50, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
-		[&](Button* button) {}));
+		[&](Button* button) {m_window.close(); }));
 }
 
 GameScene::~GameScene()
@@ -52,8 +52,8 @@ void GameScene::initTitle()
 	m_title.setFont(m_font);
 	m_title.setString("Shoot and Destroy");
 	m_title.setFillColor(sf::Color(40, 40, 40));
-	m_title.setCharacterSize(80);
-	m_title.setPosition(960, 540);
+	m_title.setCharacterSize(35);
+	m_title.setPosition(730, 500);
 }
 
 void GameScene::initAnnounce()
@@ -63,7 +63,7 @@ void GameScene::initAnnounce()
 	}
 	m_announce.setFont(m_font);
 	m_announce.setString("Calvin couldn't take anymore !");
-	m_announce.setFillColor(sf::Color(40, 40, 40));
-	m_announce.setCharacterSize(80);
-	m_announce.setPosition(960, 200);
+	m_announce.setFillColor(sf::Color(0, 0, 0));
+	m_announce.setCharacterSize(20);
+	m_announce.setPosition(700, 200);
 }
