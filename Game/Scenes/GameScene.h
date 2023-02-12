@@ -16,9 +16,12 @@ private:
 	void initBackground();
 	void initAnnounce();
 	void initTitle();
+	void initInformations();
 
 	sf::Text m_title;
 	sf::Text m_announce;
+	sf::Text m_wind;
+	sf::Text m_ammo;
 	sf::Font m_font;
 
 	sf::Texture m_backgroundTexture;

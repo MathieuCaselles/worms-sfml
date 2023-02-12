@@ -5,9 +5,10 @@
 GameScene::GameScene()
 {
 	initBackground();
+	initInformations();
 	initTitle();
 
-	addGameObjects(new Button(50, 50, 200, 50, "Options", 30.f,
+	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
 }
@@ -30,9 +31,31 @@ void GameScene::render()
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 	m_window.draw(m_announce);
+	m_window.draw(m_wind);
+	m_window.draw(m_ammo);
 
 	IScene::render();
 }
+
+void GameScene::initInformations()
+{
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
+	}
+
+	m_wind.setFont(m_font);
+	m_wind.setString("Wind: ");
+	m_wind.setFillColor(sf::Color(255, 255, 255));
+	m_wind.setCharacterSize(20);
+	m_wind.setPosition(80, 25);
+
+	m_ammo.setFont(m_font);
+	m_ammo.setString("Ammo: ");
+	m_ammo.setFillColor(sf::Color(255, 255, 255));
+	m_ammo.setCharacterSize(20);
+	m_ammo.setPosition(80, 55);
+}
+
 
 void GameScene::initBackground()
 {
@@ -63,7 +86,7 @@ void GameScene::initAnnounce()
 	}
 	m_announce.setFont(m_font);
 	m_announce.setString("Calvin couldn't take anymore !");
-	m_announce.setFillColor(sf::Color(0, 0, 0));
+	m_announce.setFillColor(sf::Color(255, 255, 255));
 	m_announce.setCharacterSize(20);
 	m_announce.setPosition(700, 200);
 }
