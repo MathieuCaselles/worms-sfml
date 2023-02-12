@@ -6,19 +6,19 @@ class PolygonHelper
 public:
 	using Point2D = sf::Vector2f;
 
-	static bool triangulate(const std::vector<Point2D>& vertices, std::vector<int>& outTriangles)
+	static bool triangulate(const std::vector<Point2D>& vertices, std::vector<int>& outTrianglesIndexes)
 	{
 		if(vertices.size() < 3)
 			return false; // It is useless to triangulate a triangle.
 
-		if (!isSimplePolygon(vertices) || containsColinearEdges(vertices))
+		if (!isSimplePolygon(vertices) || !containsColinearEdges(vertices))
 			return false;
-
-		outTriangles.clear();
 
 		// ------
 
 		std::vector<int> indexVector;
+
+		indexVector.reserve(vertices.size());
 
 		for (int i = 0; i < vertices.size(); ++i)
 		{
@@ -26,26 +26,28 @@ public:
 		}
 
 		// ------
-		const int triangleCount = vertices.size() - 2;
-		int triangleIndexCount = triangleCount * 3;
+		const int totalTrianglesCount = vertices.size() - 2;
+		const int totalTrianglesIndexCount = totalTrianglesCount * 3;
 
-		//outTriangles.resize(triangleCount);
+		outTrianglesIndexes.clear();
+		outTrianglesIndexes.resize(totalTrianglesIndexCount);
+
 		int currentTriangleIndexCount = 0;
 
 		while(indexVector.size() > 3)
 		{
 			for (int i = 0; i < indexVector.size(); ++i)
 			{
-				int currentVertexIndex = indexVector[i];
-				int previousVertexIndex = getItemSafely(indexVector, i - 1);
-				int nextVertexIndex = getItemSafely(indexVector, i + 1);
+				const int currentVertexIndex = indexVector[i];
+				const int previousVertexIndex = getItemSafely(indexVector, i - 1);
+				const int nextVertexIndex = getItemSafely(indexVector, i + 1);
 
 				sf::Vector2f currentVertex = vertices[currentVertexIndex];
-				sf::Vector2f previousVertex = vertices[currentVertexIndex];
-				sf::Vector2f nextVertex = vertices[currentVertexIndex];
+				sf::Vector2f previousVertex = vertices[previousVertexIndex];
+				sf::Vector2f nextVertex = vertices[nextVertexIndex];
 
-				sf::Vector2f currentToPreviousVertex = currentVertex - previousVertex;
-				sf::Vector2f currentToNextVertex = currentVertex - nextVertex;
+				sf::Vector2f currentToPreviousVertex = previousVertex - currentVertex;
+				sf::Vector2f currentToNextVertex = nextVertex - currentVertex;
 
 				// Is this vertex convex ? Convex vertex if cross test is greater than 0
 				if(VectorUtils::Cross(currentToPreviousVertex, currentToNextVertex) < 0.f)
@@ -59,9 +61,7 @@ public:
 					if (j == currentVertexIndex || j == previousVertexIndex || j == nextVertexIndex)
 						continue; // No need to iterate through current vertices
 
-					Point2D p = vertices[j];
-
-					if(collisionPointToTriangle(p, previousVertex, currentVertex, nextVertex))
+					if(collisionPointToTriangle(vertices[j], previousVertex, currentVertex, nextVertex))
 					{
 						isEar = false;
 						break;
@@ -70,17 +70,17 @@ public:
 
 				if(isEar)
 				{
-					outTriangles[triangleIndexCount++] = previousVertexIndex;
-					outTriangles[triangleIndexCount++] = currentVertexIndex;
-					outTriangles[triangleIndexCount++] = nextVertexIndex;
-					indexVector.erase(i);
+					outTrianglesIndexes[currentTriangleIndexCount++] = previousVertexIndex;
+					outTrianglesIndexes[currentTriangleIndexCount++] = currentVertexIndex;
+					outTrianglesIndexes[currentTriangleIndexCount++] = nextVertexIndex;
+					indexVector.erase(indexVector.begin() + i);
 				}
 			}
 		}
 
-		outTriangles[triangleIndexCount++] = indexVector[0];
-		outTriangles[triangleIndexCount++] = indexVector[1];
-		outTriangles[triangleIndexCount++] = indexVector[2];
+		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[0];
+		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[1];
+		//outTrianglesIndexes[currentTriangleIndexCount++] = indexVector[2];
 
 		return true;
 	}
@@ -120,5 +120,17 @@ public:
 		return itemIndex >= inVector.size() ? inVector[itemIndex % inVector.size()] :
 			   itemIndex < 0 ?				  inVector[itemIndex % inVector.size() + inVector.size()] :
 		       inVector[itemIndex];
+	}
+
+	static sf::Color getRandomTerrainColor()
+	{
+		std::random_device dev;
+		std::mt19937 rng(dev());
+		std::uniform_int_distribution<std::mt19937::result_type> rangeRed(170, 220);
+		std::uniform_int_distribution<std::mt19937::result_type> rangeBlueGreen(60, 100);
+
+		return { static_cast<sf::Uint8>(rangeRed(rng) + 1),
+				  static_cast<sf::Uint8>(rangeBlueGreen(rng) + 1),
+				   static_cast<sf::Uint8>(rangeBlueGreen(rng) + 1) };
 	}
 };

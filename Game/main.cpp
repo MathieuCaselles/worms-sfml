@@ -19,7 +19,9 @@ int main()
     bool left = false;
 
     Terrain insaneTerrain(window);
-
+    sf::RectangleShape rectBackground;
+    rectBackground.setSize(static_cast<sf::Vector2f>(window.getSize()));
+    rectBackground.setFillColor(sf::Color(130, 170, 227));
 
     while (window.isOpen())
     {
@@ -60,6 +62,7 @@ int main()
 
         // Clear screen
         window.clear();
+        window.draw(rectBackground);
         insaneTerrain.draw();
         //window.draw(rect);
         // Update the window
