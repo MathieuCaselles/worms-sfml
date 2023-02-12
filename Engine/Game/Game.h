@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tools/DesignPatterns/Singleton.h"
+#include <Tools/DesignPatterns/Singleton.h>
 #include <SFML/Graphics.hpp>
 namespace Engine {
     class IScene;
