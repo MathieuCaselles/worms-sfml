@@ -50,7 +50,7 @@ public:
 				const sf::Vector2f currentToNextVertex = nextVertex - currentVertex;
 
 				// Is this vertex convex ? Convex vertex if cross test is greater than 0
-				if(VectorUtils::Cross(currentToPreviousVertex, currentToNextVertex) < 0.f)
+				if(VectorUtils::Cross2D(currentToPreviousVertex, currentToNextVertex) < 0.f)
 					continue;
 
 				bool isEar = true;
@@ -61,7 +61,7 @@ public:
 					if (j == currentVertexIndex || j == previousVertexIndex || j == nextVertexIndex)
 						continue; // No need to iterate through current vertices
 
-					if(CollisionUtils::collisionPointToTriangle(vertices[j], previousVertex, currentVertex, nextVertex))
+					if(CollisionUtils::pointToTriangle(vertices[j], previousVertex, currentVertex, nextVertex))
 					{
 						isEar = false;
 						break;
