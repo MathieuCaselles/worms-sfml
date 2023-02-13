@@ -3,7 +3,6 @@
 #include <iostream>
 #include <random>
 
-#include "Engine/VectorUtils.h"
 #include "Engine/PolygonHelper.h"
 
 constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 10;
@@ -19,48 +18,25 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 		std::cout << "Can not load terrain image !" << std::endl;
 		return;
 	}
+
 	// -------- Convex shape construction
 	std::vector<Point2D> allTerrainVertexPoints;
+	allTerrainVertexPoints.reserve(NUM_VERTEX_FOR_BASE_IMAGE + 4); // 2 for screen edges, 2 other for terrain sides.
 
 	allTerrainVertexPoints.emplace_back(0, _renderWindow.getSize().y);
 	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
 	getAllVertexPointsFromBaseImage(allTerrainVertexPoints);
 
-	// ----
-	std::vector<Point2D> allTerrainVertexPointsReversed;
-	allTerrainVertexPointsReversed.reserve(allTerrainVertexPoints.size() + 2);
-	allTerrainVertexPointsReversed.emplace_back(0, _renderWindow.getSize().y);
-	for (int i = 0; i < allTerrainVertexPoints.size(); ++i)
-	{
-		allTerrainVertexPointsReversed.push_back(allTerrainVertexPoints[allTerrainVertexPoints.size() - 1 - i]);
-	}
-	allTerrainVertexPointsReversed.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
-
-	// -------- Insane Polygon construction
-	sf::CircleShape insanePolygon(80, 50);
-	insanePolygon.setPosition(400, 400);
-
-	std::vector<Point2D> allTerrainVertexPointsCircle;
-	allTerrainVertexPointsCircle.reserve(insanePolygon.getPointCount());
-
-	for (int insanePoint = insanePolygon.getPointCount(); insanePoint > 0 ; --insanePoint)
-		allTerrainVertexPointsCircle.push_back(insanePolygon.getPoint(insanePoint));
-
-	//for (int insanePoint = 0; insanePoint < insanePolygon.getPointCount(); ++insanePoint)
-	//	allTerrainVertexPointsCircle.push_back(insanePolygon.getPoint(insanePoint));
-
 	// -------- Terrain drawing
-	std::vector<Point2D>& vectorToTriangulate = allTerrainVertexPoints;
-
-	PolygonHelper::triangulate(vectorToTriangulate, _trianglesVertices);
+	PolygonHelper::triangulate(allTerrainVertexPoints, _trianglesVertices);
 
 	for (int i = 0; i < _trianglesVertices.size(); i += 3)
 	{
 		sf::VertexArray newTriangle{ sf::Triangles, 3 };
 
-		newTriangle[0].position = vectorToTriangulate[_trianglesVertices[i]];
-		newTriangle[1].position = vectorToTriangulate[_trianglesVertices[i+1]];
-		newTriangle[2].position = vectorToTriangulate[_trianglesVertices[i+2]];
+		newTriangle[0].position = allTerrainVertexPoints[_trianglesVertices[i]];
+		newTriangle[1].position = allTerrainVertexPoints[_trianglesVertices[i+1]];
+		newTriangle[2].position = allTerrainVertexPoints[_trianglesVertices[i+2]];
 
 		const sf::Color randomColor = PolygonHelper::getRandomTerrainColor();
 
@@ -74,15 +50,13 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 
 void Terrain::draw()
 {
-	//_renderWindow.draw(_convexShapeTerrain);
-
 	for (const auto& triangle : _triangles)
 	{
 		_renderWindow.draw(triangle);
 	}
 }
 
-void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints)
+void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints) const
 {
 	const float windowW = static_cast<float>(_renderWindow.getSize().x);
 	const float windowH = static_cast<float>(_renderWindow.getSize().y);
@@ -107,15 +81,8 @@ void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoi
 	}
 }
 
-sf::Vector2f Terrain::getEdgeFromPoints(const Point2D& pointA, const Point2D& pointB)
+bool Terrain::isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude) const
 {
-	return {};
-}
-
-bool Terrain::isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude)
-{
-	return _imageHeightMapColor.r <= std::min(255, color.r + incertitude) && _imageHeightMapColor.r >= std::max(0, color.r - incertitude)/* &&
-		   _imageHeightMapColor.g <= std::min(255, color.g + incertitude) && _imageHeightMapColor.g >= std::max(0, color.g - incertitude) &&
-		   _imageHeightMapColor.b <= std::min(255, color.b + incertitude) && _imageHeightMapColor.b >= std::max(0, color.b - incertitude)*/;
+	return _imageHeightMapColor.r <= std::min(255, color.r + incertitude) && _imageHeightMapColor.r >= std::max(0, color.r - incertitude);
 }
 

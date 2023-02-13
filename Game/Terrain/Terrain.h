@@ -19,13 +19,9 @@ private:
 	sf::Color _imageHeightMapColor;
 
 	// ---- Final convex shape
-	//std::vector<Point2D> _allTerrainVertexPoints;
-
 	std::vector<int> _trianglesVertices;
 	std::vector<sf::VertexArray> _triangles;
 
-	void getAllVertexPointsFromBaseImage(std::vector<Terrain::Point2D>& allVertexPoints);
-	sf::Vector2f getEdgeFromPoints(const Point2D& pointA, const Point2D& pointB);
-
-	bool isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude);
+	void getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints) const;
+	bool isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude) const;
 };

@@ -1,5 +1,7 @@
 #pragma once
-#include <list>
+
+#include "CollisionUtils.h"
+
 
 class PolygonHelper
 {
@@ -40,12 +42,12 @@ public:
 				const int previousVertexIndex = getItemSafely(indexVector, i - 1);
 				const int nextVertexIndex = getItemSafely(indexVector, i + 1);
 
-				sf::Vector2f currentVertex = vertices[currentVertexIndex];
-				sf::Vector2f previousVertex = vertices[previousVertexIndex];
-				sf::Vector2f nextVertex = vertices[nextVertexIndex];
+				const sf::Vector2f currentVertex = vertices[currentVertexIndex];
+				const sf::Vector2f previousVertex = vertices[previousVertexIndex];
+				const sf::Vector2f nextVertex = vertices[nextVertexIndex];
 
-				sf::Vector2f currentToPreviousVertex = previousVertex - currentVertex;
-				sf::Vector2f currentToNextVertex = nextVertex - currentVertex;
+				const sf::Vector2f currentToPreviousVertex = previousVertex - currentVertex;
+				const sf::Vector2f currentToNextVertex = nextVertex - currentVertex;
 
 				// Is this vertex convex ? Convex vertex if cross test is greater than 0
 				if(VectorUtils::Cross(currentToPreviousVertex, currentToNextVertex) < 0.f)
@@ -59,7 +61,7 @@ public:
 					if (j == currentVertexIndex || j == previousVertexIndex || j == nextVertexIndex)
 						continue; // No need to iterate through current vertices
 
-					if(collisionPointToTriangle(vertices[j], previousVertex, currentVertex, nextVertex))
+					if(CollisionUtils::collisionPointToTriangle(vertices[j], previousVertex, currentVertex, nextVertex))
 					{
 						isEar = false;
 						break;
@@ -84,23 +86,6 @@ public:
 		return true;
 	}
 
-	static bool collisionPointToTriangle(const Point2D& point, const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c)
-	{
-		sf::Vector2f ab = b - a;
-		sf::Vector2f bc = c - b;
-		sf::Vector2f ca = a - c;
-
-		sf::Vector2f ap = point - a;
-		sf::Vector2f bp = point - b;
-		sf::Vector2f cp = point - c;
-
-		float cross1 = VectorUtils::Cross(ab, ap);
-		float cross2 = VectorUtils::Cross(bc, bp);
-		float cross3 = VectorUtils::Cross(ca, cp);
-
-		return cross1 < 0.f && cross2 < 0.f && cross3 < 0.f;
-	}
-
 	static bool containsColinearEdges(const std::vector<Point2D>& vertices)
 	{
 		// TODO : Remove colinear edges is some exists.
@@ -123,13 +108,11 @@ public:
 
 	static sf::Color getRandomTerrainColor()
 	{
-		std::random_device dev;
-		std::mt19937 rng(dev());
-		std::uniform_int_distribution<std::mt19937::result_type> rangeRed(170, 220);
-		std::uniform_int_distribution<std::mt19937::result_type> rangeBlueGreen(60, 100);
+		const auto randomRed = MathUtils::getRandomNumber(170, 220);
+		const auto randomBlueGreen = MathUtils::getRandomNumber(60, 100);
 
-		return { static_cast<sf::Uint8>(rangeRed(rng) + 1),
-				  static_cast<sf::Uint8>(rangeBlueGreen(rng) + 1),
-				   static_cast<sf::Uint8>(rangeBlueGreen(rng) + 1) };
+		return { static_cast<sf::Uint8>(randomRed),
+				  static_cast<sf::Uint8>(randomBlueGreen),
+				   static_cast<sf::Uint8>(randomBlueGreen) };
 	}
 };

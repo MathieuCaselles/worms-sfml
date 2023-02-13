@@ -1,12 +1,10 @@
 #pragma once
 
+#include "MathUtils.h"
+
 class VectorUtils
 {
 public:
-    constexpr static float PI = 3.14159265358979f;
-	constexpr static float DEG_TO_RAD = PI * 2.f / 360.f;
-    constexpr static float RAD_TO_DEG = 1.f / DEG_TO_RAD;
-
     static float Dot(const sf::Vector2f& lhs, const sf::Vector2f& rhs)      { return lhs.x * rhs.x + lhs.y * rhs.y; }
     static float Distance(const sf::Vector2f& lhs, const sf::Vector2f& rhs) { return Magnitude(lhs - rhs); }
     static float Magnitude(const sf::Vector2f& vector)                      { return std::sqrt(Dot(vector, vector)); }
@@ -32,7 +30,7 @@ public:
         const float denominator = std::sqrt(SqrMagnitude(from) * SqrMagnitude(to));
         const float finalDot = std::clamp(Dot(from, to) / denominator, -1.f, 1.f);
 
-        return std::acos(finalDot) * RAD_TO_DEG;
+        return std::acos(finalDot) * MathUtils::RAD_TO_DEG;
     }
 
 	static sf::Vector2f Reflect(const sf::Vector2f& inDirection, const sf::Vector2f& inNormal)
