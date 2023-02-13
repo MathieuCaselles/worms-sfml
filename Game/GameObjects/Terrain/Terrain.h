@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Game/Terrain/GCTerrain.h>
+#include "GCTerrain.h"
 
 #include "Engine/GameObject/GameObject.h"
 #include "Game/Components/InputComponents/ICVoid.h"

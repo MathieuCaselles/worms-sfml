@@ -5,7 +5,7 @@
 
 #include "Engine/PolygonHelper.h"
 
-constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 20;
+constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
 Terrain::Terrain(const sf::Vector2f& renderWindowSize) :
