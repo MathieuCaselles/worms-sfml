@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CollisionUtils.h"
+#include "Game/Assets/GameColors.h"
 
 
 class PolygonHelper
@@ -108,11 +109,9 @@ public:
 
 	static sf::Color getRandomTerrainColor()
 	{
-		const auto randomRed = MathUtils::getRandomNumber(170, 220);
-		const auto randomBlueGreen = MathUtils::getRandomNumber(60, 100);
+		const auto randomRed   = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.r, GameColors::_terrainRandomTriangleColorMax.r);
+		const auto randomBlue  = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.g, GameColors::_terrainRandomTriangleColorMin.g);
+		const auto randomGreen = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.b, GameColors::_terrainRandomTriangleColorMin.b);
 
-		return { static_cast<sf::Uint8>(randomRed),
-				  static_cast<sf::Uint8>(randomBlueGreen),
-				   static_cast<sf::Uint8>(randomBlueGreen) };
-	}
+		return { static_cast<sf::Uint8>(randomRed), static_cast<sf::Uint8>(randomBlue), static_cast<sf::Uint8>(randomGreen) }; }
 };

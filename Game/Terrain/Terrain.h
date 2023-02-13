@@ -1,18 +1,24 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <Game/Terrain/GCTerrain.h>
 
-class Terrain
+#include "Engine/GameObject/GameObject.h"
+#include "Game/Components/InputComponents/ICVoid.h"
+#include "Game/Components/PhysicsComponents/PCVoid.h"
+
+class Terrain : public Engine::GameObject<PCVoid, GCTerrain, ICVoid>
 {
 public:
 	using Point2D = sf::Vector2f;
 
-	Terrain(sf::RenderWindow& renderWindow);
+	//Terrain(const sf::RenderWindow& renderWindow);1920, 1080
+	Terrain(const sf::Vector2f& renderWindowSize);
 
-	void draw();
+	const std::vector<sf::VertexArray>& getTriangles() const { return _triangles; }
 
 private:
-	sf::RenderWindow& _renderWindow;
+	//const sf::RenderWindow& _renderWindow;
+	sf::Vector2f _renderWindowSize;
 
 	// ---- Base image processing
 	sf::Image _baseImageTerrain;

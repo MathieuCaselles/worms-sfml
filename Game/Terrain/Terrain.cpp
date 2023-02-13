@@ -5,11 +5,11 @@
 
 #include "Engine/PolygonHelper.h"
 
-constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 10;
+constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 20;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
-Terrain::Terrain(sf::RenderWindow& renderWindow) :
-	_renderWindow(renderWindow),
+Terrain::Terrain(const sf::Vector2f& renderWindowSize) :
+	_renderWindowSize(renderWindowSize),
 	_imageHeightMapColor(sf::Color::Red)
 {
 	// ---- Base image loading
@@ -23,14 +23,14 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	std::vector<Point2D> allTerrainVertexPoints;
 	allTerrainVertexPoints.reserve(NUM_VERTEX_FOR_BASE_IMAGE + 4); // 2 for screen edges, 2 other for terrain sides.
 
-	allTerrainVertexPoints.emplace_back(0, _renderWindow.getSize().y);
-	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
+	allTerrainVertexPoints.emplace_back(0, _renderWindowSize.y);
+	allTerrainVertexPoints.emplace_back(_renderWindowSize.x, _renderWindowSize.y);
 	getAllVertexPointsFromBaseImage(allTerrainVertexPoints);
 
 	// -------- Terrain drawing
 	PolygonHelper::triangulate(allTerrainVertexPoints, _trianglesVertices);
 
-	for (int i = 0; i < _trianglesVertices.size(); i += 3)
+	for (int i = 0; i < static_cast<int>(_trianglesVertices.size()); i += 3)
 	{
 		sf::VertexArray newTriangle{ sf::Triangles, 3 };
 
@@ -48,18 +48,10 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	}
 }
 
-void Terrain::draw()
-{
-	for (const auto& triangle : _triangles)
-	{
-		_renderWindow.draw(triangle);
-	}
-}
-
 void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints) const
 {
-	const float windowW = static_cast<float>(_renderWindow.getSize().x);
-	const float windowH = static_cast<float>(_renderWindow.getSize().y);
+	const auto windowW = static_cast<float>(_renderWindowSize.x);
+	const auto windowH = static_cast<float>(_renderWindowSize.y);
 
 	const float baseImageWRatio = windowW / static_cast<float>(_baseImageTerrain.getSize().x);
 	const float baseImageHRatio = windowH / static_cast<float>(_baseImageTerrain.getSize().y);
