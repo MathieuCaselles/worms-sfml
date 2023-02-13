@@ -1,4 +1,5 @@
 # Worms Sfml
 
-AprËs avoir cloner le projet, veillez ‡ ce que le CMakeSettings.json contienne le bon chemin vers votre executable cmake ‡ l'attribut `cmakeExecutable`.
-Votre version de cmake doit Ítre au minimum Ègale ‡ `3.25.2`.
+Apr√®s avoir cloner le projet, veillez √† ce que le CMakeSettings.json contienne le bon chemin vers votre executable cmake √† l'attribut `cmakeExecutable`.  
+Votre version de cmake doit √™tre au minimum √©gale √† `3.25.2`.  
+Sur visual studio, l'√©l√©ment de d√©marrage √† s√©lectionner est `Worms.exe(bin\Worms.exe)`  
