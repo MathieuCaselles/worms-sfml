@@ -6,7 +6,7 @@
 #include "Engine/VectorUtils.h"
 #include "Engine/PolygonHelper.h"
 
-constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 100;
+constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 10;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
 Terrain::Terrain(sf::RenderWindow& renderWindow) :
@@ -14,7 +14,7 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	_imageHeightMapColor(sf::Color::Red)
 {
 	// ---- Base image loading
-	if (!_baseImageTerrain.loadFromFile("./Assets/Maps/BaseTerrain3.png"))
+	if (!_baseImageTerrain.loadFromFile("./Assets/Maps/BaseTerrain4.png"))
 	{
 		std::cout << "Can not load terrain image !" << std::endl;
 		return;
@@ -22,9 +22,9 @@ Terrain::Terrain(sf::RenderWindow& renderWindow) :
 	// -------- Convex shape construction
 	std::vector<Point2D> allTerrainVertexPoints;
 
-	allTerrainVertexPoints.emplace_back(0, 0);
+	allTerrainVertexPoints.emplace_back(0, _renderWindow.getSize().y);
+	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, _renderWindow.getSize().y);
 	getAllVertexPointsFromBaseImage(allTerrainVertexPoints);
-	allTerrainVertexPoints.emplace_back(_renderWindow.getSize().x, 0);
 
 	// ----
 	std::vector<Point2D> allTerrainVertexPointsReversed;
@@ -90,7 +90,7 @@ void Terrain::getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoi
 	const float baseImageWRatio = windowW / static_cast<float>(_baseImageTerrain.getSize().x);
 	const float baseImageHRatio = windowH / static_cast<float>(_baseImageTerrain.getSize().y);
 
-	for (int i = 0; i <= NUM_VERTEX_FOR_BASE_IMAGE; ++i)
+	for (int i = NUM_VERTEX_FOR_BASE_IMAGE; i >= 0; --i)
 	{
 		const int col = i * static_cast<int>(_baseImageTerrain.getSize().x) / NUM_VERTEX_FOR_BASE_IMAGE;
 
