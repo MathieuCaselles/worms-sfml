@@ -1,5 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 namespace Engine {
@@ -36,7 +35,7 @@ namespace Engine {
         std::vector<IGameObject*> m_gameObjects;
     };
 }
-#endif // SCENE_H
+
 namespace Engine {
 
     template<typename ...Args>
