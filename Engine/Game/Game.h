@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Tools/DesignPatterns/Singleton.h"
+#include <Tools/DesignPatterns/Singleton.h>
 #include <SFML/Graphics.hpp>
+
+
 namespace Engine {
     class IScene;
 
@@ -12,7 +14,7 @@ namespace Engine {
     public:
 
         ~Game();
-        void run(sf::VideoMode videoMode = sf::VideoMode(1920, 1080), std::string windowTitle = "SFML", sf::Uint32 style = sf::Style::Default);
+        void run(sf::VideoMode videoMode = sf::VideoMode(1920, 1080), std::string windowTitle = "SFML", sf::Uint32 style = sf::Style::Default, const size_t indexStartScene = 0);
 
         sf::RenderWindow* getWindow();
 

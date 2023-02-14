@@ -9,11 +9,15 @@ Game::~Game()
     clearScenes();
 }
 
-void Game::run(sf::VideoMode videoMode, std::string windowTitle, sf::Uint32 style)
+void Game::run(sf::VideoMode videoMode, std::string windowTitle, sf::Uint32 style, const size_t indexStartScene)
 {
+    m_pCurrentScene = m_scenes.at(indexStartScene);
+
     assert("m_pCurrentScene is nullptr", m_pCurrentScene != nullptr);
 
     initWindow(videoMode, windowTitle, style);
+
+    m_pCurrentScene->onBeginPlay();
 
     sf::Clock DeltaTimeClock;
     float deltaTime;
@@ -37,7 +41,10 @@ sf::RenderWindow* Game::getWindow()
 
 void Game::setCurrentScene(const size_t index)
 {
+    m_pCurrentScene->onEndPlay();
     m_pCurrentScene = m_scenes.at(index);
+    m_pCurrentScene->onBeginPlay();
+
 }
 
 void Game::clearScenes()

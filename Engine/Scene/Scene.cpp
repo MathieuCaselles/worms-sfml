@@ -29,6 +29,24 @@ namespace Engine {
 		return m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
 	}
 
+
+
+	void IScene::onBeginPlay() {
+		for (IGameObject* pGameObject : m_gameObjects)
+		{
+			pGameObject->onBeginPlay(*this);
+		}
+	}
+
+
+	void IScene::onEndPlay() {
+		for (IGameObject* pGameObject : m_gameObjects)
+		{
+			pGameObject->onEndPlay(*this);
+		}
+	}
+
+
 	void IScene::processInput(sf::Event& inputEvent)
 	{
 		for (IGameObject* pGameObject : m_gameObjects)

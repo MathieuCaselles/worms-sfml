@@ -17,6 +17,9 @@ namespace Engine {
         virtual const sf::Vector2i getMousePositionWindow();
         virtual const sf::Vector2f getMousePositionView();
 
+        virtual void onBeginPlay();
+        virtual void onEndPlay();
+
         virtual void processInput(sf::Event& inputEvent);
         virtual void update(const float& deltaTime);
         virtual void render();
