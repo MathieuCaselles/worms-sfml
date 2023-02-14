@@ -6,13 +6,18 @@
 
 MainGameScene::MainGameScene()
 {
-	// TODO : Put a getter of window size instead of hard coding the supposed window size
-	const auto windowSize = sf::Vector2f(1920, 1080);
+	_terrain = std::make_unique<Terrain>();
+	addGameObjects(_terrain.get());
+}
 
-	_background.setSize(windowSize);
+void MainGameScene::onBeginPlay()
+{
+	IScene::onBeginPlay();
+
+	_background.setSize(static_cast<sf::Vector2f>(m_window.getSize()));
 	_background.setFillColor(GameColors::_sky);
 
-	addGameObjects(new Terrain(windowSize));
+	_terrain->generateTerrain(static_cast<sf::Vector2f>(m_window.getSize()));
 }
 
 void MainGameScene::render()

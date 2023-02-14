@@ -8,9 +8,7 @@
 constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
-Terrain::Terrain(const sf::Vector2f& renderWindowSize) :
-	_renderWindowSize(renderWindowSize),
-	_imageHeightMapColor(sf::Color::Red)
+Terrain::Terrain() : _imageHeightMapColor(GameColors::_terrainHeightMap)
 {
 	// ---- Base image loading
 	if (!_baseImageTerrain.loadFromFile("./Assets/Maps/BaseTerrain4.png"))
@@ -18,6 +16,14 @@ Terrain::Terrain(const sf::Vector2f& renderWindowSize) :
 		std::cout << "Can not load terrain image !" << std::endl;
 		return;
 	}
+}
+
+void Terrain::generateTerrain(const sf::Vector2f& windowSize)
+{
+	if (windowSize.x < 1 || windowSize.y < 1)
+		return;
+
+	_renderWindowSize = windowSize;
 
 	// -------- Convex shape construction
 	std::vector<Point2D> allTerrainVertexPoints;
@@ -35,8 +41,8 @@ Terrain::Terrain(const sf::Vector2f& renderWindowSize) :
 		sf::VertexArray newTriangle{ sf::Triangles, 3 };
 
 		newTriangle[0].position = allTerrainVertexPoints[_trianglesVertices[i]];
-		newTriangle[1].position = allTerrainVertexPoints[_trianglesVertices[i+1]];
-		newTriangle[2].position = allTerrainVertexPoints[_trianglesVertices[i+2]];
+		newTriangle[1].position = allTerrainVertexPoints[_trianglesVertices[i + 1]];
+		newTriangle[2].position = allTerrainVertexPoints[_trianglesVertices[i + 2]];
 
 		const sf::Color randomColor = PolygonHelper::getRandomTerrainColor();
 

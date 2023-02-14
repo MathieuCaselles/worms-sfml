@@ -11,8 +11,8 @@ class Terrain : public Engine::GameObject<PCVoid, GCTerrain, ICVoid>
 public:
 	using Point2D = sf::Vector2f;
 
-	//Terrain(const sf::RenderWindow& renderWindow);1920, 1080
-	Terrain(const sf::Vector2f& renderWindowSize);
+	Terrain();
+	void generateTerrain(const sf::Vector2f& windowSize);
 
 	const std::vector<sf::VertexArray>& getTriangles() const { return _triangles; }
 
