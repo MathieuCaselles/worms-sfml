@@ -6,9 +6,8 @@
 int main()
 {
     Engine::Game* game = Engine::Game::GetInstance();
-    game->addScenes(new MainGameScene());
-    game->setCurrentScene(ScenesEnum::MAIN_MENU);
-    game->run(sf::VideoMode(1920, 1080), "Pathfinder", sf::Style::Fullscreen);
+    game->addScenes(new MainMenuScene());
+    game->run(sf::VideoMode(1920, 1080), "Pathfinder", sf::Style::Fullscreen, ScenesEnum::MAIN_MENU);
 
     return 0;
 }

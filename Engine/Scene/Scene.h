@@ -1,5 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 namespace Engine {
@@ -17,6 +16,9 @@ namespace Engine {
         virtual const sf::Vector2i getMousePositionScreen();
         virtual const sf::Vector2i getMousePositionWindow();
         virtual const sf::Vector2f getMousePositionView();
+
+        virtual void onBeginPlay();
+        virtual void onEndPlay();
 
         virtual void processInput(sf::Event& inputEvent);
         virtual void update(const float& deltaTime);
@@ -36,7 +38,7 @@ namespace Engine {
         std::vector<IGameObject*> m_gameObjects;
     };
 }
-#endif // SCENE_H
+
 namespace Engine {
 
     template<typename ...Args>

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Tools/DesignPatterns/Composite.h"
+#include <Tools/DesignPatterns/Composite.h>
 
 #include "../Components/InputComponent.h"
 #include "../Components/PhysicsComponent.h"
@@ -17,6 +17,9 @@ namespace Engine {
 	{
 	public:
 		virtual ~IGameObject() {};
+
+		virtual void onBeginPlay(IScene& scene) {};
+		virtual void onEndPlay(IScene& scene) {};
 
 		virtual void processInput(sf::Event& inputEvent, IScene& scene) = 0;
 		virtual void update(const float& deltaTime, IScene& scene) = 0;
@@ -42,6 +45,5 @@ namespace Engine {
 
 			this->renderImplementation(*this, window);
 		}
-
 	};
 }
