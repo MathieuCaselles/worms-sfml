@@ -6,23 +6,23 @@
 
 MainGameScene::MainGameScene()
 {
-	_terrain = std::make_unique<Terrain>();
-	addGameObjects(_terrain.get());
+	m_terrain = std::make_unique<Terrain>();
+	addGameObjects(m_terrain.get());
 }
 
 void MainGameScene::onBeginPlay()
 {
 	IScene::onBeginPlay();
 
-	_background.setSize(static_cast<sf::Vector2f>(m_window.getSize()));
-	_background.setFillColor(GameColors::_sky);
+	m_background.setSize(static_cast<sf::Vector2f>(m_window.getSize()));
+	m_background.setFillColor(GameColors::sky);
 
-	_terrain->generateTerrain(static_cast<sf::Vector2f>(m_window.getSize()));
+	m_terrain->generateTerrain(static_cast<sf::Vector2f>(m_window.getSize()));
 }
 
 void MainGameScene::render()
 {
-	m_window.draw(_background);
+	m_window.draw(m_background);
 
 	IScene::render();
 }

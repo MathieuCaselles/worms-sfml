@@ -15,7 +15,7 @@ public:
 	void render() override;
 
 private:
-    sf::RectangleShape _background;
+    sf::RectangleShape m_background;
 
-    std::unique_ptr<Terrain> _terrain;
+    std::unique_ptr<Terrain> m_terrain;
 };

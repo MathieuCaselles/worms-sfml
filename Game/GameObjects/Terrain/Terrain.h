@@ -14,19 +14,19 @@ public:
 	Terrain();
 	void generateTerrain(const sf::Vector2f& windowSize);
 
-	const std::vector<sf::VertexArray>& getTriangles() const { return _triangles; }
+	const std::vector<sf::VertexArray>& getTriangles() const { return m_triangles; }
 
 private:
 	//const sf::RenderWindow& _renderWindow;
-	sf::Vector2f _renderWindowSize;
+	sf::Vector2f m_renderWindowSize;
 
 	// ---- Base image processing
-	sf::Image _baseImageTerrain;
-	sf::Color _imageHeightMapColor;
+	sf::Image m_baseImageTerrain;
+	sf::Color m_imageHeightMapColor;
 
 	// ---- Final convex shape
-	std::vector<int> _trianglesVertices;
-	std::vector<sf::VertexArray> _triangles;
+	std::vector<int> m_trianglesVertices;
+	std::vector<sf::VertexArray> m_triangles;
 
 	void getAllVertexPointsFromBaseImage(std::vector<Point2D>& allVertexPoints) const;
 	bool isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude) const;
