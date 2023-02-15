@@ -14,9 +14,6 @@ public:
 		if(vertices.size() < 3)
 			return false; // It is useless to triangulate a triangle.
 
-		if (!isSimplePolygon(vertices) || !containsColinearEdges(vertices))
-			return false;
-
 		// ------
 
 		std::vector<int> indexVector;
@@ -84,18 +81,6 @@ public:
 		outTrianglesIndexes.push_back(indexVector[1]);
 		outTrianglesIndexes.push_back(indexVector[2]);
 
-		return true;
-	}
-
-	static bool containsColinearEdges(const std::vector<Point2D>& vertices)
-	{
-		// TODO : Remove colinear edges is some exists.
-		return true;
-	}
-
-	static bool isSimplePolygon(const std::vector<Point2D>& vertices)
-	{
-		// TODO : Make sure all of the edges doesn't cross each others.
 		return true;
 	}
 
