@@ -109,9 +109,9 @@ public:
 
 	static sf::Color getRandomTerrainColor()
 	{
-		const auto randomRed   = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.r, GameColors::_terrainRandomTriangleColorMax.r);
-		const auto randomBlue  = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.g, GameColors::_terrainRandomTriangleColorMin.g);
-		const auto randomGreen = MathUtils::getRandomNumber(GameColors::_terrainRandomTriangleColorMin.b, GameColors::_terrainRandomTriangleColorMin.b);
+		const auto randomRed   = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.r, GameColors::terrainRandomTriangleColorMax.r);
+		const auto randomBlue  = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.g, GameColors::terrainRandomTriangleColorMin.g);
+		const auto randomGreen = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.b, GameColors::terrainRandomTriangleColorMin.b);
 
 		return { static_cast<sf::Uint8>(randomRed), static_cast<sf::Uint8>(randomBlue), static_cast<sf::Uint8>(randomGreen) }; }
 };
