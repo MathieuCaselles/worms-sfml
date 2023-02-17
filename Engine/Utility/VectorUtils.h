@@ -1,10 +1,17 @@
 #pragma once
 
 #include "MathUtils.h"
+#include <string>
 
 class VectorUtils
 {
 public:
+    inline static sf::Vector2f zero   = sf::Vector2f(0, 0);
+    inline static sf::Vector2f top    = sf::Vector2f(0, 1);
+    inline static sf::Vector2f right  = sf::Vector2f(1, 0);
+    inline static sf::Vector2f bottom = sf::Vector2f(0, -1);
+    inline static sf::Vector2f left   = sf::Vector2f(-1, 0);
+
     static sf::Vector2f GetDirectionVector(const sf::Vector2f& pointA, const sf::Vector2f& pointB) { return { pointB.x - pointA.x, pointB.y - pointA.y }; }
 
     static float Dot(const sf::Vector2f& lhs, const sf::Vector2f& rhs) { return lhs.x * rhs.x + lhs.y * rhs.y; }    
@@ -58,5 +65,10 @@ public:
         	factor * normal.x + direction.x,
             factor * normal.y + direction.y
         };
+    }
+
+    static std::string ToString(const sf::Vector2f& vector)
+    {
+        return "(" + std::to_string(vector.x) + ";" + std::to_string(vector.y) + ")";
     }
 };

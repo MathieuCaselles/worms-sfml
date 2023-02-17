@@ -11,6 +11,7 @@ public:
 	{
 		sf::Vector2f impactPoint;
 		sf::Vector2f normal;
+		float depth;
 	};
 
 
@@ -34,18 +35,59 @@ public:
 		return false;
 	}
 
-	// ---- Circle to...
-	static bool circleToCircle(const sf::Vector2f& fromCircleDir, float fromCircleRad, const sf::Vector2f& toCircleDir, float toCircleRad, HitResult& hitResult)
+	// Polygons to...
+	static bool polygonToPolygon(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB)
 	{
-		const float distance = VectorUtils::DistanceSqr(fromCircleDir, toCircleDir);
-		const float bothRadius = fromCircleRad + toCircleRad;
-
-		if (distance < bothRadius * bothRadius) // Using Sqr distance and squared radius to avoid heavy std::sqrt
+		for (int j = 0; j < 2; ++j) // Looping through both of the polygons
 		{
-			const sf::Vector2f ab = toCircleDir - fromCircleDir;
+			const std::vector<sf::Vector2f>& currentPolygonVertices = j == 0 ? verticesA : verticesB;
 
-			hitResult.impactPoint = fromCircleDir + VectorUtils::Normalize(ab) * fromCircleRad;
-			hitResult.normal = VectorUtils::Normalize(VectorUtils::GetDirectionVector(toCircleDir, fromCircleDir));
+			for (int i = 0; i < static_cast<int>(currentPolygonVertices.size()); ++i)
+			{
+				const auto va = currentPolygonVertices[i];
+				const auto vb = currentPolygonVertices[(i + 1) % currentPolygonVertices.size()];
+
+				const auto edge = vb - va;
+				const auto axis = VectorUtils::GetNormal(edge); // Get normal of current edge for SAT
+
+				float minA{ 0.f }, maxA{ 0.f }, minB{ 0.f }, maxB{ 0.f };
+
+				ProjectVertices(verticesA, axis, minA, maxA);
+				ProjectVertices(verticesB, axis, minB, maxB);
+
+				if (minA >= maxB || minB >= maxA) // Gap found between polygon A and polygon B
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	// ---- Circle to...
+	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& hitResult)
+	{
+		const float distanceSqr = VectorUtils::DistanceSqr(fromCirclePos, toCirclePos);
+		const float bothRadius = fromCircleRad + toCircleRad;
+		const float bothRadiusSqr = bothRadius * bothRadius;
+
+		if (distanceSqr <= bothRadiusSqr) // Using Sqr distance and squared radius to avoid heavy std::sqrt
+		{
+			const sf::Vector2f ab = toCirclePos - fromCirclePos;
+
+			if(ab != VectorUtils::zero) // Center of the circle
+			{
+				hitResult.impactPoint = fromCirclePos + VectorUtils::Normalize(ab) * fromCircleRad;
+				hitResult.normal = VectorUtils::Normalize(VectorUtils::GetDirectionVector(hitResult.impactPoint, fromCirclePos));
+			}
+			else
+			{
+				hitResult.impactPoint = fromCirclePos;
+				hitResult.normal = VectorUtils::top;
+			}
+
+			hitResult.depth = bothRadiusSqr - distanceSqr;
 
 			return true;
 		}
@@ -130,5 +172,23 @@ public:
 		const float cross3 = VectorUtils::Cross2D(ca, cp);
 
 		return cross1 < 0.f && cross2 < 0.f && cross3 < 0.f;
+	}
+
+private:
+	static void ProjectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
+	{
+		min = std::numeric_limits<float>::min();
+		max = std::numeric_limits<float>::max();
+
+		for (const auto& v : vertices)
+		{
+			const float proj = VectorUtils::Dot(v, axis);
+
+			if (proj < min) 
+				{ min = proj; }
+
+			if (proj > max) 
+				{ max = proj; }
+		}
 	}
 };

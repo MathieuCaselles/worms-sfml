@@ -84,6 +84,16 @@ public:
 		return true;
 	}
 
+	static sf::Color getRandomTerrainColor()
+	{
+		const auto randomRed = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.r, GameColors::terrainRandomTriangleColorMax.r);
+		const auto randomBlue = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.g, GameColors::terrainRandomTriangleColorMin.g);
+		const auto randomGreen = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.b, GameColors::terrainRandomTriangleColorMin.b);
+
+		return { static_cast<sf::Uint8>(randomRed), static_cast<sf::Uint8>(randomBlue), static_cast<sf::Uint8>(randomGreen) };
+	}
+
+private:
 	template<typename T>
 	static T getItemSafely(const std::vector<T>& inVector, int itemIndex)
 	{
@@ -92,11 +102,5 @@ public:
 		       inVector[itemIndex];
 	}
 
-	static sf::Color getRandomTerrainColor()
-	{
-		const auto randomRed   = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.r, GameColors::terrainRandomTriangleColorMax.r);
-		const auto randomBlue  = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.g, GameColors::terrainRandomTriangleColorMin.g);
-		const auto randomGreen = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.b, GameColors::terrainRandomTriangleColorMin.b);
 
-		return { static_cast<sf::Uint8>(randomRed), static_cast<sf::Uint8>(randomBlue), static_cast<sf::Uint8>(randomGreen) }; }
 };
