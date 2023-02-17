@@ -2,17 +2,19 @@
 
 #include "VectorUtils.h"
 
+constexpr float LINE_LINE_PIXEL_DEFAULT_INCERTITUDE = 3.f;
+
 class CollisionUtils
 {
 public:
-	struct LineHitResult
+	struct HitResult
 	{
 		sf::Vector2f impactPoint;
 		sf::Vector2f normal;
 	};
 
 
-	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, LineHitResult& outHitResult)
+	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult)
 	{
 		sf::Vector2f impactPoint;
 
@@ -23,10 +25,29 @@ public:
 				const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(allPoints[i + 1].x, allPoints[i + 1].y), sf::Vector2f(allPoints[i].x, allPoints[i].y));
 
 				outHitResult.impactPoint = impactPoint;
-				outHitResult.normal = VectorUtils::GetNormal(hitLine);
+				outHitResult.normal = VectorUtils::Normalize(VectorUtils::GetNormal(hitLine));
 
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	// ---- Circle to...
+	static bool circleToCircle(const sf::Vector2f& fromCircleDir, float fromCircleRad, const sf::Vector2f& toCircleDir, float toCircleRad, HitResult& hitResult)
+	{
+		const float distance = VectorUtils::DistanceSqr(fromCircleDir, toCircleDir);
+		const float bothRadius = fromCircleRad + toCircleRad;
+
+		if (distance < bothRadius * bothRadius) // Using Sqr distance and squared radius to avoid heavy std::sqrt
+		{
+			const sf::Vector2f ab = toCircleDir - fromCircleDir;
+
+			hitResult.impactPoint = fromCircleDir + VectorUtils::Normalize(ab) * fromCircleRad;
+			hitResult.normal = VectorUtils::Normalize(VectorUtils::GetDirectionVector(toCircleDir, fromCircleDir));
+
+			return true;
 		}
 
 		return false;
@@ -50,7 +71,7 @@ public:
 		return false;
 	}
 
-	static bool lineToPoint(float x1, float y1, float x2, float y2, float px, float py)
+	static bool lineToPoint(float x1, float y1, float x2, float y2, float px, float py, float incertitude = LINE_LINE_PIXEL_DEFAULT_INCERTITUDE)
 	{
 		const float d1 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x1, y1));
 		const float d2 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x2, y2));
@@ -58,7 +79,7 @@ public:
 		const float lineLength = VectorUtils::Distance(sf::Vector2f(x1, y1), sf::Vector2f(x2, y2));
 
 		// Since floats are so minutely accurate, add a little buffer zone that will give collision
-		constexpr float buffer = 0.01f; // Higher = less accurate
+		const float buffer = incertitude; // Higher = less accurate
 		const float d1Andd2 = d1 + d2;
 
 		return d1Andd2 >= lineLength - buffer && d1Andd2 <= lineLength + buffer;

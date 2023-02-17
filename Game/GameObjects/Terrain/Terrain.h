@@ -23,7 +23,7 @@ public:
 	void generateTerrain(const sf::Vector2f& windowSize);
 
 	bool IsHit() const { return m_isHit; }
-	bool collisionWithCircle(const sf::Vector2f& circlePos, float circleRadius, CollisionUtils::LineHitResult& impactPoint) const;
+	bool collisionWithCircle(const sf::Vector2f& circlePos, float circleRadius, CollisionUtils::HitResult& impactPoint) const;
 
 private:
 	sf::Vector2f m_renderWindowSize;

@@ -68,7 +68,7 @@ void Terrain::generateTerrain(const sf::Vector2f& windowSize)
 	}
 }
 
-bool Terrain::collisionWithCircle(const sf::Vector2f& circlePos, const float circleRadius, CollisionUtils::LineHitResult& hitResult) const
+bool Terrain::collisionWithCircle(const sf::Vector2f& circlePos, const float circleRadius, CollisionUtils::HitResult& hitResult) const
 {
 	return CollisionUtils::circleAboveMultiLines(m_terrainTopLines, circlePos, circleRadius, hitResult);
 }

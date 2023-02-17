@@ -20,6 +20,8 @@ private:
     void updateSkyColor(const sf::Color& color);
 
     sf::RectangleShape m_background;
+    sf::CircleShape m_blackHole;
+    sf::CircleShape m_hitBlackHolePoint;
 
     // ---- Debug shapes
     sf::CircleShape m_mousePosCircle;
