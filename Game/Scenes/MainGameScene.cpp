@@ -31,27 +31,30 @@ void MainGameScene::onBeginPlay()
 	m_hitBlackHolePoint.setOrigin(m_hitBlackHolePoint.getRadius(), m_hitBlackHolePoint.getRadius());
 
 	// ---- Convex shapes
-	m_convexShapeStatic.setPointCount(m_baseShape1.size());
+	m_convexShapeStatic.setPointCount(m_baseShape3.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeStatic.getPointCount()); ++i)
 	{
-		m_convexShapeStatic.setPoint(i, m_baseShape1[i]);
+		m_convexShapeStatic.setPoint(i, m_baseShape3[i]);
 	}
 
-	m_convexShapeMousePos.setPointCount(m_baseShape2.size());
+	m_convexShapeMousePos.setPointCount(m_baseShape3.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeMousePos.getPointCount()); ++i)
 	{
-		m_convexShapeMousePos.setPoint(i, m_baseShape2[i]);
+		m_convexShapeMousePos.setPoint(i, m_baseShape3[i]);
 	}
 
-	constexpr float CONVEX_SHAPES_SIZE = 10.f;
+	constexpr float CONVEX_SHAPES_SIZE = 20.f;
 
-	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
-	m_convexShapeMousePos.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
+	//m_convexShapeMousePos.setOrigin(m_convexShapeMousePos.getLocalBounds().getSize().x / 2, m_convexShapeMousePos.getLocalBounds().getSize().y / 2);
+	//m_convexShapeStatic.setOrigin(m_convexShapeStatic.getLocalBounds().getSize().x / 2, m_convexShapeStatic.getLocalBounds().getSize().y / 2);
 
-	m_convexShapeMousePos.setFillColor(sf::Color(0, 0, 255, 150));
+	//m_convexShapeMousePos.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
+	//m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
 
-	m_convexShapeStatic.setPosition(200, 400);
-	m_convexShapeMousePos.setPosition(200, 400);
+	m_convexShapeMousePos.setFillColor(sf::Color(0, 0, 255, 100));
+	m_convexShapeStatic.setFillColor(GameColors::dirty);
+
+	m_convexShapeStatic.setPosition(400, 200);
 
 	// ---- Terrain
 	m_terrain->generateTerrain(windowSize);
@@ -82,8 +85,8 @@ void MainGameScene::update(const float& deltaTime)
 	}
 
 	// ---- Convex shape hit test
-	//m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-	m_convexShapeStatic.rotate(10.f * deltaTime);
+	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
+	m_convexShapeStatic.rotate(20.f * deltaTime);
 
 	std::vector<sf::Vector2f> convexShapeEdgesStatic;
 	for (const auto& edge : m_baseShape1)

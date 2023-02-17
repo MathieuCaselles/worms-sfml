@@ -177,8 +177,8 @@ public:
 private:
 	static void ProjectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
 	{
-		min = std::numeric_limits<float>::min();
-		max = std::numeric_limits<float>::max();
+		min = std::numeric_limits<float>::max();
+		max = std::numeric_limits<float>::min();
 
 		for (const auto& v : vertices)
 		{

@@ -23,21 +23,30 @@ private:
 
 	const std::vector<sf::Vector2f> m_baseShape1
     {
-    	sf::Vector2f(0, 0),
-    	sf::Vector2f(1, 1),
-    	sf::Vector2f(3, 2),
-    	sf::Vector2f(4, 1),
-	    sf::Vector2f(2, -2)
+    	sf::Vector2f(0, 2),
+    	sf::Vector2f(2, 1),
+    	sf::Vector2f(2, -1),
+    	sf::Vector2f(0, -2),
+	    sf::Vector2f(-2, -2),
+	    sf::Vector2f(-2, -1)
     };
 
     const std::vector<sf::Vector2f> m_baseShape2
     {
-        sf::Vector2f(0, 0),
-        sf::Vector2f(3, 1),
-        sf::Vector2f(4, -2),
-        sf::Vector2f(-2, -3),
-        sf::Vector2f(-3, -2),
-        sf::Vector2f(-2, -1)
+        sf::Vector2f(1, 3),
+        sf::Vector2f(2, 2),
+        sf::Vector2f(2, -1),
+        sf::Vector2f(-1, -3),
+        sf::Vector2f(-2, -1),
+        sf::Vector2f(-2, 0)
+    };
+
+    const std::vector<sf::Vector2f> m_baseShape3
+    {
+        sf::Vector2f(40, 40),
+        sf::Vector2f(40, -40),
+        sf::Vector2f(-40, -40),
+        sf::Vector2f(-40, 40)
     };
 
     sf::RectangleShape m_background;
