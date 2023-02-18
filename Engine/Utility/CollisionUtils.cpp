@@ -98,9 +98,7 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 		}
 	}
 
-	const int closestPointIndex = getClosestCirclePointPolygonIndex(vertices, circlePos);
-	const sf::Vector2f closestPoint = vertices[closestPointIndex];
-
+	const sf::Vector2f closestPoint = getClosestPolygonPointFromCircle(vertices, circlePos);
 	const sf::Vector2f closestPointAxis = closestPoint - circlePos;
 
 	projectVertices(vertices, closestPointAxis, minA, maxA);
@@ -122,6 +120,8 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 	{
 		outHitResult.normal = -outHitResult.normal;
 	}
+
+	return true;
 }
 
 // ---- Circle to...
@@ -269,19 +269,19 @@ void CollisionUtils::projectCircle(const sf::Vector2f& circlePos, float circleRa
 		std::swap(min, max);
 }
 
-int CollisionUtils::getClosestCirclePointPolygonIndex(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos)
+sf::Vector2f CollisionUtils::getClosestPolygonPointFromCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos)
 {
-	int result = -1;
+	sf::Vector2f result;
 	float minDistance = std::numeric_limits<float>::max();
 
-	for (int i = 0; i < static_cast<int>(vertices.size()); ++i)
+	for (const auto& vertex : vertices)
 	{
-		const float distance = VectorUtils::Distance(vertices[i], circlePos);
+		const float distance = VectorUtils::Distance(vertex, circlePos);
 
 		if (distance < minDistance)
 		{
 			minDistance = distance;
-			result = i;
+			result = vertex;
 		}
 	}
 

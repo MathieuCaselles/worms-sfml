@@ -97,7 +97,7 @@ void MainGameScene::update(const float& deltaTime)
 
 	if(hitPolyDebug)
 	{
-		std::cout << "Normal poly hit: " << VectorUtils::ToString(ppHitResult.normal) << std::endl;
+		// std::cout << "Normal poly hit: " << VectorUtils::ToString(ppHitResult.normal) << std::endl;
 	}
 
 	// ---- Polygon - Circle hit test
@@ -105,6 +105,11 @@ void MainGameScene::update(const float& deltaTime)
 	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
 
 	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
+
+	if(hitCirclePolyDebug)
+	{
+		std::cout << "Normal circle-poly hit: " << VectorUtils::ToString(pcHitResult.normal) << std::endl;
+	}
 }
 
 void MainGameScene::render()

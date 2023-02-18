@@ -42,5 +42,5 @@ private:
 	static void projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max);
 	static void projectCircle(const sf::Vector2f& circlePos, float circleRad, const sf::Vector2f& axis, float& min, float& max);
 
-	static int getClosestCirclePointPolygonIndex(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos);
+	static sf::Vector2f getClosestPolygonPointFromCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos);
 };
