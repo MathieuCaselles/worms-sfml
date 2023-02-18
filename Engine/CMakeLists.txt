@@ -20,4 +20,7 @@ target_sources(Engine PRIVATE
   "Game/Game.h" "Game/Game.cpp"
   "GameObject/GameObject.h"
   "Scene/Scene.h" "Scene/Scene.cpp"
-   "Utility/VectorUtils.h" "Utility/PolygonHelper.h" "Utility/MathUtils.h" "Utility/CollisionUtils.h")
+   "Utility/VectorUtils.h" "Utility/VectorUtils.cpp" 
+   "Utility/PolygonHelper.h" "Utility/PolygonHelper.cpp"
+   "Utility/MathUtils.h" "Utility/MathUtils.cpp"
+   "Utility/CollisionUtils.h" "Utility/CollisionUtils.cpp")

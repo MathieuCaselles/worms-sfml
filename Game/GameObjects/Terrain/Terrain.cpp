@@ -4,6 +4,7 @@
 #include <random>
 
 #include "Engine/Utility/PolygonHelper.h"
+#include "Game/Assets/GameColors.h"
 
 constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;

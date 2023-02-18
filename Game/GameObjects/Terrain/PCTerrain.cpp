@@ -1,9 +1,8 @@
 #include "PCTerrain.h"
 
-#include <iostream>
-
 #include "Terrain.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Utility/VectorUtils.h"
 
 PCTerrain::PCTerrain() : m_callbackIsCalled(false)
 {

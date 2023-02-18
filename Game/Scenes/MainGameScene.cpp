@@ -1,6 +1,7 @@
 #include "MainGameScene.h"
 
 #include "Engine/Game/Game.h"
+#include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
 #include "Game/GameObjects/Terrain/Terrain.h"
 
@@ -31,16 +32,16 @@ void MainGameScene::onBeginPlay()
 	m_hitBlackHolePoint.setOrigin(m_hitBlackHolePoint.getRadius(), m_hitBlackHolePoint.getRadius());
 
 	// ---- Convex shapes
-	m_convexShapeStatic.setPointCount(m_baseShape1.size());
+	m_convexShapeStatic.setPointCount(m_baseShape3.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeStatic.getPointCount()); ++i)
 	{
-		m_convexShapeStatic.setPoint(i, m_baseShape1[i]);
+		m_convexShapeStatic.setPoint(i, m_baseShape3[i]);
 	}
 
-	m_convexShapeMousePos.setPointCount(m_baseShape2.size());
+	m_convexShapeMousePos.setPointCount(m_baseShape3.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeMousePos.getPointCount()); ++i)
 	{
-		m_convexShapeMousePos.setPoint(i, m_baseShape2[i]);
+		m_convexShapeMousePos.setPoint(i, m_baseShape3[i]);
 	}
 
 	constexpr float CONVEX_SHAPES_SIZE = 20.f;
@@ -67,39 +68,45 @@ void MainGameScene::update(const float& deltaTime)
 	updateSkyColor(m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky);
 
 	// ---- Circle circle hit test
-	CollisionUtils::HitResult hitResult;
+	CollisionUtils::HitResult cchitResult;
 	const bool hitCircleCircleDebug = CollisionUtils::circleToCircle(
 		m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), 
 		m_blackHole.getPosition(), m_blackHole.getRadius(), 
-		hitResult);
+		cchitResult);
 
 	m_blackHole.setFillColor(hitCircleCircleDebug ? GameColors::smoothPurple : GameColors::nightPurple);
-	m_hitBlackHolePoint.setPosition(hitResult.impactPoint);
 
 	if(hitCircleCircleDebug)
 	{
-		std::cout << "Normal circle hit: " << VectorUtils::ToString(hitResult.normal) << std::endl;
+		m_hitBlackHolePoint.setPosition(cchitResult.impactPoint);
+		std::cout << "Normal circle hit: " << VectorUtils::ToString(cchitResult.normal) << std::endl;
 	}
 
 	// ---- Convex shape hit test
 	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-	m_convexShapeStatic.rotate(20.f * deltaTime);
+	//m_convexShapeStatic.rotate(20.f * deltaTime);
 
 	std::vector<sf::Vector2f> convexShapeEdgesStatic;
-	for (const auto& edge : m_baseShape1)
+	for (const auto& edge : m_baseShape3)
 	{
 		convexShapeEdgesStatic.emplace_back(m_convexShapeStatic.getTransform().transformPoint(edge));
 	}
 
 	std::vector<sf::Vector2f> convexShapeEdgesMouse;
-	for (const auto& edge : m_baseShape2)
+	for (const auto& edge : m_baseShape3)
 	{
 		convexShapeEdgesMouse.emplace_back(m_convexShapeMousePos.getTransform().transformPoint(edge));
 	}
 
-	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse);
+	CollisionUtils::HitResult pphitResult;
+	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse, pphitResult);
 
 	m_convexShapeStatic.setFillColor(hitPolyDebug ? sf::Color::Red : GameColors::dirty);
+
+	if(hitPolyDebug)
+	{
+		std::cout << "Normal poly hit: " << VectorUtils::ToString(pphitResult.normal) << std::endl;
+	}
 }
 
 void MainGameScene::render()
