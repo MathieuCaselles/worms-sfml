@@ -42,8 +42,8 @@ bool CollisionUtils::polygonToPolygon(const std::vector<sf::Vector2f>& verticesA
 
 			float minA{ 0.f }, maxA{ 0.f }, minB{ 0.f }, maxB{ 0.f };
 
-			ProjectVertices(verticesA, axis, minA, maxA);
-			ProjectVertices(verticesB, axis, minB, maxB);
+			projectVertices(verticesA, axis, minA, maxA);
+			projectVertices(verticesB, axis, minB, maxB);
 
 			if (minA >= maxB || minB >= maxA) // Gap found between polygon A and polygon B
 			{
@@ -67,6 +67,61 @@ bool CollisionUtils::polygonToPolygon(const std::vector<sf::Vector2f>& verticesA
 	}
 
 	return true;
+}
+
+bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos, float circleRadius, HitResult& outHitResult)
+{
+	outHitResult.depth = std::numeric_limits<float>::max();
+
+	float minA{ 0.f }, maxA{ 0.f }, minB{ 0.f }, maxB{ 0.f };
+
+	for (int i = 0; i < static_cast<int>(vertices.size()); ++i)
+	{
+		const auto va = vertices[i];
+		const auto vb = vertices[(i + 1) % static_cast<int>(vertices.size())];
+
+		const auto edge = vb - va;
+		const auto axis = VectorUtils::Normalize(VectorUtils::GetNormal(edge)); // Get normal of current edge for SAT
+
+		projectVertices(vertices, axis, minA, maxA);
+		projectCircle(circlePos, circleRadius, axis, minB, maxB);
+
+		if (minA >= maxB || minB >= maxA) // Gap found between polygon and circle
+		{
+			return false;
+		}
+
+		if (const float axisDepth = std::min(maxB - minA, maxA - minB); axisDepth < outHitResult.depth)
+		{
+			outHitResult.depth = axisDepth;
+			outHitResult.normal = axis;
+		}
+	}
+
+	const int closestPointIndex = getClosestCirclePointPolygonIndex(vertices, circlePos);
+	const sf::Vector2f closestPoint = vertices[closestPointIndex];
+
+	const sf::Vector2f closestPointAxis = closestPoint - circlePos;
+
+	projectVertices(vertices, closestPointAxis, minA, maxA);
+	projectCircle(circlePos, circleRadius, closestPointAxis, minB, maxB);
+
+	if (minA >= maxB || minB >= maxA) // Gap found between polygon and circle
+	{
+		return false;
+	}
+
+	if (const float axisDepth = std::min(maxB - minA, maxA - minB); axisDepth < outHitResult.depth)
+	{
+		outHitResult.depth = axisDepth;
+		outHitResult.normal = closestPointAxis;
+	}
+
+	const sf::Vector2f aToBDirection = PolygonHelper::FindArithmeticMean(vertices) - circlePos;
+	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) < 0.f)
+	{
+		outHitResult.normal = -outHitResult.normal;
+	}
 }
 
 // ---- Circle to...
@@ -178,7 +233,7 @@ bool CollisionUtils::pointToTriangle(const sf::Vector2f& point, const sf::Vector
 	return cross1 < 0.f && cross2 < 0.f && cross3 < 0.f;
 }
 
-void CollisionUtils::ProjectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
+void CollisionUtils::projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
 {
 	min = std::numeric_limits<float>::max();
 	max = std::numeric_limits<float>::lowest();
@@ -197,4 +252,38 @@ void CollisionUtils::ProjectVertices(const std::vector<sf::Vector2f>& vertices, 
 			max = proj;
 		}
 	}
+}
+
+void CollisionUtils::projectCircle(const sf::Vector2f& circlePos, float circleRad, const sf::Vector2f& axis, float& min, float& max)
+{
+	const sf::Vector2f direction = VectorUtils::Normalize(axis);
+	const sf::Vector2f directionByRadius = direction * circleRad;
+
+	const sf::Vector2f circleSide1 = circlePos + directionByRadius;
+	const sf::Vector2f circleSide2 = circlePos - directionByRadius;
+
+	min = VectorUtils::Dot(circleSide1, axis);
+	max = VectorUtils::Dot(circleSide2, axis);
+
+	if (min > max)
+		std::swap(min, max);
+}
+
+int CollisionUtils::getClosestCirclePointPolygonIndex(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos)
+{
+	int result = -1;
+	float minDistance = std::numeric_limits<float>::max();
+
+	for (int i = 0; i < static_cast<int>(vertices.size()); ++i)
+	{
+		const float distance = VectorUtils::Distance(vertices[i], circlePos);
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			result = i;
+		}
+	}
+
+	return result;
 }

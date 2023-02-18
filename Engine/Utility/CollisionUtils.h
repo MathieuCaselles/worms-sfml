@@ -21,6 +21,8 @@ public:
 	// Polygons to...
 	static bool polygonToPolygon(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB, HitResult& outHitResult);
 
+	static bool polygonToCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos, float circleRadius, HitResult& outHitResult);
+
 	// ---- Circle to...
 	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& hitResult);
 
@@ -37,5 +39,8 @@ public:
 	static bool pointToTriangle(const sf::Vector2f& point, const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c);
 
 private:
-	static void ProjectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max);
+	static void projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max);
+	static void projectCircle(const sf::Vector2f& circlePos, float circleRad, const sf::Vector2f& axis, float& min, float& max);
+
+	static int getClosestCirclePointPolygonIndex(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos);
 };

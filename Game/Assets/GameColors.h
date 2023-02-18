@@ -2,6 +2,8 @@
 
 namespace GameColors
 {
+	static sf::Color transparentBlack{ 0, 0, 0, 0 };
+	static sf::Color transparentWhite{ 255, 255, 255, 0 };
 	static sf::Color sky{ 130, 170, 227 };
 	static sf::Color sweetPink{ 255, 170, 194 };
 	static sf::Color nightPurple{ 45, 3, 59 };

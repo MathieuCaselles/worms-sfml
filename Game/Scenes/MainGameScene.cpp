@@ -32,26 +32,22 @@ void MainGameScene::onBeginPlay()
 	m_hitBlackHolePoint.setOrigin(m_hitBlackHolePoint.getRadius(), m_hitBlackHolePoint.getRadius());
 
 	// ---- Convex shapes
-	m_convexShapeStatic.setPointCount(m_baseShape3.size());
+	m_convexShapeStatic.setPointCount(m_baseShape2.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeStatic.getPointCount()); ++i)
-	{
-		m_convexShapeStatic.setPoint(i, m_baseShape3[i]);
-	}
+		m_convexShapeStatic.setPoint(i, m_baseShape2[i]);
 
-	m_convexShapeMousePos.setPointCount(m_baseShape3.size());
+	m_convexShapeMousePos.setPointCount(m_baseShape1.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeMousePos.getPointCount()); ++i)
-	{
-		m_convexShapeMousePos.setPoint(i, m_baseShape3[i]);
-	}
+		m_convexShapeMousePos.setPoint(i, m_baseShape1[i]);
 
 	constexpr float CONVEX_SHAPES_SIZE = 20.f;
 
 	m_convexShapeMousePos.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
+	m_convexShapeMousePos.setFillColor(GameColors::transparentBlack);
+	m_convexShapeMousePos.setOutlineThickness(3 / CONVEX_SHAPES_SIZE);
+
 	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
-
-	m_convexShapeMousePos.setFillColor(sf::Color(0, 0, 255, 100));
 	m_convexShapeStatic.setFillColor(GameColors::dirty);
-
 	m_convexShapeStatic.setPosition(400, 200);
 
 	// ---- Terrain
@@ -68,45 +64,47 @@ void MainGameScene::update(const float& deltaTime)
 	updateSkyColor(m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky);
 
 	// ---- Circle circle hit test
-	CollisionUtils::HitResult cchitResult;
+	CollisionUtils::HitResult ccHitResult;
 	const bool hitCircleCircleDebug = CollisionUtils::circleToCircle(
 		m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), 
 		m_blackHole.getPosition(), m_blackHole.getRadius(), 
-		cchitResult);
+		ccHitResult);
 
 	m_blackHole.setFillColor(hitCircleCircleDebug ? GameColors::smoothPurple : GameColors::nightPurple);
 
 	if(hitCircleCircleDebug)
 	{
-		m_hitBlackHolePoint.setPosition(cchitResult.impactPoint);
-		std::cout << "Normal circle hit: " << VectorUtils::ToString(cchitResult.normal) << std::endl;
+		m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
+		std::cout << "Normal circle hit: " << VectorUtils::ToString(ccHitResult.normal) << std::endl;
 	}
 
-	// ---- Convex shape hit test
+	// ---- Polygons hit test
 	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-	//m_convexShapeStatic.rotate(20.f * deltaTime);
+	m_convexShapeMousePos.rotate(20.f * deltaTime);
 
 	std::vector<sf::Vector2f> convexShapeEdgesStatic;
-	for (const auto& edge : m_baseShape3)
-	{
+	for (const auto& edge : m_baseShape2)
 		convexShapeEdgesStatic.emplace_back(m_convexShapeStatic.getTransform().transformPoint(edge));
-	}
 
 	std::vector<sf::Vector2f> convexShapeEdgesMouse;
-	for (const auto& edge : m_baseShape3)
-	{
+	for (const auto& edge : m_baseShape1)
 		convexShapeEdgesMouse.emplace_back(m_convexShapeMousePos.getTransform().transformPoint(edge));
-	}
 
-	CollisionUtils::HitResult pphitResult;
-	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse, pphitResult);
+	CollisionUtils::HitResult ppHitResult;
+	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse, ppHitResult);
 
-	m_convexShapeStatic.setFillColor(hitPolyDebug ? sf::Color::Red : GameColors::dirty);
+	m_convexShapeMousePos.setOutlineColor(hitPolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
 
 	if(hitPolyDebug)
 	{
-		std::cout << "Normal poly hit: " << VectorUtils::ToString(pphitResult.normal) << std::endl;
+		std::cout << "Normal poly hit: " << VectorUtils::ToString(ppHitResult.normal) << std::endl;
 	}
+
+	// ---- Polygon - Circle hit test
+	CollisionUtils::HitResult pcHitResult;
+	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
+
+	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
 }
 
 void MainGameScene::render()
