@@ -43,10 +43,10 @@ private:
 
     const std::vector<sf::Vector2f> m_baseShape3
     {
-        sf::Vector2f(40, 40),
-        sf::Vector2f(40, -40),
-        sf::Vector2f(-40, -40),
-        sf::Vector2f(-40, 40)
+        sf::Vector2f(2, 2),
+        sf::Vector2f(2, -2),
+        sf::Vector2f(-2, -2),
+        sf::Vector2f(-2, 2)
     };
 
     sf::RectangleShape m_background;

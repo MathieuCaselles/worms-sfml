@@ -45,7 +45,7 @@ public:
 			for (int i = 0; i < static_cast<int>(currentPolygonVertices.size()); ++i)
 			{
 				const auto va = currentPolygonVertices[i];
-				const auto vb = currentPolygonVertices[(i + 1) % currentPolygonVertices.size()];
+				const auto vb = currentPolygonVertices[(i + 1) % static_cast<int>(currentPolygonVertices.size())];
 
 				const auto edge = vb - va;
 				const auto axis = VectorUtils::GetNormal(edge); // Get normal of current edge for SAT
@@ -178,7 +178,7 @@ private:
 	static void ProjectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
 	{
 		min = std::numeric_limits<float>::max();
-		max = std::numeric_limits<float>::min();
+		max = std::numeric_limits<float>::lowest();
 
 		for (const auto& v : vertices)
 		{
