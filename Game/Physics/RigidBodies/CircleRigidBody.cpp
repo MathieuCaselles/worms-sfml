@@ -2,18 +2,18 @@
 
 #include "Engine/Utility/MathUtils.h"
 
-CircleRigidBody::CircleRigidBody(const float circleRadius, const PhysicsProperties& properties)
-	: IRigidBody(properties)
+CircleRigidBody::CircleRigidBody(sf::CircleShape& circleShape, const PhysicsProperties& properties)
+	: IRigidBody(properties),
+	  m_circleShape(circleShape)
 {
-	if(m_properties.m_mass > 0.000001f)
+	if(m_rbProperties.m_mass < 0.0001f)
 	{
-		const float surfaceArea = circleRadius * circleRadius * MathUtils::PI;
-		m_properties.m_mass = surfaceArea * m_properties.m_density;
+		const float surfaceArea = m_circleShape.getRadius() * m_circleShape.getRadius() * MathUtils::PI;
+		m_rbProperties.m_mass = surfaceArea * m_rbProperties.m_density;
 	}
 }
 
-void CircleRigidBody::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject,
-	Engine::IScene& scene)
+void CircleRigidBody::step(const float& deltaTime)
 {
-	IRigidBody::updateImplementation(deltaTime, gameObject, scene);
+	IRigidBody::step(deltaTime);
 }

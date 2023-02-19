@@ -1,10 +1,16 @@
 #pragma once
 
 #include "Game/Physics/IRigidBody.h"
+#include "SFML/Graphics/CircleShape.hpp"
 
 class CircleRigidBody : public IRigidBody
 {
-	CircleRigidBody(float circleRadius, const PhysicsProperties& properties);
+public:
+	CircleRigidBody(sf::CircleShape& circleShape, const PhysicsProperties& properties);
+	~CircleRigidBody() override = default;
 
-	void updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene) override;
+	void step(const float& deltaTime) override;
+
+private:
+	sf::CircleShape& m_circleShape;
 };

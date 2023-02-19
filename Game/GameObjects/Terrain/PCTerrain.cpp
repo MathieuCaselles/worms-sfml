@@ -4,9 +4,8 @@
 #include "Engine/Scene/Scene.h"
 #include "Engine/Utility/VectorUtils.h"
 
-PCTerrain::PCTerrain() : m_callbackIsCalled(false)
-{
-}
+PCTerrain::PCTerrain()
+{ }
 
 void PCTerrain::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {

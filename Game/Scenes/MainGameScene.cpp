@@ -9,6 +9,14 @@ MainGameScene::MainGameScene()
 {
 	m_terrain = std::make_unique<Terrain>();
 	addGameObjects(m_terrain.get());
+
+	m_physicsWorld = std::make_unique<PhysicsWorld>();
+	addGameObjects(m_physicsWorld.get());
+
+	const PhysicsProperties circlePhysicsProperties{ 7.1f, 0.5f };
+	m_fallingCircle = std::make_unique<FallingCircle>(sf::Vector2f(500, 50), 20, GameColors::orange, circlePhysicsProperties);
+
+	addGameObjects(m_fallingCircle.get());
 }
 
 void MainGameScene::onBeginPlay()
@@ -54,6 +62,9 @@ void MainGameScene::onBeginPlay()
 	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
 	m_convexShapeStatic.setFillColor(GameColors::dirty);
 	m_convexShapeStatic.setPosition(400, 200);
+
+	// Physic world
+	m_physicsWorld->addRigidBody(*m_fallingCircle);
 }
 
 void MainGameScene::update(const float& deltaTime)

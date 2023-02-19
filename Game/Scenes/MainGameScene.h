@@ -3,10 +3,10 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
+#include "Game/GameObjects/PhysicsObjects/FallingCircle.h"
 #include "Game/GameObjects/Terrain/Terrain.h"
-#include "Game/Physics/RigidBodies/CircleRigidBody.h"
-#include "Game/Physics/PhysicsWorld.h"
 
+#include "Game/Physics/PhysicsWorld.h"
 
 class MainGameScene : public Engine::IScene
 {
@@ -19,6 +19,9 @@ public:
 	void render() override;
 
 private:
+    std::unique_ptr<PhysicsWorld> m_physicsWorld;
+    std::unique_ptr<FallingCircle> m_fallingCircle;
+
     sf::RectangleShape m_background;
     std::unique_ptr<Terrain> m_terrain;
 

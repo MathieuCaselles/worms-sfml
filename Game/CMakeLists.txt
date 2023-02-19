@@ -19,16 +19,24 @@ target_sources(Worms PRIVATE
  "Scenes/MainMenuScene.h" "Scenes/MainMenuScene.cpp"
  "Scenes/MainGameScene.h" "Scenes/MainGameScene.cpp"
 
+ "Physics/IRigidBody.h" "Physics/IRigidBody.cpp"
+ "Physics/PhysicsProperties.h"
+ "Physics/PhysicsWorld.h" "Physics/PhysicsWorld.cpp"
+ "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
+ "Physics/PCPhysicsWorld.h" "Physics/PCPhysicsWorld.cpp"  
+
  "Components/GraphicsComponents/GCVoid.h" "Components/GraphicsComponents/GCVoid.cpp" "Components/GraphicsComponents/UI/Buttons/GCButton.h" "Components/GraphicsComponents/UI/Buttons/GCButton.cpp"
  "Components/InputComponents/ICVoid.h" "Components/InputComponents/ICVoid.cpp" "Components/InputComponents/UI/Buttons/ICButton.h" "Components/InputComponents/UI/Buttons/ICButton.cpp"
  "Components/PhysicsComponents/PCVoid.h" "Components/PhysicsComponents/PCVoid.cpp" "Components/PhysicsComponents/UI/Buttons/PCButton.h" "Components/PhysicsComponents/UI/Buttons/PCButton.cpp"
  "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
 
  "GameObjects/Terrain/Terrain.h" "GameObjects/Terrain/Terrain.cpp" 
- "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
+ "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" 
+ "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
 
- "Physics/PhysicsProperties.h"
- "Physics/PhysicsWorld.h"
- "Physics/IRigidBody.h"
- "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
- "Physics/RigidBodies/BoxRigidBody.h" "Physics/RigidBodies/BoxRigidBody.cpp")
+ "GameObjects/PhysicsObjects/FallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle.cpp"
+ "GameObjects/PhysicsObjects/GCFallingCircle.h" "GameObjects/PhysicsObjects/GCFallingCircle.cpp" 
+ "GameObjects/PhysicsObjects/PCFallingCircle.h" "GameObjects/PhysicsObjects/PCFallingCircle.cpp"
+
+
+)

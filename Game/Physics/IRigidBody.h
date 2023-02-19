@@ -1,23 +1,30 @@
 #pragma once
 
-#include "Engine/Components/PhysicsComponent.h"
 #include "PhysicsProperties.h"
+#include "SFML/System/Vector2.hpp"
 
-class IRigidBody : public Engine::IPhysicsComponent
+class IRigidBody
 {
-protected:
-	explicit IRigidBody(const PhysicsProperties& properties)
-		: m_properties(properties) { }
+public:
+	virtual ~IRigidBody() = default;
 
-	void updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene) override
+	virtual void step(const float& deltaTime);
+
+	bool operator==(const IRigidBody& other) const
 	{
-		
+		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
-	sf::Vector2f m_velocity;
+	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 
-	float m_rotationAngle { 0.f };
-	float m_angularVelocity { 0.f };
+protected:
+	explicit IRigidBody(const PhysicsProperties& properties);
 
-	PhysicsProperties m_properties;
+	sf::Vector2f m_rbPosition;
+	sf::Vector2f m_rbVelocity;
+
+	float m_rbRotation { 0.f };
+	float m_rbAngularVelocity { 0.f };
+
+	PhysicsProperties m_rbProperties;
 };
