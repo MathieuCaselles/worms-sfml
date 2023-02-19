@@ -40,6 +40,6 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
  "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
 
- "GameObjects/PhysicsObjects/FallingBox.h/FallingBoxRB.h" "GameObjects/PhysicsObjects/FallingBox.h/FallingBoxRB.cpp"
- "GameObjects/PhysicsObjects/FallingBox.h/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox.h/GCFallingbox.cpp"
- "GameObjects/PhysicsObjects/FallingBox.h/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox.h/PCFallingBox.cpp")
+ "GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.h" "GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.cpp"
+ "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
+ "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp")

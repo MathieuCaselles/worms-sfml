@@ -3,7 +3,7 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
-#include "Game/GameObjects/PhysicsObjects/FallingBox.h/FallingBoxRB.h"
+#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.h"
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.h"
 #include "Game/GameObjects/Terrain/Terrain.h"
 
@@ -34,6 +34,7 @@ private:
 
     sf::CircleShape m_blackHole;
     sf::CircleShape m_hitBlackHolePoint;
+    sf::RectangleShape m_hitBlackHolePointRect;
 
     sf::ConvexShape m_convexShapeStatic;
     sf::ConvexShape m_convexShapeMousePos;

@@ -8,10 +8,11 @@ FallingCircleRB::FallingCircleRB(const sf::Vector2f& initialPos, float radius, c
 	GameObject<PCFallingCircle, GCFallingCircle, ICVoid>(),
 	CircleRigidBody(m_circleShape, properties)
 {
-	m_circleShape.setPosition(initialPos);
 	m_circleShape.setRadius(radius);
-	m_circleShape.setOrigin(radius / 2.f, radius / 2.f);
+	m_circleShape.setOrigin(m_circleShape.getRadius(), m_circleShape.getRadius());
+
 	m_circleShape.setFillColor(color);
+	m_circleShape.setPosition(initialPos);
 
 	m_rbPosition = m_circleShape.getPosition();
 }

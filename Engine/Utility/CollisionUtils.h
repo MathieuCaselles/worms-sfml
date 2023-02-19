@@ -11,6 +11,7 @@ class CollisionUtils
 public:
 	struct HitResult
 	{
+		bool hasHit { false };
 		sf::Vector2f impactPoint;
 		sf::Vector2f normal;
 		float depth { 0.f };
@@ -24,7 +25,7 @@ public:
 	static bool polygonToCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos, float circleRadius, HitResult& outHitResult);
 
 	// ---- Circle to...
-	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& hitResult);
+	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& outHitResult);
 
 	static bool circleToPolygon(const sf::Vector2f& circlePos, float circleRadius, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult);
 

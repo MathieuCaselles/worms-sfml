@@ -14,10 +14,12 @@ MainGameScene::MainGameScene()
 	addGameObjects(m_physicsWorld.get());
 
 	const PhysicsProperties basicPhysicsProperties{ 7.1f, 0.5f };
-	m_fallingCircleDirty = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 0), 20, GameColors::orange, basicPhysicsProperties);
-	m_fallingCircleRed = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 100), 20, GameColors::redBlood, basicPhysicsProperties);
-	m_fallingBoxDirty = std::make_unique<FallingBoxRB>(sf::Vector2f(500, 150), sf::Vector2f(40.f, 40.f), GameColors::dirty, basicPhysicsProperties);
-	m_fallingBoxRed = std::make_unique<FallingBoxRB>(sf::Vector2f(500, 200), sf::Vector2f(40.f, 40.f), GameColors::redBlood, basicPhysicsProperties);
+	constexpr float rbObjectsXOrigin = 500.f;
+
+	m_fallingCircleDirty = std::make_unique<FallingCircleRB>(sf::Vector2f(rbObjectsXOrigin, 0), 20, GameColors::orange, basicPhysicsProperties);
+	m_fallingCircleRed = std::make_unique<FallingCircleRB>(sf::Vector2f(rbObjectsXOrigin, 100), 20, GameColors::redBlood, basicPhysicsProperties);
+	m_fallingBoxDirty = std::make_unique<FallingBoxRB>(sf::Vector2f(rbObjectsXOrigin, 150), sf::Vector2f(40.f, 40.f), GameColors::dirty, basicPhysicsProperties);
+	m_fallingBoxRed = std::make_unique<FallingBoxRB>(sf::Vector2f(rbObjectsXOrigin + 20, 200), sf::Vector2f(60.f, 60.f), GameColors::redBlood, basicPhysicsProperties);
 
 	m_fallingCircleDirty->setVelocity(PhysicsWorld::GRAVITY * 7.f);
 	m_fallingCircleRed->setVelocity(sf::Vector2f(0.f, 0.f));
@@ -58,6 +60,10 @@ void MainGameScene::onBeginPlay()
 	m_hitBlackHolePoint.setFillColor(sf::Color::Red);
 	m_hitBlackHolePoint.setOrigin(m_hitBlackHolePoint.getRadius(), m_hitBlackHolePoint.getRadius());
 
+	m_hitBlackHolePointRect.setSize(sf::Vector2f(15.f, 15.f));
+	m_hitBlackHolePointRect.setFillColor(sf::Color::Red);
+	m_hitBlackHolePointRect.setOrigin(m_hitBlackHolePointRect.getSize().x / 2.f, m_hitBlackHolePointRect.getSize().y / 2.f);
+
 	// ---- Convex shapes
 	m_convexShapeStatic.setPointCount(m_baseShape2.size());
 	for (int i = 0; i < static_cast<int>(m_convexShapeStatic.getPointCount()); ++i)
@@ -95,7 +101,8 @@ void MainGameScene::update(const float& deltaTime)
 		ccHitResult);
 
 	m_blackHole.setFillColor(hitCircleCircleDebug ? GameColors::smoothPurple : GameColors::nightPurple);
-	m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
+	//m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
+	m_hitBlackHolePointRect.setPosition(ccHitResult.impactPoint);
 
 	// ---- Polygons hit test
 	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
@@ -119,6 +126,11 @@ void MainGameScene::update(const float& deltaTime)
 	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
 
 	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(255, 0, 0, 150));
+
+	if(ccHitResult.hasHit)
+	{
+		std::cout << VectorUtils::ToString(ccHitResult.normal) << std::endl;
+	}
 }
 
 void MainGameScene::render()
@@ -129,6 +141,7 @@ void MainGameScene::render()
 
 	m_window.draw(m_blackHole);
 	m_window.draw(m_hitBlackHolePoint);
+	m_window.draw(m_hitBlackHolePointRect);
 
 	m_window.draw(m_convexShapeStatic);
 

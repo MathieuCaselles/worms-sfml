@@ -13,6 +13,7 @@ bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allP
 		{
 			const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(allPoints[i + 1].x, allPoints[i + 1].y), sf::Vector2f(allPoints[i].x, allPoints[i].y));
 
+			outHitResult.hasHit = true;
 			outHitResult.impactPoint = impactPoint;
 			outHitResult.normal = VectorUtils::Normalize(VectorUtils::GetNormal(hitLine));
 
@@ -61,10 +62,12 @@ bool CollisionUtils::polygonToPolygon(const std::vector<sf::Vector2f>& verticesA
 	outHitResult.depth = VectorUtils::Magnitude(outHitResult.normal);
 
 	const sf::Vector2f aToBDirection = PolygonHelper::FindArithmeticMean(verticesB) - PolygonHelper::FindArithmeticMean(verticesA);
-	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) < 0.f)
+	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) > 0.f)
 	{
 		outHitResult.normal = -outHitResult.normal;
 	}
+
+	outHitResult.hasHit = true;
 
 	return true;
 }
@@ -121,32 +124,33 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 		outHitResult.normal = -outHitResult.normal;
 	}
 
+	outHitResult.hasHit = true;
 	return true;
 }
 
 // ---- Circle to...
-bool CollisionUtils::circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& hitResult)
+bool CollisionUtils::circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& outHitResult)
 {
-	const float distanceSqr = VectorUtils::DistanceSqr(fromCirclePos, toCirclePos);
+	const float distance = VectorUtils::Distance(fromCirclePos, toCirclePos);
 	const float bothRadius = fromCircleRad + toCircleRad;
-	const float bothRadiusSqr = bothRadius * bothRadius;
 
-	if (distanceSqr <= bothRadiusSqr) // Using Sqr distance and squared radius to avoid heavy std::sqrt
+	if (distance <= bothRadius) // Using Sqr distance and squared radius to avoid heavy std::sqrt
 	{
 		const sf::Vector2f ab = toCirclePos - fromCirclePos;
 
 		if (ab != VectorUtils::zero) // Center of the circle
 		{
-			hitResult.impactPoint = fromCirclePos + VectorUtils::Normalize(ab) * fromCircleRad;
-			hitResult.normal = VectorUtils::Normalize(VectorUtils::GetDirectionVector(hitResult.impactPoint, fromCirclePos));
+			outHitResult.impactPoint = fromCirclePos + VectorUtils::Normalize(ab) * fromCircleRad;
+			outHitResult.normal = VectorUtils::Normalize(VectorUtils::GetDirectionVector(outHitResult.impactPoint, fromCirclePos));
 		}
 		else
 		{
-			hitResult.impactPoint = fromCirclePos;
-			hitResult.normal = VectorUtils::top;
+			outHitResult.impactPoint = fromCirclePos;
+			outHitResult.normal = VectorUtils::top;
 		}
 
-		hitResult.depth = bothRadiusSqr - distanceSqr;
+		outHitResult.depth = bothRadius - distance;
+		outHitResult.hasHit = true;
 
 		return true;
 	}
@@ -156,10 +160,10 @@ bool CollisionUtils::circleToCircle(const sf::Vector2f& fromCirclePos, float fro
 
 bool CollisionUtils::circleToPolygon(const sf::Vector2f& circlePos, float circleRadius, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult)
 {
-	const bool hasHit = polygonToCircle(vertices, circlePos, circleRadius, outHitResult);
+	outHitResult.hasHit = polygonToCircle(vertices, circlePos, circleRadius, outHitResult);
 	outHitResult.normal = -outHitResult.normal;
 
-	return hasHit;
+	return outHitResult.hasHit;
 }
 
 // ---- Lines to...
