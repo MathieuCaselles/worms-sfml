@@ -90,13 +90,13 @@ void MainGameScene::update(const float& deltaTime)
 	CollisionUtils::HitResult ppHitResult;
 	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse, ppHitResult);
 
-	m_convexShapeMousePos.setOutlineColor(hitPolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
+	m_convexShapeMousePos.setOutlineColor(hitPolyDebug ? sf::Color::Blue : sf::Color(255, 0, 0, 150));
 
 	// ---- Polygon - Circle hit test
 	CollisionUtils::HitResult pcHitResult;
 	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
 
-	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
+	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(255, 0, 0, 150));
 }
 
 void MainGameScene::render()

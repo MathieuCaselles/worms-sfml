@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Game/GameObjects/Terrain/Terrain.h"
+#include "Game/Physics/RigidBodies/CircleRigidBody.h"
+#include "Game/Physics/PhysicsWorld.h"
 
 
 class MainGameScene : public Engine::IScene

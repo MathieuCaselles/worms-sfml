@@ -25,4 +25,10 @@ target_sources(Worms PRIVATE
  "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
 
  "GameObjects/Terrain/Terrain.h" "GameObjects/Terrain/Terrain.cpp" 
- "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp")
+ "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
+
+ "Physics/PhysicsProperties.h"
+ "Physics/PhysicsWorld.h"
+ "Physics/IRigidBody.h"
+ "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
+ "Physics/RigidBodies/BoxRigidBody.h" "Physics/RigidBodies/BoxRigidBody.cpp")
