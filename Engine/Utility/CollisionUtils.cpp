@@ -177,23 +177,22 @@ bool CollisionUtils::lineToPoint(float x1, float y1, float x2, float y2, float p
 	const float d1 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x1, y1));
 	const float d2 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x2, y2));
 
-	const float lineLength = VectorUtils::Distance(sf::Vector2f(x1, y1), sf::Vector2f(x2, y2));
+	const float lineLength = VectorUtils::DistanceSqr(sf::Vector2f(x1, y1), sf::Vector2f(x2, y2));
 
-	// Since floats are so minutely accurate, add a little buffer zone that will give collision
-	const float buffer = incertitude; // Higher = less accurate
-	const float d1Andd2 = d1 + d2;
+	float d1Andd2 = d1 + d2;
+	d1Andd2 *= d1Andd2;
 
-	return d1Andd2 >= lineLength - buffer && d1Andd2 <= lineLength + buffer;
+	return d1Andd2 >= lineLength - incertitude && d1Andd2 <= lineLength + incertitude;
 }
 
 bool CollisionUtils::lineToCircle(float x1, float y1, float x2, float y2, float cX, float cY, float cR, sf::Vector2f& outImpactPoint)
 {
-	const float lengthLine = VectorUtils::Distance(x1, y1, x2, y2);
+	const float lengthLineSqr = VectorUtils::DistanceSqr(sf::Vector2f( x1, y1), sf::Vector2f(x2, y2));
 
-	if (lengthLine < 0.000001f)
+	if (lengthLineSqr < 0.000001f)
 		return false; // Division by 0 guard
 
-	const float dot = ((cX - x1) * (x2 - x1) + (cY - y1) * (y2 - y1)) / (lengthLine * lengthLine);
+	const float dot = ((cX - x1) * (x2 - x1) + (cY - y1) * (y2 - y1)) / lengthLineSqr;
 
 	const float closestX = x1 + (dot * (x2 - x1));
 	const float closestY = y1 + (dot * (y2 - y1));
@@ -213,7 +212,7 @@ bool CollisionUtils::lineToCircle(float x1, float y1, float x2, float y2, float 
 // ---- Points to...
 bool CollisionUtils::pointToCircle(float px, float py, float cx, float cy, float r)
 {
-	return VectorUtils::Distance(px, py, cx, cy) <= r;
+	return VectorUtils::DistanceSqr(sf::Vector2f(px, py), sf::Vector2f(cx, cy)) <= r * r;
 }
 
 bool CollisionUtils::pointToTriangle(const sf::Vector2f& point, const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c)
@@ -277,7 +276,7 @@ sf::Vector2f CollisionUtils::getClosestPolygonPointFromCircle(const std::vector<
 
 	for (const auto& vertex : vertices)
 	{
-		const float distance = VectorUtils::Distance(vertex, circlePos);
+		const float distance = VectorUtils::DistanceSqr(vertex, circlePos);
 
 		if (distance < minDistance)
 		{
