@@ -10,7 +10,7 @@ class PolygonHelper
 public:
 	static bool triangulate(const std::vector<sf::Vector2f>& vertices, std::vector<int>& outTrianglesIndexes);
 
-	// Usefull to find an approximated center of a polygon, m making the mean of all the vertices position.
+	// Useful to find an approximated center of a polygon, calculating the mean of all the vertices position.
 	static sf::Vector2f FindArithmeticMean(const std::vector<sf::Vector2f>& vertices);
 
 	static sf::Color getRandomTerrainColor();

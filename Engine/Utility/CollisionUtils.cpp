@@ -233,6 +233,7 @@ bool CollisionUtils::pointToTriangle(const sf::Vector2f& point, const sf::Vector
 	return cross1 < 0.f && cross2 < 0.f && cross3 < 0.f;
 }
 
+// ---- Private methods
 void CollisionUtils::projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max)
 {
 	min = std::numeric_limits<float>::max();

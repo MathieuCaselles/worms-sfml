@@ -17,8 +17,13 @@ void MainGameScene::onBeginPlay()
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
+	// ---- Background
 	m_background.setSize(windowSize);
 
+	// ---- Terrain
+	m_terrain->generateTerrain(windowSize);
+
+	// ---- Debug shapes
 	m_circleMousePos.setRadius(TERRAIN_DEBUG_MOUSE_RADIUS);
 	m_circleMousePos.setFillColor(sf::Color(0, 255, 0, 100));
 	m_circleMousePos.setOrigin(m_circleMousePos.getRadius(), m_circleMousePos.getRadius());
@@ -49,9 +54,6 @@ void MainGameScene::onBeginPlay()
 	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
 	m_convexShapeStatic.setFillColor(GameColors::dirty);
 	m_convexShapeStatic.setPosition(400, 200);
-
-	// ---- Terrain
-	m_terrain->generateTerrain(windowSize);
 }
 
 void MainGameScene::update(const float& deltaTime)
@@ -61,7 +63,7 @@ void MainGameScene::update(const float& deltaTime)
 	// ---- Terrain hit test
 	m_circleMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
 
-	updateSkyColor(m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky);
+	m_background.setFillColor((m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky));
 
 	// ---- Circle circle hit test
 	CollisionUtils::HitResult ccHitResult;
@@ -71,12 +73,7 @@ void MainGameScene::update(const float& deltaTime)
 		ccHitResult);
 
 	m_blackHole.setFillColor(hitCircleCircleDebug ? GameColors::smoothPurple : GameColors::nightPurple);
-
-	if(hitCircleCircleDebug)
-	{
-		m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
-		std::cout << "Normal circle hit: " << VectorUtils::ToString(ccHitResult.normal) << std::endl;
-	}
+	m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
 
 	// ---- Polygons hit test
 	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
@@ -95,21 +92,11 @@ void MainGameScene::update(const float& deltaTime)
 
 	m_convexShapeMousePos.setOutlineColor(hitPolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
 
-	if(hitPolyDebug)
-	{
-		// std::cout << "Normal poly hit: " << VectorUtils::ToString(ppHitResult.normal) << std::endl;
-	}
-
 	// ---- Polygon - Circle hit test
 	CollisionUtils::HitResult pcHitResult;
 	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
 
 	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
-
-	if(hitCirclePolyDebug)
-	{
-		std::cout << "Normal circle-poly hit: " << VectorUtils::ToString(pcHitResult.normal) << std::endl;
-	}
 }
 
 void MainGameScene::render()
@@ -125,9 +112,4 @@ void MainGameScene::render()
 
 	m_window.draw(m_convexShapeMousePos);
 	m_window.draw(m_circleMousePos);
-}
-
-void MainGameScene::updateSkyColor(const sf::Color& color)
-{
-	m_background.setFillColor(color);
 }

@@ -37,7 +37,6 @@ sf::Vector3f VectorUtils::Cross3D(const sf::Vector3f& lhs, const sf::Vector3f& r
         lhs.x * rhs.y - lhs.y * rhs.x };
 }
 
-// Returned angle is always positive
 float VectorUtils::GetAngle(const sf::Vector2f& from, const sf::Vector2f& to)
 {
     const float denominator = std::sqrt(SqrMagnitude(from) * SqrMagnitude(to));
