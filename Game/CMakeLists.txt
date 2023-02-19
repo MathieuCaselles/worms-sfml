@@ -19,11 +19,13 @@ target_sources(Worms PRIVATE
  "Scenes/MainMenuScene.h" "Scenes/MainMenuScene.cpp"
  "Scenes/MainGameScene.h" "Scenes/MainGameScene.cpp"
 
- "Physics/IRigidBody.h" "Physics/IRigidBody.cpp"
  "Physics/PhysicsProperties.h"
  "Physics/PhysicsWorld.h" "Physics/PhysicsWorld.cpp"
- "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
  "Physics/PCPhysicsWorld.h" "Physics/PCPhysicsWorld.cpp"  
+
+ "Physics/IRigidBody.h" "Physics/IRigidBody.cpp"
+ "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
+ "Physics/RigidBodies/BoxRigidBody.h" "Physics/RigidBodies/BoxRigidBody.cpp"
 
  "Components/GraphicsComponents/GCVoid.h" "Components/GraphicsComponents/GCVoid.cpp" "Components/GraphicsComponents/UI/Buttons/GCButton.h" "Components/GraphicsComponents/UI/Buttons/GCButton.cpp"
  "Components/InputComponents/ICVoid.h" "Components/InputComponents/ICVoid.cpp" "Components/InputComponents/UI/Buttons/ICButton.h" "Components/InputComponents/UI/Buttons/ICButton.cpp"
@@ -38,4 +40,6 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
  "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
 
-)
+ "GameObjects/PhysicsObjects/FallingBox.h/FallingBoxRB.h" "GameObjects/PhysicsObjects/FallingBox.h/FallingBoxRB.cpp"
+ "GameObjects/PhysicsObjects/FallingBox.h/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox.h/GCFallingbox.cpp"
+ "GameObjects/PhysicsObjects/FallingBox.h/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox.h/PCFallingBox.cpp")

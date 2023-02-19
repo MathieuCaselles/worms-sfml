@@ -13,10 +13,11 @@ MainGameScene::MainGameScene()
 	m_physicsWorld = std::make_unique<PhysicsWorld>();
 	addGameObjects(m_physicsWorld.get());
 
-	const PhysicsProperties circlePhysicsProperties{ 7.1f, 0.5f };
-	m_fallingCircle = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 50), 20, GameColors::orange, circlePhysicsProperties);
+	const PhysicsProperties basicPhysicsProperties{ 7.1f, 0.5f };
+	m_fallingCircle = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 50), 20, GameColors::orange, basicPhysicsProperties);
+	m_fallingBox = std::make_unique<FallingBoxRB>(sf::Vector2f(600, 50), sf::Vector2f(40.f, 40.f), GameColors::orange, basicPhysicsProperties);
 
-	addGameObjects(m_fallingCircle.get());
+	addGameObjects(m_fallingCircle.get(), m_fallingBox.get());
 }
 
 void MainGameScene::onBeginPlay()
@@ -65,6 +66,7 @@ void MainGameScene::onBeginPlay()
 
 	// Physic world
 	m_physicsWorld->addRigidBody(*m_fallingCircle);
+	m_physicsWorld->addRigidBody(*m_fallingBox);
 }
 
 void MainGameScene::update(const float& deltaTime)

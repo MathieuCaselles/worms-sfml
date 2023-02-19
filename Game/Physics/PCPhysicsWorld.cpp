@@ -24,9 +24,19 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 	// -------- Update collisions
 	for (const auto& currentRb : world.m_rigidBodies)
 	{
-		if (currentRb->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+		for (const auto& otherRb : world.m_rigidBodies)
 		{
-			std::cout << "Updating collision of rb";
+			if (currentRb == otherRb)
+				continue;
+
+			if (currentRb->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+			{
+				auto circleRB = reinterpret_cast<CircleRigidBody*>(currentRb);
+
+				if(otherRb->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+				{
+				}
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ FallingCircleRB::FallingCircleRB(const sf::Vector2f& initialPos, float radius, c
 {
 	m_circleShape.setPosition(initialPos);
 	m_circleShape.setRadius(radius);
+	m_circleShape.setOrigin(radius / 2.f, radius / 2.f);
 	m_circleShape.setFillColor(color);
 
 	m_rbPosition = m_circleShape.getPosition();
