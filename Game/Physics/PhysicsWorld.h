@@ -29,9 +29,9 @@ public:
 	void addRigidBody(IRigidBody& rb);
 	void removeRigidBody(IRigidBody& rb);
 
-	IRigidBody* getRigidBody(IRigidBody&& rb);
+	IRigidBody* getRigidBody(IRigidBody& rb);
 
 private:
-	std::list<IRigidBody*> m_rigidBodies;
+	std::vector<IRigidBody*> m_rigidBodies;
 
 };

@@ -21,8 +21,10 @@ public:
 
 private:
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
-    std::unique_ptr<FallingCircleRB> m_fallingCircle;
-    std::unique_ptr<FallingBoxRB> m_fallingBox;
+    std::unique_ptr<FallingCircleRB> m_fallingCircleDirty;
+    std::unique_ptr<FallingCircleRB> m_fallingCircleRed;
+    std::unique_ptr<FallingBoxRB> m_fallingBoxDirty;
+    std::unique_ptr<FallingBoxRB> m_fallingBoxRed;
 
     sf::RectangleShape m_background;
     std::unique_ptr<Terrain> m_terrain;

@@ -14,10 +14,23 @@ MainGameScene::MainGameScene()
 	addGameObjects(m_physicsWorld.get());
 
 	const PhysicsProperties basicPhysicsProperties{ 7.1f, 0.5f };
-	m_fallingCircle = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 50), 20, GameColors::orange, basicPhysicsProperties);
-	m_fallingBox = std::make_unique<FallingBoxRB>(sf::Vector2f(600, 50), sf::Vector2f(40.f, 40.f), GameColors::orange, basicPhysicsProperties);
+	m_fallingCircleDirty = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 0), 20, GameColors::orange, basicPhysicsProperties);
+	m_fallingCircleRed = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 100), 20, GameColors::redBlood, basicPhysicsProperties);
+	m_fallingBoxDirty = std::make_unique<FallingBoxRB>(sf::Vector2f(500, 150), sf::Vector2f(40.f, 40.f), GameColors::dirty, basicPhysicsProperties);
+	m_fallingBoxRed = std::make_unique<FallingBoxRB>(sf::Vector2f(500, 200), sf::Vector2f(40.f, 40.f), GameColors::redBlood, basicPhysicsProperties);
 
-	addGameObjects(m_fallingCircle.get(), m_fallingBox.get());
+	m_fallingCircleDirty->setVelocity(PhysicsWorld::GRAVITY * 7.f);
+	m_fallingCircleRed->setVelocity(sf::Vector2f(0.f, 0.f));
+	m_fallingBoxDirty->setVelocity(sf::Vector2f(0.f, 0.f));
+	m_fallingBoxRed->setVelocity(sf::Vector2f(0.f, 0.f));
+
+	addGameObjects(m_fallingCircleDirty.get(), m_fallingCircleRed.get(), m_fallingBoxDirty.get(), m_fallingBoxRed.get());
+
+	// Physic world
+	m_physicsWorld->addRigidBody(*m_fallingCircleDirty);
+	m_physicsWorld->addRigidBody(*m_fallingCircleRed);
+	m_physicsWorld->addRigidBody(*m_fallingBoxDirty);
+	m_physicsWorld->addRigidBody(*m_fallingBoxRed);
 }
 
 void MainGameScene::onBeginPlay()
@@ -63,10 +76,6 @@ void MainGameScene::onBeginPlay()
 	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
 	m_convexShapeStatic.setFillColor(GameColors::dirty);
 	m_convexShapeStatic.setPosition(400, 200);
-
-	// Physic world
-	m_physicsWorld->addRigidBody(*m_fallingCircle);
-	m_physicsWorld->addRigidBody(*m_fallingBox);
 }
 
 void MainGameScene::update(const float& deltaTime)

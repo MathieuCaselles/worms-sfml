@@ -14,10 +14,10 @@ void PhysicsWorld::addRigidBody(IRigidBody& rb)
 
 void PhysicsWorld::removeRigidBody(IRigidBody& rb)
 {
-	m_rigidBodies.remove(&rb);
+	m_rigidBodies.erase(std::ranges::find(m_rigidBodies, &rb));
 }
 
-IRigidBody* PhysicsWorld::getRigidBody(IRigidBody&& rb)
+IRigidBody* PhysicsWorld::getRigidBody(IRigidBody& rb)
 {
 	return *std::ranges::find(m_rigidBodies, &rb);
 }

@@ -14,6 +14,8 @@ public:
 
 	void step(const float& deltaTime) override;
 
+	std::vector<sf::Vector2f> getRectPoints() const;
+
 private:
 	sf::RectangleShape& m_rectangleShape;
 };

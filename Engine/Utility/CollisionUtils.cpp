@@ -154,6 +154,14 @@ bool CollisionUtils::circleToCircle(const sf::Vector2f& fromCirclePos, float fro
 	return false;
 }
 
+bool CollisionUtils::circleToPolygon(const sf::Vector2f& circlePos, float circleRadius, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult)
+{
+	const bool hasHit = polygonToCircle(vertices, circlePos, circleRadius, outHitResult);
+	outHitResult.normal = -outHitResult.normal;
+
+	return hasHit;
+}
+
 // ---- Lines to...
 bool CollisionUtils::lineToLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, sf::Vector2f& outIntersectionPoint)
 {
