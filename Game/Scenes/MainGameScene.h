@@ -5,6 +5,7 @@
 
 #include "Game/GameObjects/Terrain/Terrain.h"
 
+
 class MainGameScene : public Engine::IScene
 {
 public:
@@ -12,10 +13,39 @@ public:
     ~MainGameScene() override = default;
 
     void onBeginPlay() override;
+    void update(const float& deltaTime) override;
 	void render() override;
 
 private:
     sf::RectangleShape m_background;
-
     std::unique_ptr<Terrain> m_terrain;
+
+    // ---- Debug shapes
+    sf::CircleShape m_circleMousePos;
+
+    sf::CircleShape m_blackHole;
+    sf::CircleShape m_hitBlackHolePoint;
+
+    sf::ConvexShape m_convexShapeStatic;
+    sf::ConvexShape m_convexShapeMousePos;
+
+    const std::vector<sf::Vector2f> m_baseShape1
+    {
+        sf::Vector2f(0, 2),
+        sf::Vector2f(2, 1),
+        sf::Vector2f(2, -1),
+        sf::Vector2f(0, -2),
+        sf::Vector2f(-2, -2),
+        sf::Vector2f(-2, -1)
+    };
+
+    const std::vector<sf::Vector2f> m_baseShape2
+    {
+        sf::Vector2f(1, 3),
+        sf::Vector2f(2, 2),
+        sf::Vector2f(2, -1),
+        sf::Vector2f(-1, -3),
+        sf::Vector2f(-2, -1),
+        sf::Vector2f(-2, 0)
+    };
 };
