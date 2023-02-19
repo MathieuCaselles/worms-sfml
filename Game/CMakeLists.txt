@@ -34,9 +34,8 @@ target_sources(Worms PRIVATE
  "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" 
  "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
 
- "GameObjects/PhysicsObjects/FallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle.cpp"
- "GameObjects/PhysicsObjects/GCFallingCircle.h" "GameObjects/PhysicsObjects/GCFallingCircle.cpp" 
- "GameObjects/PhysicsObjects/PCFallingCircle.h" "GameObjects/PhysicsObjects/PCFallingCircle.cpp"
-
+ "GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.h" "GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.cpp"
+ "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
+ "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
 
 )

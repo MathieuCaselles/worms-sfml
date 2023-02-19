@@ -23,4 +23,5 @@ target_sources(Engine PRIVATE
    "Utility/VectorUtils.h" "Utility/VectorUtils.cpp" 
    "Utility/PolygonHelper.h" "Utility/PolygonHelper.cpp"
    "Utility/MathUtils.h" "Utility/MathUtils.cpp"
-   "Utility/CollisionUtils.h" "Utility/CollisionUtils.cpp")
+   "Utility/CollisionUtils.h" "Utility/CollisionUtils.cpp"
+   "Utility/RTTI.h")

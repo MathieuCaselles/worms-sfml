@@ -6,6 +6,9 @@
 class CircleRigidBody : public IRigidBody
 {
 public:
+	DECLARE_RTTI(CircleRigidBody, IRigidBody)
+
+public:
 	CircleRigidBody(sf::CircleShape& circleShape, const PhysicsProperties& properties);
 	~CircleRigidBody() override = default;
 

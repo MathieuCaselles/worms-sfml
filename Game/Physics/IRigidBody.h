@@ -2,9 +2,13 @@
 
 #include "PhysicsProperties.h"
 #include "SFML/System/Vector2.hpp"
+#include "Engine/Utility/RTTI.h"
 
-class IRigidBody
+class IRigidBody : public HasRTTI
 {
+public:
+	DECLARE_RTTI(IRigidBody, NoRTTIRoot)
+
 public:
 	virtual ~IRigidBody() = default;
 

@@ -4,6 +4,6 @@
 
 struct PCFallingCircle : Engine::IPhysicsComponent
 {
-	PCFallingCircle();
+	PCFallingCircle() = default;
 	void updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene) override;
 };

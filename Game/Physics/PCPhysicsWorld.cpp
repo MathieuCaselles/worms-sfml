@@ -1,7 +1,11 @@
 #include "PCPhysicsWorld.h"
 
+#include <iostream>
+
 #include "IRigidBody.h"
 #include "PhysicsWorld.h"
+
+#include "Game/Physics/RigidBodies/CircleRigidBody.h"
 
 PCPhysicsWorld::PCPhysicsWorld()
 { }
@@ -18,5 +22,11 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 	}
 
 	// -------- Update collisions
-
+	for (const auto& currentRb : world.m_rigidBodies)
+	{
+		if (currentRb->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+		{
+			std::cout << "Updating collision of rb";
+		}
+	}
 }

@@ -1,10 +1,10 @@
-#include "FallingCircle.h"
+#include "FallingCircleRB.h"
 
-FallingCircle::FallingCircle()
-	: FallingCircle({ 0.f, 0.f }, 0.f, sf::Color::White, { })
+FallingCircleRB::FallingCircleRB()
+	: FallingCircleRB({ 0.f, 0.f }, 0.f, sf::Color::White, { })
 { }
 
-FallingCircle::FallingCircle(const sf::Vector2f& initialPos, float radius, const sf::Color& color, const PhysicsProperties& properties) :
+FallingCircleRB::FallingCircleRB(const sf::Vector2f& initialPos, float radius, const sf::Color& color, const PhysicsProperties& properties) :
 	GameObject<PCFallingCircle, GCFallingCircle, ICVoid>(),
 	CircleRigidBody(m_circleShape, properties)
 {

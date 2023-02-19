@@ -7,17 +7,17 @@
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
-class FallingCircle : public Engine::GameObject<PCFallingCircle, GCFallingCircle, ICVoid>,
+class FallingCircleRB : public Engine::GameObject<PCFallingCircle, GCFallingCircle, ICVoid>,
                       public CircleRigidBody
 {
 	friend PCFallingCircle;
 	friend GCFallingCircle;
 
 public:
-	FallingCircle();
-	FallingCircle(const sf::Vector2f& initialPos, float radius, const sf::Color& color, const PhysicsProperties& properties);
+	FallingCircleRB();
+	FallingCircleRB(const sf::Vector2f& initialPos, float radius, const sf::Color& color, const PhysicsProperties& properties);
 
-	~FallingCircle() override = default;
+	~FallingCircleRB() override = default;
 
 private:
 	sf::CircleShape m_circleShape;

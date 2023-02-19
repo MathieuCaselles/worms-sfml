@@ -14,7 +14,7 @@ MainGameScene::MainGameScene()
 	addGameObjects(m_physicsWorld.get());
 
 	const PhysicsProperties circlePhysicsProperties{ 7.1f, 0.5f };
-	m_fallingCircle = std::make_unique<FallingCircle>(sf::Vector2f(500, 50), 20, GameColors::orange, circlePhysicsProperties);
+	m_fallingCircle = std::make_unique<FallingCircleRB>(sf::Vector2f(500, 50), 20, GameColors::orange, circlePhysicsProperties);
 
 	addGameObjects(m_fallingCircle.get());
 }

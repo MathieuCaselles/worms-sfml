@@ -1,10 +1,10 @@
 #include "GCFallingCircle.h"
 
-#include "FallingCircle.h"
+#include "FallingCircleRB.h"
 
 void GCFallingCircle::renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window)
 {
-	const auto& fallingCircle = reinterpret_cast<FallingCircle&>(gameObject);
+	const auto& fallingCircle = reinterpret_cast<FallingCircleRB&>(gameObject);
 
 	window.draw(fallingCircle.m_circleShape);
 }
