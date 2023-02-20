@@ -36,10 +36,10 @@ target_sources(Worms PRIVATE
  "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" 
  "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
 
- "GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.h" "GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.cpp"
- "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
- "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
+ "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h" "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.cpp"
+ "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.h" "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.cpp" 
+ "GameObjects/RigidBodies/FallingCircle/PCFallingCircle.h" "GameObjects/RigidBodies/FallingCircle/PCFallingCircle.cpp"
 
- "GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.h" "GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.cpp"
- "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
- "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp")
+ "GameObjects/RigidBodies/FallingBox/FallingBoxRB.h" "GameObjects/RigidBodies/FallingBox/FallingBoxRB.cpp"
+ "GameObjects/RigidBodies/FallingBox/GCFallingBox.h" "GameObjects/RigidBodies/FallingBox/GCFallingbox.cpp"
+ "GameObjects/RigidBodies/FallingBox/PCFallingBox.h" "GameObjects/RigidBodies/FallingBox/PCFallingBox.cpp")
