@@ -1,19 +1,21 @@
 #include "FallingBoxRB.h"
 
 FallingBoxRB::FallingBoxRB()
-	: FallingBoxRB({ 0.f, 0.f }, { 0.f, 0.f }, sf::Color::White, { })
+	: FallingBoxRB( sf::RectangleShape(), {})
 { }
 
-FallingBoxRB::FallingBoxRB(const sf::Vector2f& initialPos, const sf::Vector2f& size, const sf::Color& color, const PhysicsProperties& properties) :
-	GameObject<PCFallingBox, GCFallingBox, ICVoid>(),
-	BoxRigidBody(m_rectangleShape, properties)
+FallingBoxRB::FallingBoxRB(sf::RectangleShape rectangleShape, const PhysicsProperties& properties)
+	: FallingBoxRB(std::move(rectangleShape), properties, rectangleShape.getPosition(), rectangleShape.getRotation())
+{ }
+
+FallingBoxRB::FallingBoxRB(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
+	: GameObject<PCFallingBox, GCFallingBox, ICVoid>(),
+		BoxRigidBody(m_rectangleShape, properties),
+		m_rectangleShape(std::move(rectangleShape))
 {
-	m_rectangleShape.setSize(size);
-	m_rectangleShape.setOrigin(size.x / 2.f, size.y / 2.f);
-	m_rectangleShape.setFillColor(color);
-	m_rectangleShape.setPosition(initialPos);
+	m_rbPosition = initialPosition;
+	m_rbRotation = initialRotation;
 
-	m_rectangleShape.rotate(45.f);
-
-	m_rbPosition = m_rectangleShape.getPosition();
+	m_rectangleShape.setPosition(m_rbPosition);
+	m_rectangleShape.setRotation(m_rbRotation);
 }

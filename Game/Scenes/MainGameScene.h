@@ -3,8 +3,8 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
-#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBoxRB.h"
-#include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircleRB.h"
+#include "Game/GameObjects/RigidBodies/FallingBox/FallingBoxRB.h"
+#include "Game/GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h"
 #include "Game/GameObjects/Terrain/Terrain.h"
 
 #include "Game/Physics/PhysicsWorld.h"
@@ -21,9 +21,9 @@ public:
 
 private:
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
-    std::unique_ptr<FallingCircleRB> m_fallingCircleDirty;
+    std::unique_ptr<FallingCircleRB> m_fallingCircleOrange;
     std::unique_ptr<FallingCircleRB> m_fallingCircleRed;
-    std::unique_ptr<FallingBoxRB> m_fallingBoxDirty;
+    std::unique_ptr<FallingBoxRB> m_fallingBoxOrange;
     std::unique_ptr<FallingBoxRB> m_fallingBoxRed;
 
     sf::RectangleShape m_background;

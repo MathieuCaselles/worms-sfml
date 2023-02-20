@@ -15,7 +15,8 @@ class FallingBoxRB : public Engine::GameObject<PCFallingBox, GCFallingBox, ICVoi
 
 public:
 	FallingBoxRB();
-	FallingBoxRB(const sf::Vector2f& initialPos, const sf::Vector2f& size, const sf::Color& color, const PhysicsProperties& properties);
+	FallingBoxRB(sf::RectangleShape rectangleShape, const PhysicsProperties& properties);
+	FallingBoxRB(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 
 	~FallingBoxRB() override = default;
 

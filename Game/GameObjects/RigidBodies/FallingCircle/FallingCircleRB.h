@@ -15,7 +15,12 @@ class FallingCircleRB : public Engine::GameObject<PCFallingCircle, GCFallingCirc
 
 public:
 	FallingCircleRB();
-	FallingCircleRB(const sf::Vector2f& initialPos, float radius, const sf::Color& color, const PhysicsProperties& properties);
+
+	// The initial position will be the position from circleShape.getPosition()
+	FallingCircleRB(sf::CircleShape circleShape, const PhysicsProperties& properties);
+
+	// The initial position will be the parameter initialPosition
+	FallingCircleRB(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 
 	~FallingCircleRB() override = default;
 
