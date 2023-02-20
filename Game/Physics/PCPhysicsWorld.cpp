@@ -1,13 +1,12 @@
 #include "PCPhysicsWorld.h"
 
-#include <iostream>
-
 #include "IRigidBody.h"
 #include "PhysicsWorld.h"
 #include "Engine/Utility/CollisionUtils.h"
 
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "RigidBodies/BoxRigidBody.h"
+#include "WorldCollisionExternalDispatcher.h"
 
 PCPhysicsWorld::PCPhysicsWorld()
 { }
@@ -46,50 +45,52 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 
 bool PCPhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& hitResult)
 {
-	if (rbA->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
-	{
-		const auto currentCircleRB = reinterpret_cast<CircleRigidBody*>(rbA);
+	testExternalDispatchRenderer(rbA, rbB);
 
-		if (rbB->getInstanceRTTI() == CircleRigidBody::getClassRTTI()) // Circle to circle
-		{
-			const auto otherCircleRb = reinterpret_cast<CircleRigidBody*>(rbB);
-			return CollisionUtils::circleToCircle(
-			currentCircleRB->getCircleShape().getPosition(), currentCircleRB->getCircleShape().getRadius(),
-			otherCircleRb->getCircleShape().getPosition(), otherCircleRb->getCircleShape().getRadius(), 
-				hitResult);
-		}
-		
-		if (rbB->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Circle to box
-		{
-			const auto otherBoxRb = reinterpret_cast<BoxRigidBody*>(rbB);
-			return CollisionUtils::circleToPolygon(
-				currentCircleRB->getCircleShape().getPosition(), currentCircleRB->getCircleShape().getRadius(),
-				otherBoxRb->getRectPoints(), 
-				hitResult);
-		}
-	}
-	else if (rbA->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Box to circle
-	{
-		const auto currentBoxRB = reinterpret_cast<BoxRigidBody*>(rbA);
+	//if (rbA->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+	//{
+	//	const auto currentCircleRB = reinterpret_cast<CircleRigidBody*>(rbA);
 
-		if (rbB->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
-		{
-			const auto otherCircleRb = reinterpret_cast<CircleRigidBody*>(rbB);
-			return CollisionUtils::polygonToCircle(
-				currentBoxRB->getRectPoints(), 
-				otherCircleRb->getCircleShape().getPosition(), otherCircleRb->getCircleShape().getRadius(), 
-				hitResult);
-		}
-		
-		if (rbB->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Box to box
-		{
-			const auto otherBoxRb = reinterpret_cast<BoxRigidBody*>(rbB);
-			return CollisionUtils::polygonToPolygon(
-				currentBoxRB->getRectPoints(), 
-				otherBoxRb->getRectPoints(), 
-				hitResult);
-		}
-	}
+	//	if (rbB->getInstanceRTTI() == CircleRigidBody::getClassRTTI()) // Circle to circle
+	//	{
+	//		const auto otherCircleRb = reinterpret_cast<CircleRigidBody*>(rbB);
+	//		return CollisionUtils::circleToCircle(
+	//		currentCircleRB->getCircleShape().getPosition(), currentCircleRB->getCircleShape().getRadius(),
+	//		otherCircleRb->getCircleShape().getPosition(), otherCircleRb->getCircleShape().getRadius(), 
+	//			hitResult);
+	//	}
+	//	
+	//	if (rbB->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Circle to box
+	//	{
+	//		const auto otherBoxRb = reinterpret_cast<BoxRigidBody*>(rbB);
+	//		return CollisionUtils::circleToPolygon(
+	//			currentCircleRB->getCircleShape().getPosition(), currentCircleRB->getCircleShape().getRadius(),
+	//			otherBoxRb->getRectPoints(), 
+	//			hitResult);
+	//	}
+	//}
+	//else if (rbA->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Box to circle
+	//{
+	//	const auto currentBoxRB = reinterpret_cast<BoxRigidBody*>(rbA);
+
+	//	if (rbB->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+	//	{
+	//		const auto otherCircleRb = reinterpret_cast<CircleRigidBody*>(rbB);
+	//		return CollisionUtils::polygonToCircle(
+	//			currentBoxRB->getRectPoints(), 
+	//			otherCircleRb->getCircleShape().getPosition(), otherCircleRb->getCircleShape().getRadius(), 
+	//			hitResult);
+	//	}
+	//	
+	//	if (rbB->getInstanceRTTI() == BoxRigidBody::getClassRTTI()) // Box to box
+	//	{
+	//		const auto otherBoxRb = reinterpret_cast<BoxRigidBody*>(rbB);
+	//		return CollisionUtils::polygonToPolygon(
+	//			currentBoxRB->getRectPoints(), 
+	//			otherBoxRb->getRectPoints(), 
+	//			hitResult);
+	//	}
+	//}
 
 	return false;
 }

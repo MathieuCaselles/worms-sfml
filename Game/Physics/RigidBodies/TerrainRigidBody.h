@@ -6,7 +6,7 @@
 class TerrainRigidBody : public IRigidBody
 {
 public:
-	DECLARE_RTTI(CircleRigidBody, IRigidBody)
+	DECLARE_RTTI(TerrainRigidBody, IRigidBody)
 
 public:
 	TerrainRigidBody(const PhysicsProperties& properties);
