@@ -2,7 +2,7 @@
 
 #include <Engine/Components/GraphicsComponent.h>
 
-class Terrain;
+class TerrainRB;
 
 struct GCTerrain : Engine::IGraphicsComponent
 {

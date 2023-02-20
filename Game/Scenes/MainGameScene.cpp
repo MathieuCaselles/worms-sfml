@@ -3,16 +3,11 @@
 #include "Engine/Game/Game.h"
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
-#include "Game/GameObjects/Terrain/Terrain.h"
+#include "Game/GameObjects/RigidBodies/Terrain/TerrainRB.h"
 
 MainGameScene::MainGameScene()
 {
-	m_terrain = std::make_unique<Terrain>();
-	addGameObjects(m_terrain.get());
-
-	m_physicsWorld = std::make_unique<PhysicsWorld>();
-	addGameObjects(m_physicsWorld.get());
-
+	// ---- Moving entities
 	const PhysicsProperties basicPhysicsProperties{ 7.1f, 0.5f };
 	constexpr float rbObjectsXOrigin = 500.f;
 
@@ -40,13 +35,23 @@ MainGameScene::MainGameScene()
 	m_fallingBoxOrange->setVelocity	  (sf::Vector2f(0.f, 0.f));
 	m_fallingBoxRed->setVelocity	  (sf::Vector2f(0.f, 0.f));
 
-	addGameObjects(m_fallingCircleOrange.get(), m_fallingCircleRed.get(), m_fallingBoxOrange.get(), m_fallingBoxRed.get());
+	// ---- Terrain and physics world
+	const PhysicsProperties terrainPhysicsProperties{ 7.1f, 0.5f, true };
+	m_terrain = std::make_unique<TerrainRB>(terrainPhysicsProperties);
 
-	// Physic world
+	m_physicsWorld = std::make_unique<PhysicsWorld>();
+
 	m_physicsWorld->addRigidBody(*m_fallingCircleOrange);
 	m_physicsWorld->addRigidBody(*m_fallingCircleRed);
 	m_physicsWorld->addRigidBody(*m_fallingBoxOrange);
 	m_physicsWorld->addRigidBody(*m_fallingBoxRed);
+	m_physicsWorld->addRigidBody(*m_terrain);
+
+	// ---- Adding gameObjects in order
+	addGameObjects(m_physicsWorld.get());
+	addGameObjects(m_terrain.get());
+
+	addGameObjects(m_fallingCircleOrange.get(), m_fallingCircleRed.get(), m_fallingBoxOrange.get(), m_fallingBoxRed.get());
 }
 
 void MainGameScene::onBeginPlay()
@@ -57,6 +62,7 @@ void MainGameScene::onBeginPlay()
 
 	// ---- Background
 	m_background.setSize(windowSize);
+	m_background.setFillColor(GameColors::sky);
 
 	// ---- Terrain
 	m_terrain->generateTerrain(windowSize);
@@ -104,8 +110,6 @@ void MainGameScene::update(const float& deltaTime)
 
 	// ---- Terrain hit test
 	m_circleMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-
-	m_background.setFillColor((m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky));
 
 	// ---- Circle circle hit test
 	CollisionUtils::HitResult ccHitResult;

@@ -5,7 +5,7 @@
 
 #include "Game/GameObjects/RigidBodies/FallingBox/FallingBoxRB.h"
 #include "Game/GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h"
-#include "Game/GameObjects/Terrain/Terrain.h"
+#include "Game/GameObjects/RigidBodies/Terrain/TerrainRB.h"
 
 #include "Game/Physics/PhysicsWorld.h"
 
@@ -27,7 +27,7 @@ private:
     std::unique_ptr<FallingBoxRB> m_fallingBoxRed;
 
     sf::RectangleShape m_background;
-    std::unique_ptr<Terrain> m_terrain;
+    std::unique_ptr<TerrainRB> m_terrain;
 
     // ---- Debug shapes
     sf::CircleShape m_circleMousePos;

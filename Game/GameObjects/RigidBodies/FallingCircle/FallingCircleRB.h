@@ -8,7 +8,7 @@
 #include "Game/Physics/PhysicsProperties.h"
 
 class FallingCircleRB : public Engine::GameObject<PCFallingCircle, GCFallingCircle, ICVoid>,
-                      public CircleRigidBody
+                        public CircleRigidBody
 {
 	friend PCFallingCircle;
 	friend GCFallingCircle;

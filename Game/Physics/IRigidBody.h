@@ -21,6 +21,7 @@ public:
 
 	void addForce(const sf::Vector2f& movement) { m_rbPosition += movement; }
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
+	PhysicsProperties getProperties() const { return m_rbProperties; }
 
 protected:
 	explicit IRigidBody(const PhysicsProperties& properties);

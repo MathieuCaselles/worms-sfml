@@ -26,15 +26,16 @@ target_sources(Worms PRIVATE
  "Physics/IRigidBody.h" "Physics/IRigidBody.cpp"
  "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
  "Physics/RigidBodies/BoxRigidBody.h" "Physics/RigidBodies/BoxRigidBody.cpp"
+ "Physics/RigidBodies/TerrainRigidBody.h" "Physics/RigidBodies/TerrainRigidBody.cpp"
 
  "Components/GraphicsComponents/GCVoid.h" "Components/GraphicsComponents/GCVoid.cpp" "Components/GraphicsComponents/UI/Buttons/GCButton.h" "Components/GraphicsComponents/UI/Buttons/GCButton.cpp"
  "Components/InputComponents/ICVoid.h" "Components/InputComponents/ICVoid.cpp" "Components/InputComponents/UI/Buttons/ICButton.h" "Components/InputComponents/UI/Buttons/ICButton.cpp"
  "Components/PhysicsComponents/PCVoid.h" "Components/PhysicsComponents/PCVoid.cpp" "Components/PhysicsComponents/UI/Buttons/PCButton.h" "Components/PhysicsComponents/UI/Buttons/PCButton.cpp"
  "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
 
- "GameObjects/Terrain/Terrain.h" "GameObjects/Terrain/Terrain.cpp" 
- "GameObjects/Terrain/GCTerrain.h" "GameObjects/Terrain/GCTerrain.cpp" 
- "GameObjects/Terrain/PCTerrain.h" "GameObjects/Terrain/PCTerrain.cpp"
+ "GameObjects/RigidBodies/Terrain/TerrainRB.h" "GameObjects/RigidBodies/Terrain/TerrainRB.cpp" 
+ "GameObjects/RigidBodies/Terrain/GCTerrain.h" "GameObjects/RigidBodies/Terrain/GCTerrain.cpp" 
+ "GameObjects/RigidBodies/Terrain/PCTerrain.h" "GameObjects/RigidBodies/Terrain/PCTerrain.cpp"
 
  "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h" "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.cpp"
  "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.h" "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.cpp" 
@@ -42,4 +43,5 @@ target_sources(Worms PRIVATE
 
  "GameObjects/RigidBodies/FallingBox/FallingBoxRB.h" "GameObjects/RigidBodies/FallingBox/FallingBoxRB.cpp"
  "GameObjects/RigidBodies/FallingBox/GCFallingBox.h" "GameObjects/RigidBodies/FallingBox/GCFallingbox.cpp"
- "GameObjects/RigidBodies/FallingBox/PCFallingBox.h" "GameObjects/RigidBodies/FallingBox/PCFallingBox.cpp")
+ "GameObjects/RigidBodies/FallingBox/PCFallingBox.h" "GameObjects/RigidBodies/FallingBox/PCFallingBox.cpp" 
+)

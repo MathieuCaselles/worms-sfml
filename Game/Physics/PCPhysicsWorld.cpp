@@ -19,7 +19,10 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 	// -------- Update movements
 	for (const auto& rb : world.m_rigidBodies)
 	{
-		rb->step(deltaTime);
+		if(!rb->getProperties().m_isStatic)
+		{
+			rb->step(deltaTime);
+		}
 	}
 
 	// -------- Update collisions
