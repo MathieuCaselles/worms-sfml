@@ -4,7 +4,7 @@
 
 void IRigidBody::step(const float& deltaTime)
 {
-	addMovement(m_rbVelocity * deltaTime);
+	addForce(m_rbVelocity * deltaTime);
 }
 
 IRigidBody::IRigidBody(const PhysicsProperties& properties)

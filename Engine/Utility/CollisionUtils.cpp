@@ -84,10 +84,10 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 		const auto vb = vertices[(i + 1) % static_cast<int>(vertices.size())];
 
 		const auto edge = vb - va;
-		const auto axis = VectorUtils::Normalize(VectorUtils::GetNormal(edge)); // Get normal of current edge for SAT
+		const auto polygonAxis = VectorUtils::Normalize(VectorUtils::GetNormal(edge)); // Get normal of current edge for SAT
 
-		projectVertices(vertices, axis, minA, maxA);
-		projectCircle(circlePos, circleRadius, axis, minB, maxB);
+		projectVertices(vertices, polygonAxis, minA, maxA);
+		projectCircle(circlePos, circleRadius, polygonAxis, minB, maxB);
 
 		if (minA >= maxB || minB >= maxA) // Gap found between polygon and circle
 		{
@@ -97,12 +97,12 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 		if (const float axisDepth = std::min(maxB - minA, maxA - minB); axisDepth < outHitResult.depth)
 		{
 			outHitResult.depth = axisDepth;
-			outHitResult.normal = axis;
+			outHitResult.normal = polygonAxis;
 		}
 	}
 
 	const sf::Vector2f closestPoint = getClosestPolygonPointFromCircle(vertices, circlePos);
-	const sf::Vector2f closestPointAxis = closestPoint - circlePos;
+	const sf::Vector2f closestPointAxis = VectorUtils::Normalize(closestPoint - circlePos);
 
 	projectVertices(vertices, closestPointAxis, minA, maxA);
 	projectCircle(circlePos, circleRadius, closestPointAxis, minB, maxB);

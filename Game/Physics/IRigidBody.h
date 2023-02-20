@@ -19,7 +19,7 @@ public:
 		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
-	void addMovement(const sf::Vector2f& movement) { m_rbPosition += movement; }
+	void addForce(const sf::Vector2f& movement) { m_rbPosition += movement; }
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 
 protected:

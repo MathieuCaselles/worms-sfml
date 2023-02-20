@@ -34,8 +34,8 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 			CollisionUtils::HitResult hitResult;
 			if (collide(currentRb, otherRb, hitResult))
 			{
-				currentRb->addMovement(hitResult.normal * hitResult.depth / 2.f);
-				otherRb->addMovement(-hitResult.normal * hitResult.depth / 2.f);
+				currentRb->addForce(hitResult.normal * hitResult.depth / 2.f);
+				otherRb->addForce(-hitResult.normal * hitResult.depth / 2.f);
 			}
 		}
 	}
