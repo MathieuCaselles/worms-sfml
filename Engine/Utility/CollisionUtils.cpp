@@ -125,7 +125,7 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 	}
 
 	outHitResult.hasHit = true;
-	return true;
+	return outHitResult.hasHit;
 }
 
 // ---- Circle to...

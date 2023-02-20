@@ -13,7 +13,7 @@ public:
 	~CircleRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
-	const sf::CircleShape& getCircleShape() const { return m_circleShape; }
+	[[nodiscard]] const sf::CircleShape& getCircleShape() const { return m_circleShape; }
 
 private:
 	sf::CircleShape& m_circleShape;

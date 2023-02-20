@@ -22,6 +22,8 @@ public:
 
 	void generateTerrain(const sf::Vector2f& windowSize);
 
+	const std::vector<sf::Vector2f>& getFloorEdges() const { return m_terrainTopLines; }
+
 private:
 	sf::Vector2f m_renderWindowSize;
 

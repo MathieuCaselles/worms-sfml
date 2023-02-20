@@ -8,7 +8,7 @@ class IRigidBody;
 
 struct PCPhysicsWorld : Engine::IPhysicsComponent
 {
-	PCPhysicsWorld();
+	PCPhysicsWorld() = default;
 	void updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene) override;
 
 	static bool collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& hitResult);

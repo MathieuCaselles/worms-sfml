@@ -1,7 +1,7 @@
 #include "TerrainRigidBody.h"
 
-TerrainRigidBody::TerrainRigidBody(const PhysicsProperties& properties)
-	: IRigidBody(properties)
+TerrainRigidBody::TerrainRigidBody(TerrainRB& terrain, const PhysicsProperties& properties)
+	: IRigidBody(properties), m_terrain(terrain)
 { }
 
 void TerrainRigidBody::step(const float& deltaTime)

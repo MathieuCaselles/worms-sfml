@@ -10,7 +10,7 @@ constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
 TerrainRB::TerrainRB(const PhysicsProperties& physicsProperties) :
-	TerrainRigidBody(physicsProperties),
+	TerrainRigidBody(*this, physicsProperties),
 	m_imageHeightMapColor(GameColors::terrainHeightMap)
 {
 	// ---- Base image loading
