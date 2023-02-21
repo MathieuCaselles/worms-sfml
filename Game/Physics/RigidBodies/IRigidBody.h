@@ -1,7 +1,8 @@
 #pragma once
 
-#include "PhysicsProperties.h"
 #include "SFML/System/Vector2.hpp"
+
+#include "Game/Physics/PhysicsProperties.h"
 #include "Engine/Utility/RTTI.h"
 
 class IRigidBody : public HasRTTI

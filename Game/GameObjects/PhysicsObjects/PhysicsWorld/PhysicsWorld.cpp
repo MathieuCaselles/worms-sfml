@@ -1,6 +1,6 @@
 #include "PhysicsWorld.h"
 
-#include "IRigidBody.h"
+#include "Game/Physics/RigidBodies/IRigidBody.h"
 
 void PhysicsWorld::onBeginPlay(Engine::IScene& scene)
 {

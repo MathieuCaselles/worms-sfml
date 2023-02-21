@@ -1,10 +1,10 @@
 #include "PCPhysicsWorld.h"
 
-#include "IRigidBody.h"
-#include "PhysicsWorld.h"
 #include "Engine/Utility/CollisionUtils.h"
+#include "Game/Physics/WorldCollisionExternalDispatcher.h"
 
-#include "WorldCollisionExternalDispatcher.h"
+#include "Game/Physics/RigidBodies/IRigidBody.h"
+#include "PhysicsWorld.h"
 
 void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {

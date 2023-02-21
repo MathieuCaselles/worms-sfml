@@ -1,10 +1,10 @@
 #include "GCFallingBox.h"
 
-#include "FallingBoxRB.h"
+#include "FallingBox.h"
 
 void GCFallingBox::renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window)
 {
-	const auto& fallingBox = reinterpret_cast<FallingBoxRB&>(gameObject);
+	const auto& fallingBox = reinterpret_cast<FallingBox&>(gameObject);
 
 	window.draw(fallingBox.m_rectangleShape);
 }

@@ -1,4 +1,4 @@
-#include "TerrainRB.h"
+#include "Terrain.h"
 
 #include <iostream>
 #include <random>
@@ -9,7 +9,7 @@
 constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
 
-TerrainRB::TerrainRB(const PhysicsProperties& physicsProperties) :
+Terrain::Terrain(const PhysicsProperties& physicsProperties) :
 	TerrainRigidBody(*this, physicsProperties),
 	m_imageHeightMapColor(GameColors::terrainHeightMap)
 {
@@ -21,7 +21,7 @@ TerrainRB::TerrainRB(const PhysicsProperties& physicsProperties) :
 	}
 }
 
-void TerrainRB::onBeginPlay(Engine::IScene& scene)
+void Terrain::onBeginPlay(Engine::IScene& scene)
 {
 	GameObject<PCTerrain, GCTerrain, ICVoid>::onBeginPlay(scene);
 
@@ -30,7 +30,7 @@ void TerrainRB::onBeginPlay(Engine::IScene& scene)
 	m_hitSurfaceNormalLine.setOrigin(m_hitSurfaceNormalLine.getSize().x / 2, m_hitSurfaceNormalLine.getSize().y); // Bottom-centered
 }
 
-void TerrainRB::generateTerrain(const sf::Vector2f& windowSize)
+void Terrain::generateTerrain(const sf::Vector2f& windowSize)
 {
 	if (windowSize.x < 1 || windowSize.y < 1)
 		return;
@@ -71,7 +71,7 @@ void TerrainRB::generateTerrain(const sf::Vector2f& windowSize)
 	}
 }
 
-void TerrainRB::getAllVertexPointsFromBaseImage(std::vector<sf::Vector2f>& allVertexPoints) const
+void Terrain::getAllVertexPointsFromBaseImage(std::vector<sf::Vector2f>& allVertexPoints) const
 {
 	const auto windowW = static_cast<float>(m_renderWindowSize.x);
 	const auto windowH = static_cast<float>(m_renderWindowSize.y);
@@ -96,7 +96,7 @@ void TerrainRB::getAllVertexPointsFromBaseImage(std::vector<sf::Vector2f>& allVe
 	}
 }
 
-bool TerrainRB::isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude) const
+bool Terrain::isColorIntoColorRange(const sf::Color& color, sf::Uint8 incertitude) const
 {
 	return m_imageHeightMapColor.r <= std::min(255, color.r + incertitude) && m_imageHeightMapColor.r >= std::max(0, color.r - incertitude);
 }

@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Game/Physics/IRigidBody.h"
+#include "Game/Physics/RigidBodies/IRigidBody.h"
+
 #include "SFML/Graphics/RectangleShape.hpp"
+
+struct PhysicsProperties;
 
 class BoxRigidBody : public IRigidBody
 {

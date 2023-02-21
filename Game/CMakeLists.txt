@@ -20,12 +20,11 @@ target_sources(Worms PRIVATE
  "Scenes/MainGameScene.h" "Scenes/MainGameScene.cpp"
 
  "Physics/PhysicsProperties.h"
- "Physics/PhysicsWorld.h" "Physics/PhysicsWorld.cpp"
- "Physics/PCPhysicsWorld.h" "Physics/PCPhysicsWorld.cpp"  
+ "Physics/WorldCollisionExternalDispatcher.h"
 
- "Physics/IRigidBody.h" "Physics/IRigidBody.cpp"
- "Physics/RigidBodies/CircleRigidBody.h" "Physics/RigidBodies/CircleRigidBody.cpp" 
- "Physics/RigidBodies/BoxRigidBody.h" "Physics/RigidBodies/BoxRigidBody.cpp"
+ "Physics/RigidBodies/IRigidBody.h"       "Physics/RigidBodies/IRigidBody.cpp"
+ "Physics/RigidBodies/CircleRigidBody.h"  "Physics/RigidBodies/CircleRigidBody.cpp" 
+ "Physics/RigidBodies/BoxRigidBody.h"     "Physics/RigidBodies/BoxRigidBody.cpp"
  "Physics/RigidBodies/TerrainRigidBody.h" "Physics/RigidBodies/TerrainRigidBody.cpp"
 
  "Components/GraphicsComponents/GCVoid.h" "Components/GraphicsComponents/GCVoid.cpp" "Components/GraphicsComponents/UI/Buttons/GCButton.h" "Components/GraphicsComponents/UI/Buttons/GCButton.cpp"
@@ -33,15 +32,18 @@ target_sources(Worms PRIVATE
  "Components/PhysicsComponents/PCVoid.h" "Components/PhysicsComponents/PCVoid.cpp" "Components/PhysicsComponents/UI/Buttons/PCButton.h" "Components/PhysicsComponents/UI/Buttons/PCButton.cpp"
  "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
 
- "GameObjects/RigidBodies/Terrain/TerrainRB.h" "GameObjects/RigidBodies/Terrain/TerrainRB.cpp" 
- "GameObjects/RigidBodies/Terrain/GCTerrain.h" "GameObjects/RigidBodies/Terrain/GCTerrain.cpp" 
- "GameObjects/RigidBodies/Terrain/PCTerrain.h" "GameObjects/RigidBodies/Terrain/PCTerrain.cpp"
+ "GameObjects/PhysicsObjects/Terrain/Terrain.h" "GameObjects/PhysicsObjects/Terrain/Terrain.cpp" 
+ "GameObjects/PhysicsObjects/Terrain/GCTerrain.h" "GameObjects/PhysicsObjects/Terrain/GCTerrain.cpp" 
+ "GameObjects/PhysicsObjects/Terrain/PCTerrain.h" "GameObjects/PhysicsObjects/Terrain/PCTerrain.cpp"
 
- "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h" "GameObjects/RigidBodies/FallingCircle/FallingCircleRB.cpp"
- "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.h" "GameObjects/RigidBodies/FallingCircle/GCFallingCircle.cpp" 
- "GameObjects/RigidBodies/FallingCircle/PCFallingCircle.h" "GameObjects/RigidBodies/FallingCircle/PCFallingCircle.cpp"
+ "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.cpp"
+ "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
+ "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
 
- "GameObjects/RigidBodies/FallingBox/FallingBoxRB.h" "GameObjects/RigidBodies/FallingBox/FallingBoxRB.cpp"
- "GameObjects/RigidBodies/FallingBox/GCFallingBox.h" "GameObjects/RigidBodies/FallingBox/GCFallingbox.cpp"
- "GameObjects/RigidBodies/FallingBox/PCFallingBox.h" "GameObjects/RigidBodies/FallingBox/PCFallingBox.cpp" 
- "Physics/WorldCollisionExternalDispatcher.h")
+ "GameObjects/PhysicsObjects/FallingBox/FallingBox.h" "GameObjects/PhysicsObjects/FallingBox/FallingBox.cpp"
+ "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
+ "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp" 
+
+ "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.cpp"
+ "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.cpp"
+)

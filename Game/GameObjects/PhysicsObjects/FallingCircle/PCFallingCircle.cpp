@@ -1,9 +1,9 @@
 #include "PCFallingCircle.h"
 
-#include "FallingCircleRB.h"
+#include "FallingCircle.h"
 
 void PCFallingCircle::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
-	auto& fallingCircle = reinterpret_cast<FallingCircleRB&>(gameObject);
+	auto& fallingCircle = reinterpret_cast<FallingCircle&>(gameObject);
 
 }

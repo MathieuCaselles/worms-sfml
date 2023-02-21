@@ -1,7 +1,8 @@
 #pragma once
 
-#include "IRigidBody.h"
-#include "Game/GameObjects/RigidBodies/Terrain/TerrainRB.h"
+#include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
+
+#include "Game/Physics/RigidBodies/IRigidBody.h"
 #include "RigidBodies/CircleRigidBody.h"
 #include "RigidBodies/BoxRigidBody.h"
 #include "RigidBodies/TerrainRigidBody.h"
@@ -43,7 +44,7 @@ struct CollisionHandler<CircleRigidBody, TerrainRigidBody>
 	void operator()(CircleRigidBody* rbA, TerrainRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
 		CollisionUtils::circleAboveMultiLines(
-			rbB->getTerrain().getFloorEdges(), 
+			rbB->getEdges(),
 			rbA->getPosition(), rbA->getRadius(),
 			outHitResult);
 	}

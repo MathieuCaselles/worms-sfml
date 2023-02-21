@@ -10,14 +10,14 @@
 
 constexpr float TERRAIN_DEBUG_MOUSE_RADIUS = 20;
 
-class TerrainRB : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
+class Terrain : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
 			      public TerrainRigidBody
 {
 	friend GCTerrain;
 	friend PCTerrain;
 
 public:
-	TerrainRB(const PhysicsProperties& physicsProperties);
+	Terrain(const PhysicsProperties& physicsProperties);
 	void onBeginPlay(Engine::IScene& scene) override;
 
 	void generateTerrain(const sf::Vector2f& windowSize);

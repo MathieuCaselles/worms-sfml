@@ -3,7 +3,7 @@
 #include "Engine/GameObject/GameObject.h"
 
 #include "Game/Components/GraphicsComponents/GCVoid.h"
-#include "Game/Physics/PCPhysicsWorld.h"
+#include "PCPhysicsWorld.h"
 #include "Game/Components/InputComponents/ICVoid.h"
 
 class IRigidBody;

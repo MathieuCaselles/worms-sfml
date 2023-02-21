@@ -3,11 +3,10 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
-#include "Game/GameObjects/RigidBodies/FallingBox/FallingBoxRB.h"
-#include "Game/GameObjects/RigidBodies/FallingCircle/FallingCircleRB.h"
-#include "Game/GameObjects/RigidBodies/Terrain/TerrainRB.h"
-
-#include "Game/Physics/PhysicsWorld.h"
+class PhysicsWorld;
+class Terrain;
+class FallingBox;
+class FallingCircle;
 
 class MainGameScene : public Engine::IScene
 {
@@ -21,13 +20,13 @@ public:
 
 private:
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
-    std::unique_ptr<FallingCircleRB> m_fallingCircleOrange;
-    std::unique_ptr<FallingCircleRB> m_fallingCircleRed;
-    std::unique_ptr<FallingBoxRB> m_fallingBoxOrange;
-    std::unique_ptr<FallingBoxRB> m_fallingBoxRed;
+    std::unique_ptr<FallingCircle> m_fallingCircleOrange;
+    std::unique_ptr<FallingCircle> m_fallingCircleRed;
+    std::unique_ptr<FallingBox> m_fallingBoxOrange;
+    std::unique_ptr<FallingBox> m_fallingBoxRed;
 
     sf::RectangleShape m_background;
-    std::unique_ptr<TerrainRB> m_terrain;
+    std::unique_ptr<Terrain> m_terrain;
 
     // ---- Debug shapes
     sf::CircleShape m_circleMousePos;

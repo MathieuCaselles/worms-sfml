@@ -3,7 +3,12 @@
 #include "Engine/Game/Game.h"
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
-#include "Game/GameObjects/RigidBodies/Terrain/TerrainRB.h"
+
+#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBox.h"
+#include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
+#include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
+
+#include "Game/GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h"
 
 MainGameScene::MainGameScene()
 {
@@ -25,10 +30,10 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	m_fallingCircleOrange = std::make_unique<FallingCircleRB>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 300));
-	m_fallingCircleRed = std::make_unique<FallingCircleRB>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(820, 590));
-	m_fallingBoxOrange = std::make_unique<FallingBoxRB>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(770, 620), 10);
-	m_fallingBoxRed = std::make_unique<FallingBoxRB>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin + 40, 300), -20);
+	m_fallingCircleOrange = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 300));
+	m_fallingCircleRed = std::make_unique<FallingCircle>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(820, 590));
+	m_fallingBoxOrange = std::make_unique<FallingBox>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(770, 620), 10);
+	m_fallingBoxRed = std::make_unique<FallingBox>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin + 40, 300), -20);
 
 	m_fallingCircleOrange->setVelocity(PhysicsWorld::GRAVITY * 9.f);
 	m_fallingCircleRed->setVelocity   (sf::Vector2f(0.f, 0.f));
@@ -37,7 +42,7 @@ MainGameScene::MainGameScene()
 
 	// ---- Terrain and physics world
 	const PhysicsProperties terrainPhysicsProperties{ 7.1f, 0.5f, true };
-	m_terrain = std::make_unique<TerrainRB>(terrainPhysicsProperties);
+	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld = std::make_unique<PhysicsWorld>();
 

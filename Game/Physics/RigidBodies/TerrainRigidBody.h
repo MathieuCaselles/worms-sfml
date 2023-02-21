@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Game/Physics/IRigidBody.h"
-#include "SFML/Graphics/CircleShape.hpp"
+#include <vector>
 
-class TerrainRB;
+#include "Game/Physics/RigidBodies/IRigidBody.h"
+
+class Terrain;
+struct PhysicsProperties;
 
 class TerrainRigidBody : public IRigidBody
 {
@@ -11,13 +13,12 @@ public:
 	DECLARE_RTTI(TerrainRigidBody, IRigidBody)
 
 public:
-	TerrainRigidBody(TerrainRB& terrain, const PhysicsProperties& properties);
+	TerrainRigidBody(Terrain& terrain, const PhysicsProperties& properties);
 	~TerrainRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
-
-	[[nodiscard]] const TerrainRB& getTerrain() const { return m_terrain; }
+	const std::vector<sf::Vector2f>& getEdges() const;
 
 private:
-	TerrainRB& m_terrain;
+	Terrain& m_terrain;
 };
