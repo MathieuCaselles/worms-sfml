@@ -5,23 +5,28 @@
 
 bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult)
 {
-	sf::Vector2f impactPoint;
+	outHitResult.normal = { };
+
+	sf::Vector2f lineToCircleImpactPoint;
 
 	for (int i = 0; i < static_cast<int>(allPoints.size()) - 1; ++i)
 	{
-		if (lineToCircle(allPoints[i].x, allPoints[i].y, allPoints[i + 1].x, allPoints[i + 1].y, circlePos.x, circlePos.y, circleRadius, impactPoint))
+		if (lineToCircle(allPoints[i].x, allPoints[i].y, allPoints[i + 1].x, allPoints[i + 1].y, circlePos.x, circlePos.y, circleRadius, lineToCircleImpactPoint))
 		{
 			const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(allPoints[i + 1].x, allPoints[i + 1].y), sf::Vector2f(allPoints[i].x, allPoints[i].y));
 
-			outHitResult.hasHit = true;
-			outHitResult.impactPoint = impactPoint;
-			outHitResult.normal = VectorUtils::Normalize(VectorUtils::GetNormal(hitLine));
+			if(!outHitResult.hasHit)
+			{
+				outHitResult.hasHit = true;
+				outHitResult.impactPoint = lineToCircleImpactPoint;
+			}
 
-			return true;
+			outHitResult.normal += -VectorUtils::Normalize(VectorUtils::GetNormal(hitLine)); // Making the sum of all the normal that circle has hit.
+			outHitResult.depth = std::max(circleRadius - VectorUtils::Distance(circlePos, lineToCircleImpactPoint), outHitResult.depth);
 		}
 	}
 
-	return false;
+	return outHitResult.hasHit;
 }
 
 // Polygons to...
@@ -189,10 +194,9 @@ bool CollisionUtils::lineToPoint(float x1, float y1, float x2, float y2, float p
 	const float d1 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x1, y1));
 	const float d2 = VectorUtils::Distance(sf::Vector2f(px, py), sf::Vector2f(x2, y2));
 
-	const float lineLength = VectorUtils::DistanceSqr(sf::Vector2f(x1, y1), sf::Vector2f(x2, y2));
+	const float lineLength = VectorUtils::Distance(sf::Vector2f(x1, y1), sf::Vector2f(x2, y2));
 
 	float d1Andd2 = d1 + d2;
-	d1Andd2 *= d1Andd2;
 
 	return d1Andd2 >= lineLength - incertitude && d1Andd2 <= lineLength + incertitude;
 }
@@ -209,7 +213,7 @@ bool CollisionUtils::lineToCircle(float x1, float y1, float x2, float y2, float 
 	const float closestX = x1 + (dot * (x2 - x1));
 	const float closestY = y1 + (dot * (y2 - y1));
 
-	if (!lineToPoint(x1, y1, x2, y2, closestX, closestY)) return false;
+	if (!lineToPoint(x1, y1, x2, y2, closestX, closestY, cR)) return false;
 
 	if (pointToCircle(closestX, closestY, cX, cY, cR))
 	{

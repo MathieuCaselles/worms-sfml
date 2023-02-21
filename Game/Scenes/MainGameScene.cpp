@@ -25,12 +25,12 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	m_fallingCircleOrange = std::make_unique<FallingCircleRB>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin, 0));
-	m_fallingCircleRed = std::make_unique<FallingCircleRB>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin - 20, 200));
-	m_fallingBoxOrange = std::make_unique<FallingBoxRB>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin + 20, 100));
+	m_fallingCircleOrange = std::make_unique<FallingCircleRB>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 300));
+	m_fallingCircleRed = std::make_unique<FallingCircleRB>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(820, 590));
+	m_fallingBoxOrange = std::make_unique<FallingBoxRB>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(770, 620), 10);
 	m_fallingBoxRed = std::make_unique<FallingBoxRB>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin + 40, 300), -20);
 
-	m_fallingCircleOrange->setVelocity(PhysicsWorld::GRAVITY * 7.f);
+	m_fallingCircleOrange->setVelocity(PhysicsWorld::GRAVITY * 9.f);
 	m_fallingCircleRed->setVelocity   (sf::Vector2f(0.f, 0.f));
 	m_fallingBoxOrange->setVelocity	  (sf::Vector2f(0.f, 0.f));
 	m_fallingBoxRed->setVelocity	  (sf::Vector2f(0.f, 0.f));

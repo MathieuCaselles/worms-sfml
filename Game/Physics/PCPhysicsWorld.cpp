@@ -13,10 +13,7 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 	// -------- Update movements
 	for (const auto& rb : world.m_rigidBodies)
 	{
-		if(!rb->getProperties().m_isStatic)
-		{
-			rb->step(deltaTime);
-		}
+		rb->step(deltaTime);
 	}
 
 	// -------- Update collisions
@@ -40,7 +37,15 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 
 bool PCPhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& hitResult)
 {
-	tryWorldCollisionExternalDispatcher(rbA, rbB, hitResult);
+	if(rbA->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
+	{
+		MakeCollision<CircleRigidBody>()(reinterpret_cast<CircleRigidBody*>(rbA), rbB, hitResult);
+	}
+	else if(rbA->getInstanceRTTI() == BoxRigidBody::getClassRTTI())
+	{
+		MakeCollision<BoxRigidBody>()(reinterpret_cast<BoxRigidBody*>(rbA), rbB, hitResult);
+	}
+
 
 	return hitResult.hasHit;
 }

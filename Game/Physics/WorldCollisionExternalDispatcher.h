@@ -93,11 +93,11 @@ struct CollisionHandler<TerrainRigidBody, TerrainRigidBody>
 	}
 };
 
-template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename RigidBodyTypeList>
+template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename LeftRB, typename RigidBodyTypeList>
 class WorldCollisionExternalDispatcher {};
 
-template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename... AllRigidBodiesTypes>
-class WorldCollisionExternalDispatcher<FnToDispatch, TypeList<AllRigidBodiesTypes...> >
+template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename LeftRB, typename... AllRigidBodiesTypes>
+class WorldCollisionExternalDispatcher<FnToDispatch, LeftRB, TypeList<AllRigidBodiesTypes...>>
 {
 public:
     template<typename RigidBodyTypeA, typename RigidBodyTypeB>
@@ -112,13 +112,32 @@ public:
 
     void operator()(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
     {
-        (invokeIfRequired<AllRigidBodiesTypes, AllRigidBodiesTypes>(rbA, rbB, outHitResult), ...);
+        (invokeIfRequired<LeftRB, AllRigidBodiesTypes>(rbA, rbB, outHitResult), ...);
     }
 };
 
 using AllColisionnableRBs = TypeList<CircleRigidBody, BoxRigidBody, TerrainRigidBody>;
 
-inline void tryWorldCollisionExternalDispatcher(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
+template<typename RigidBodyType>
+struct MakeCollision
 {
-    WorldCollisionExternalDispatcher<CollisionHandler, AllColisionnableRBs>()(rbA, rbB, outHitResult);
-}
+	void operator()(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult) { }
+};
+
+template<>
+struct MakeCollision<CircleRigidBody>
+{
+	void operator()(CircleRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
+	{
+		WorldCollisionExternalDispatcher<CollisionHandler, CircleRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
+	}
+};
+
+template<>
+struct MakeCollision<BoxRigidBody>
+{
+	void operator()(BoxRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
+	{
+		WorldCollisionExternalDispatcher<CollisionHandler, BoxRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
+	}
+};
