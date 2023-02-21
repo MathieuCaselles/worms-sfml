@@ -13,8 +13,7 @@
 MainGameScene::MainGameScene()
 {
 	// ---- Moving entities
-	const PhysicsProperties basicPhysicsProperties{ 7.1f, 0.5f };
-	constexpr float rbObjectsXOrigin = 500.f;
+	const PhysicsProperties basicPhysicsProperties{ 1.3f, 0.5f };
 
 	sf::CircleShape defaultCircleShape;
 	defaultCircleShape.setRadius(20);
@@ -30,15 +29,10 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	m_fallingCircleOrange = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 300));
-	m_fallingCircleRed = std::make_unique<FallingCircle>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(820, 590));
-	m_fallingBoxOrange = std::make_unique<FallingBox>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(770, 620), 10);
-	m_fallingBoxRed = std::make_unique<FallingBox>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(rbObjectsXOrigin + 40, 300), -20);
-
-	m_fallingCircleOrange->setVelocity(PhysicsWorld::GRAVITY * 9.f);
-	m_fallingCircleRed->setVelocity   (sf::Vector2f(0.f, 0.f));
-	m_fallingBoxOrange->setVelocity	  (sf::Vector2f(0.f, 0.f));
-	m_fallingBoxRed->setVelocity	  (sf::Vector2f(0.f, 0.f));
+	m_fallingCircleOrange = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
+	m_fallingCircleRed = std::make_unique<FallingCircle>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 300));
+	m_fallingBoxOrange = std::make_unique<FallingBox>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(600, 400), 10);
+	m_fallingBoxRed = std::make_unique<FallingBox>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
 
 	// ---- Terrain and physics world
 	const PhysicsProperties terrainPhysicsProperties{ 7.1f, 0.5f, true };
@@ -154,6 +148,9 @@ void MainGameScene::update(const float& deltaTime)
 	{
 		std::cout << VectorUtils::ToString(ccHitResult.normal) << std::endl;
 	}
+
+	// Physics
+	m_fallingCircleOrange->addForce(PhysicsWorld::GRAVITY * 50.f);
 }
 
 void MainGameScene::render()

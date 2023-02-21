@@ -16,6 +16,7 @@ public:
 	~BoxRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
+	void updateMass() override;
 
 	[[nodiscard]] std::vector<sf::Vector2f> getTransformRectPoints() const;
 

@@ -5,6 +5,7 @@
 
 #include "Game/Physics/RigidBodies/IRigidBody.h"
 #include "PhysicsWorld.h"
+#include "Engine/Utility/VectorUtils.h"
 
 void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
@@ -17,19 +18,31 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 	}
 
 	// -------- Update collisions
-	for (int i = 0; i < static_cast<int>(world.m_rigidBodies.size()) - 1; ++i)
+	for (int a = 0; a < static_cast<int>(world.m_rigidBodies.size()) - 1; ++a)
 	{
-		const auto currentRb = world.m_rigidBodies[i];
+		const auto rbA = world.m_rigidBodies[a];
 
-		for (int j = i + 1; j < static_cast<int>(world.m_rigidBodies.size()); ++j)
+		for (int b = a + 1; b < static_cast<int>(world.m_rigidBodies.size()); ++b)
 		{
-			const auto otherRb = world.m_rigidBodies[j];
+			const auto rbB = world.m_rigidBodies[b];
 
 			CollisionUtils::HitResult hitResult;
-			if (collide(currentRb, otherRb, hitResult))
+			if (collide(rbA, rbB, hitResult))
 			{
-				currentRb->addForce(hitResult.normal * hitResult.depth / 2.f);
-				otherRb->addForce(-hitResult.normal * hitResult.depth / 2.f);
+				// Move bodies apart
+				rbA->translate(hitResult.normal * hitResult.depth / 2.f);
+				rbB->translate(-hitResult.normal * hitResult.depth / 2.f);
+
+				// Change velocity due to the collision
+				sf::Vector2f relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
+
+				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);
+
+				const auto j = -(1.f + e) * VectorUtils::Dot(relativeVelocity, hitResult.normal) /
+							  (1.f / rbA->getProperties().m_mass) + (1.f / rbB->getProperties().m_mass);
+
+				rbA->setVelocity(rbA->getVelocity() - (j / rbA->getProperties().m_mass * hitResult.normal));
+				rbB->setVelocity(rbB->getVelocity() + (j / rbB->getProperties().m_mass * hitResult.normal));
 			}
 		}
 	}

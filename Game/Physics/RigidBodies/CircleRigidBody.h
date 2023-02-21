@@ -16,6 +16,7 @@ public:
 	~CircleRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
+	void updateMass() override;
 
 	[[nodiscard]] float getRadius() const { return m_circleShape.getRadius(); }
 

@@ -6,8 +6,8 @@ FallingCircle::FallingCircle()
 	: FallingCircle(sf::CircleShape(), {})
 { }
 
-FallingCircle::FallingCircle(sf::CircleShape circleShape, const PhysicsProperties& properties)
-	: FallingCircle(std::move(circleShape), properties, circleShape.getPosition(), circleShape.getRotation())
+FallingCircle::FallingCircle(const sf::CircleShape& circleShape, const PhysicsProperties& properties)
+	: FallingCircle(circleShape, properties, circleShape.getPosition(), circleShape.getRotation())
 
 { }
 
@@ -16,6 +16,8 @@ FallingCircle::FallingCircle(sf::CircleShape circleShape, const PhysicsPropertie
 	CircleRigidBody(m_circleShape, properties),
 	m_circleShape(std::move(circleShape))
 {
+	CircleRigidBody::updateMass();
+
 	m_rbPosition = initialPosition;
 	m_rbRotation = initialRotation;
 

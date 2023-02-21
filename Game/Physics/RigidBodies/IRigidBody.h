@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "SFML/System/Vector2.hpp"
 
 #include "Game/Physics/PhysicsProperties.h"
@@ -15,22 +17,25 @@ public:
 
 	virtual void step(const float& deltaTime);
 
+	void addForce(const sf::Vector2f& force)
+	{
+		// a = F / m
+		m_forces.push_back(force / m_rbProperties.m_mass);
+	}
+
+	virtual void updateMass() { };
+
+	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
+
+	void translate(const sf::Vector2f& movementVector) { m_rbPosition += movementVector;  }
+	sf::Vector2f getPosition() const { return m_rbPosition; }
+	sf::Vector2f getVelocity() const { return m_rbVelocity; }
+	PhysicsProperties getProperties() const { return m_rbProperties; }
+
 	bool operator==(const IRigidBody& other) const
 	{
 		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
-
-	void addForce(const sf::Vector2f& movement)
-	{
-		if(!m_rbProperties.m_isStatic)
-			m_rbPosition += movement;
-	}
-
-	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
-
-	sf::Vector2f getPosition() const { return m_rbPosition; }
-	sf::Vector2f getVelocity() const { return m_rbVelocity; }
-	PhysicsProperties getProperties() const { return m_rbProperties; }
 
 protected:
 	explicit IRigidBody(const PhysicsProperties& properties);
@@ -40,6 +45,8 @@ protected:
 
 	float m_rbRotation { 0.f };
 	float m_rbAngularVelocity { 0.f };
+
+	std::list<sf::Vector2f> m_forces;
 
 	PhysicsProperties m_rbProperties;
 };

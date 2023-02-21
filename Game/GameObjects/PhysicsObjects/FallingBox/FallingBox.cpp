@@ -13,6 +13,8 @@ FallingBox::FallingBox(sf::RectangleShape rectangleShape, const PhysicsPropertie
 		BoxRigidBody(m_rectangleShape, properties),
 		m_rectangleShape(std::move(rectangleShape))
 {
+	BoxRigidBody::updateMass();
+
 	m_rbPosition = initialPosition;
 	m_rbRotation = initialRotation;
 
