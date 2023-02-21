@@ -8,6 +8,7 @@ bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allP
 	outHitResult.normal = { };
 
 	sf::Vector2f lineToCircleImpactPoint;
+	int numCollision = 0;
 
 	for (int i = 0; i < static_cast<int>(allPoints.size()) - 1; ++i)
 	{
@@ -18,14 +19,17 @@ bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allP
 			if(!outHitResult.hasHit)
 			{
 				outHitResult.hasHit = true;
-				outHitResult.impactPoint = lineToCircleImpactPoint;
 			}
 
+			outHitResult.impactPoint += lineToCircleImpactPoint;
 			outHitResult.normal += -VectorUtils::Normalize(VectorUtils::GetNormal(hitLine)); // Making the sum of all the normal that circle has hit.
 			outHitResult.depth = std::max(circleRadius - VectorUtils::Distance(circlePos, lineToCircleImpactPoint), outHitResult.depth);
+			numCollision++;
 		}
 	}
 
+	outHitResult.normal /= static_cast<float>(numCollision);
+	outHitResult.impactPoint /= static_cast<float>(numCollision);
 	return outHitResult.hasHit;
 }
 

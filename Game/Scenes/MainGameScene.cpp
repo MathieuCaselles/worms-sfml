@@ -150,7 +150,7 @@ void MainGameScene::update(const float& deltaTime)
 	}
 
 	// Physics
-	m_fallingCircleOrange->addForce(PhysicsWorld::GRAVITY * 50.f);
+	m_fallingCircleOrange->addForce(PhysicsWorld::GRAVITY * 100.f);
 }
 
 void MainGameScene::render()

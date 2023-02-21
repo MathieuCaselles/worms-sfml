@@ -16,6 +16,8 @@ void BoxRigidBody::updateMass()
 {
 	const float surfaceArea = m_rectangleShape.getSize().x * m_rectangleShape.getSize().y;
 	m_rbProperties.m_mass = surfaceArea * m_rbProperties.m_density;
+
+	IRigidBody::updateMass();
 }
 
 std::vector<sf::Vector2f> BoxRigidBody::getTransformRectPoints() const

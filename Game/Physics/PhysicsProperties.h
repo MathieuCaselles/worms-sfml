@@ -16,6 +16,7 @@ public:
 
 	float m_density{ 0.f };
 	float m_mass{ 0.f };
+	float m_invMass{ 0.f };
 	float m_bounciness{ 0.f };
 
 	bool m_isStatic{ false };

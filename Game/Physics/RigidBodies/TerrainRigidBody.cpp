@@ -11,6 +11,11 @@ void TerrainRigidBody::step(const float& deltaTime)
 	IRigidBody::step(deltaTime);
 }
 
+void TerrainRigidBody::updateMass()
+{
+	IRigidBody::updateMass();
+}
+
 const std::vector<sf::Vector2f>& TerrainRigidBody::getEdges() const
 {
 	return m_terrain.getFloorEdges(); 

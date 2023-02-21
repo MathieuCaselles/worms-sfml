@@ -17,6 +17,7 @@ public:
 	~TerrainRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
+	void updateMass() override;
 	const std::vector<sf::Vector2f>& getEdges() const;
 
 private:

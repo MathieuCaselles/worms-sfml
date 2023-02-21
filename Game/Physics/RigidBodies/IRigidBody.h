@@ -14,20 +14,14 @@ public:
 
 public:
 	virtual ~IRigidBody() = default;
-
 	virtual void step(const float& deltaTime);
+	virtual void updateMass();
 
-	void addForce(const sf::Vector2f& force)
-	{
-		// a = F / m
-		m_forces.push_back(force / m_rbProperties.m_mass);
-	}
-
-	virtual void updateMass() { };
+	void addForce(const sf::Vector2f& force);
+	void translate(const sf::Vector2f& movementVector);
 
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 
-	void translate(const sf::Vector2f& movementVector) { m_rbPosition += movementVector;  }
 	sf::Vector2f getPosition() const { return m_rbPosition; }
 	sf::Vector2f getVelocity() const { return m_rbVelocity; }
 	PhysicsProperties getProperties() const { return m_rbProperties; }

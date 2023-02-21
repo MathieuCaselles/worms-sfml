@@ -26,6 +26,9 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 		{
 			const auto rbB = world.m_rigidBodies[b];
 
+			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic)
+				continue;
+
 			CollisionUtils::HitResult hitResult;
 			if (collide(rbA, rbB, hitResult))
 			{
@@ -36,13 +39,18 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 				// Change velocity due to the collision
 				sf::Vector2f relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
 
+				if (VectorUtils::Dot(relativeVelocity, hitResult.normal) < 0.f) // Check if bodies are not already moving appart
+					continue;
+
 				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);
 
 				const auto j = -(1.f + e) * VectorUtils::Dot(relativeVelocity, hitResult.normal) /
-							  (1.f / rbA->getProperties().m_mass) + (1.f / rbB->getProperties().m_mass);
+							  rbA->getProperties().m_invMass + rbB->getProperties().m_invMass;
 
-				rbA->setVelocity(rbA->getVelocity() - (j / rbA->getProperties().m_mass * hitResult.normal));
-				rbB->setVelocity(rbB->getVelocity() + (j / rbB->getProperties().m_mass * hitResult.normal));
+				const auto impulse = j * hitResult.normal;
+
+				rbA->setVelocity(rbA->getVelocity() - impulse * rbA->getProperties().m_invMass);
+				rbB->setVelocity(rbB->getVelocity() + impulse * rbB->getProperties().m_invMass);
 			}
 		}
 	}

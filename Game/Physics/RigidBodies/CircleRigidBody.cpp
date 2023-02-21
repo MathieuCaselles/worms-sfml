@@ -19,4 +19,6 @@ void CircleRigidBody::updateMass()
 {
 	const float surfaceArea = m_circleShape.getRadius() * m_circleShape.getRadius() * MathUtils::PI;
 	m_rbProperties.m_mass = surfaceArea * m_rbProperties.m_density;
+
+	IRigidBody::updateMass();
 }
