@@ -26,6 +26,9 @@ public:
 	}
 
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
+
+	sf::Vector2f getPosition() const { return m_rbPosition; }
+	sf::Vector2f getVelocity() const { return m_rbVelocity; }
 	PhysicsProperties getProperties() const { return m_rbProperties; }
 
 protected:

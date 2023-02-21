@@ -16,4 +16,7 @@ CircleRigidBody::CircleRigidBody(sf::CircleShape& circleShape, const PhysicsProp
 void CircleRigidBody::step(const float& deltaTime)
 {
 	IRigidBody::step(deltaTime);
+
+	m_circleShape.setPosition(m_rbPosition);
+	m_circleShape.setRotation(m_rbRotation);
 }

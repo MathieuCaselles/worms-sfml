@@ -14,9 +14,11 @@ BoxRigidBody::BoxRigidBody(sf::RectangleShape& rectangleShape, const PhysicsProp
 void BoxRigidBody::step(const float& deltaTime)
 {
 	IRigidBody::step(deltaTime);
+
+	m_rectangleShape.setPosition(m_rbPosition);
 }
 
-std::vector<sf::Vector2f> BoxRigidBody::getRectPoints() const
+std::vector<sf::Vector2f> BoxRigidBody::getTransformRectPoints() const
 {
 	std::vector<sf::Vector2f> vectorResult;
 

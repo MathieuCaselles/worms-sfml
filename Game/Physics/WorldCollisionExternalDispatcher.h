@@ -19,8 +19,8 @@ struct CollisionHandler<CircleRigidBody, CircleRigidBody>
     void operator()(CircleRigidBody* rbA, CircleRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
     {
 		CollisionUtils::circleToCircle(
-			rbA->getCircleShape().getPosition(), rbA->getCircleShape().getRadius(),
-			rbB->getCircleShape().getPosition(), rbB->getCircleShape().getRadius(), 
+			rbA->getPosition(), rbA->getRadius(),
+			rbB->getPosition(), rbB->getRadius(), 
 			outHitResult);
     }
 };
@@ -31,8 +31,8 @@ struct CollisionHandler<CircleRigidBody, BoxRigidBody>
 	void operator()(CircleRigidBody* rbA, BoxRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
 		CollisionUtils::circleToPolygon(
-			rbA->getCircleShape().getPosition(), rbA->getCircleShape().getRadius(),
-			rbB->getRectPoints(),
+			rbA->getPosition(), rbA->getRadius(),
+			rbB->getTransformRectPoints(),
 			outHitResult);
 	}
 };
@@ -44,7 +44,7 @@ struct CollisionHandler<CircleRigidBody, TerrainRigidBody>
 	{
 		CollisionUtils::circleAboveMultiLines(
 			rbB->getTerrain().getFloorEdges(), 
-			rbA->getCircleShape().getPosition(), rbA->getCircleShape().getRadius(),
+			rbA->getPosition(), rbA->getRadius(),
 			outHitResult);
 	}
 };
@@ -56,8 +56,8 @@ struct CollisionHandler<BoxRigidBody, CircleRigidBody>
 	void operator()(BoxRigidBody* rbA, CircleRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
 		CollisionUtils::polygonToCircle(
-			rbA->getRectPoints(),
-			rbB->getCircleShape().getPosition(), rbB->getCircleShape().getRadius(),
+			rbA->getTransformRectPoints(),
+			rbB->getPosition(), rbB->getRadius(),
 			outHitResult);
 	}
 };
@@ -68,8 +68,8 @@ struct CollisionHandler<BoxRigidBody, BoxRigidBody>
 	void operator()(BoxRigidBody* rbA, BoxRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
 		CollisionUtils::polygonToPolygon(
-			rbA->getRectPoints(),
-			rbB->getRectPoints(),
+			rbA->getTransformRectPoints(),
+			rbB->getTransformRectPoints(),
 			outHitResult);
 	}
 };
@@ -80,16 +80,6 @@ struct CollisionHandler<BoxRigidBody, TerrainRigidBody>
 	void operator()(BoxRigidBody* rbA, TerrainRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
 		outHitResult.hasHit = false; // TODO : Handle Box - Terrain collision
-	}
-};
-
-// --- Terrain to...
-template<>
-struct CollisionHandler<TerrainRigidBody, TerrainRigidBody>
-{
-	void operator()(TerrainRigidBody*, TerrainRigidBody*, CollisionUtils::HitResult& outHitResult) const
-	{
-		// Terrain - terrain collision not handled
 	}
 };
 

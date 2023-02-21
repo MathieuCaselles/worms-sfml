@@ -24,6 +24,8 @@ public:
 
 	~FallingCircleRB() override = default;
 
+	[[nodiscard]] const sf::CircleShape& getCircleShape() const { return m_circleShape; }
+
 private:
 	sf::CircleShape m_circleShape;
 };

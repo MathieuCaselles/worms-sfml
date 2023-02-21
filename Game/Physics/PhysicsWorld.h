@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 #include "Engine/GameObject/GameObject.h"
 
 #include "Game/Components/GraphicsComponents/GCVoid.h"

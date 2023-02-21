@@ -11,5 +11,4 @@ void PCTerrain::updateImplementation(const float& deltaTime, Engine::IGameObject
 {
 	auto& terrain = reinterpret_cast<TerrainRB&>(gameObject);
 
-	const auto mousePosition = static_cast<sf::Vector2f>(scene.getMousePositionScreen());
 }

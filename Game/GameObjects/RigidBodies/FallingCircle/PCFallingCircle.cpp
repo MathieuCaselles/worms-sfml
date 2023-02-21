@@ -6,5 +6,4 @@ void PCFallingCircle::updateImplementation(const float& deltaTime, Engine::IGame
 {
 	auto& fallingCircle = reinterpret_cast<FallingCircleRB&>(gameObject);
 
-	fallingCircle.m_circleShape.setPosition(fallingCircle.m_rbPosition);
 }

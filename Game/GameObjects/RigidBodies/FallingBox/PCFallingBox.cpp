@@ -6,5 +6,4 @@ void PCFallingBox::updateImplementation(const float& deltaTime, Engine::IGameObj
 {
 	auto& fallingBox = reinterpret_cast<FallingBoxRB&>(gameObject);
 
-	fallingBox.m_rectangleShape.setPosition(fallingBox.m_rbPosition);
 }
