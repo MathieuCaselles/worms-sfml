@@ -9,7 +9,7 @@
 
 void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
-	auto& world = reinterpret_cast<PhysicsWorld&>(gameObject);
+	const auto& world = reinterpret_cast<PhysicsWorld&>(gameObject);
 
 	// -------- Update movements
 	for (const auto& rb : world.m_rigidBodies)
@@ -26,7 +26,7 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 		{
 			const auto rbB = world.m_rigidBodies[b];
 
-			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic)
+			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic) // Static bodies will never collide
 				continue;
 
 			CollisionUtils::HitResult hitResult;
@@ -40,7 +40,7 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 					continue;
 
 				// Change velocity due to the collision
-				sf::Vector2f relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
+				const auto relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
 
 				if (VectorUtils::Dot(relativeVelocity, hitResult.normal) < 0.f) // Check if bodies are not already moving appart
 					continue;
@@ -72,7 +72,6 @@ bool PCPhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::H
 	{
 		MakeCollision<BoxRigidBody>()(reinterpret_cast<BoxRigidBody*>(rbA), rbB, hitResult);
 	}
-
 
 	return hitResult.hasHit;
 }
