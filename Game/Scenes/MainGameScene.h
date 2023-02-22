@@ -3,6 +3,8 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
+#include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
+
 class PhysicsWorld;
 class Terrain;
 class FallingBox;
@@ -19,6 +21,8 @@ public:
 	void render() override;
 
 private:
+    std::unique_ptr<ForceVolume> m_windForce;
+
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
     std::unique_ptr<FallingCircle> m_fallingCircleOrange;
     std::unique_ptr<FallingCircle> m_fallingCircleRed;
@@ -27,6 +31,8 @@ private:
 
     sf::RectangleShape m_background;
     std::unique_ptr<Terrain> m_terrain;
+
+    sf::Vector2f m_windDirection;
 
     // ---- Debug shapes
     sf::CircleShape m_circleMousePos;

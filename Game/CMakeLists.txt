@@ -46,4 +46,7 @@ target_sources(Worms PRIVATE
 
  "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.cpp"
  "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.cpp"
-)
+
+ "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.cpp" 
+ "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp" 
+ "GameObjects/PhysicsObjects/ForceVolume/BlackHoleForceVolume.h")

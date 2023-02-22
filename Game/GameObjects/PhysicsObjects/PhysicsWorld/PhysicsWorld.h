@@ -20,16 +20,11 @@ public:
 	inline static const sf::Vector2f GRAVITY{ 0, 9.81f };
 
 public:
-	PhysicsWorld() = default;
-
-	void onBeginPlay(Engine::IScene& scene) override;
-
 	void addRigidBody(IRigidBody& rb);
 	void removeRigidBody(IRigidBody& rb);
 
-	IRigidBody* getRigidBody(IRigidBody& rb);
+	[[nodiscard]] const std::vector<IRigidBody*>& getAllRigidBodies() const { return m_rigidBodies; }
 
 private:
 	std::vector<IRigidBody*> m_rigidBodies;
-
 };

@@ -8,4 +8,5 @@ public:
 	constexpr static float RAD_TO_DEG = 1.f / DEG_TO_RAD;
 
 	static int getRandomNumber(int minRangeInclusive, int maxRangeInclusive);
+	static float convertKmPerHToMS(float valueKmPerH);
 };

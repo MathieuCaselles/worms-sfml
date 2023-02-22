@@ -10,3 +10,8 @@ int MathUtils::getRandomNumber(int minRangeInclusive, int maxRangeInclusive)
 
 	return static_cast<int>(range(rng)) + 1;
 }
+
+float MathUtils::convertKmPerHToMS(const float valueKmPerH)
+{
+	return valueKmPerH * 1000.f / 3600.f;
+}

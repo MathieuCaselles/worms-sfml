@@ -18,7 +18,7 @@ public:
 
 	float m_density{ 0.f };
 	float m_mass{ 0.f };
-	float m_invMass{ 0.f };
+	float m_invMass{ 0.f }; // Used for calculations. It is equal to 1 / m_mass. If it is static, it is equal to 0.
 	float m_bounciness{ 0.f };
 
 	bool m_isStatic{ false };

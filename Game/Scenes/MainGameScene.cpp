@@ -1,6 +1,7 @@
 #include "MainGameScene.h"
 
 #include "Engine/Game/Game.h"
+#include "Engine/Utility/MathUtils.h"
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
 
@@ -13,7 +14,7 @@
 MainGameScene::MainGameScene()
 {
 	// ---- Moving entities
-	const PhysicsProperties basicPhysicsProperties{ 7.3f, 0.5f };
+	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
 
 	sf::CircleShape defaultCircleShape;
@@ -47,10 +48,14 @@ MainGameScene::MainGameScene()
 	m_physicsWorld->addRigidBody(*m_fallingBoxRed);
 	m_physicsWorld->addRigidBody(*m_terrain);
 
+	// ---- Volumes
+	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
+	m_windDirection = VectorUtils::Rotate(sf::Vector2f(5000, 0), 0);
+
 	// ---- Adding gameObjects in order
 	addGameObjects(m_physicsWorld.get());
+	addGameObjects(m_windForce.get());
 	addGameObjects(m_terrain.get());
-
 	addGameObjects(m_fallingCircleOrange.get(), m_fallingCircleRed.get(), m_fallingBoxOrange.get(), m_fallingBoxRed.get());
 }
 
@@ -106,6 +111,8 @@ void MainGameScene::onBeginPlay()
 
 void MainGameScene::update(const float& deltaTime)
 {
+	m_windForce->setForce(m_windDirection);
+
 	IScene::update(deltaTime);
 
 	// ---- Terrain hit test
