@@ -3,18 +3,18 @@
 #include "PolygonHelper.h"
 #include "VectorUtils.h"
 
-bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult)
+bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& linesPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult)
 {
 	outHitResult.normal = { };
 
 	sf::Vector2f lineToCircleImpactPoint;
 	int numCollision = 0;
 
-	for (int i = 0; i < static_cast<int>(allPoints.size()) - 1; ++i)
+	for (int i = 0; i < static_cast<int>(linesPoints.size()) - 1; ++i)
 	{
-		if (lineToCircle(allPoints[i].x, allPoints[i].y, allPoints[i + 1].x, allPoints[i + 1].y, circlePos.x, circlePos.y, circleRadius, lineToCircleImpactPoint))
+		if (lineToCircle(linesPoints[i].x, linesPoints[i].y, linesPoints[i + 1].x, linesPoints[i + 1].y, circlePos.x, circlePos.y, circleRadius, lineToCircleImpactPoint))
 		{
-			const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(allPoints[i + 1].x, allPoints[i + 1].y), sf::Vector2f(allPoints[i].x, allPoints[i].y));
+			const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(linesPoints[i].x, linesPoints[i].y), sf::Vector2f(linesPoints[i + 1].x, linesPoints[i + 1].y));
 
 			if(!outHitResult.hasHit)
 			{
@@ -22,14 +22,52 @@ bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& allP
 			}
 
 			outHitResult.impactPoint += lineToCircleImpactPoint;
-			outHitResult.normal += -VectorUtils::Normalize(VectorUtils::GetNormal(hitLine)); // Making the sum of all the normal that circle has hit.
-			outHitResult.depth = std::max(circleRadius - VectorUtils::Distance(circlePos, lineToCircleImpactPoint), outHitResult.depth);
+			outHitResult.normal += VectorUtils::GetNormal(hitLine); // Making the sum of all the normal that circle has hit.
 			numCollision++;
 		}
 	}
 
-	outHitResult.normal /= static_cast<float>(numCollision);
 	outHitResult.impactPoint /= static_cast<float>(numCollision);
+	outHitResult.normal /= static_cast<float>(numCollision);
+
+	outHitResult.depth = circleRadius - VectorUtils::Distance(circlePos, outHitResult.impactPoint);
+	outHitResult.normal = VectorUtils::Normalize(outHitResult.normal);
+
+	return outHitResult.hasHit;
+}
+
+bool CollisionUtils::polygonAboveMultilines(const std::vector<sf::Vector2f>& linesPoints, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult)
+{
+	outHitResult.normal = { };
+
+	HitResult polyLineImpactPoint;
+	int numCollision = 0;
+
+	for (int i = 0; i < static_cast<int>(linesPoints.size()) - 1; ++i)
+	{
+		for (int j = 0; j < static_cast<int>(vertices.size()) - 1; ++j)
+		{
+			if (polygonToPolygon(vertices, { linesPoints[i], linesPoints[i + 1]}, polyLineImpactPoint))
+			{
+				const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(linesPoints[i].x, linesPoints[i].y), sf::Vector2f(linesPoints[i + 1].x, linesPoints[i + 1].y));
+
+				if (!outHitResult.hasHit)
+				{
+					outHitResult.hasHit = true;
+				}
+
+				outHitResult.impactPoint += polyLineImpactPoint.impactPoint;
+				outHitResult.normal += VectorUtils::GetNormal(hitLine); // Making the sum of all the normal that circle has hit.
+				numCollision++;
+			}
+		}
+	}
+
+	outHitResult.impactPoint /= static_cast<float>(numCollision);
+	outHitResult.normal /= static_cast<float>(numCollision);
+
+	outHitResult.normal = VectorUtils::Normalize(outHitResult.normal);
+
 	return outHitResult.hasHit;
 }
 

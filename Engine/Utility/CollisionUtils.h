@@ -17,7 +17,8 @@ public:
 		float depth { 0.f };
 	};
 
-	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult);
+	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& linesPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult);
+	static bool polygonAboveMultilines(const std::vector<sf::Vector2f>& linesPoints, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult);
 
 	// Polygons to...
 	static bool polygonToPolygon(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB, HitResult& outHitResult);

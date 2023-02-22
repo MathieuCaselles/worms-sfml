@@ -80,7 +80,10 @@ struct CollisionHandler<BoxRigidBody, TerrainRigidBody>
 {
 	void operator()(BoxRigidBody* rbA, TerrainRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
 	{
-		outHitResult.hasHit = false; // TODO : Handle Box - Terrain collision
+		CollisionUtils::polygonAboveMultilines(
+			rbB->getEdges(),
+			rbA->getTransformRectPoints(),
+			outHitResult);
 	}
 };
 
