@@ -1,5 +1,7 @@
 #include "BoxRigidBody.h"
 
+#include "Game/GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h"
+
 BoxRigidBody::BoxRigidBody(sf::RectangleShape& rectangleShape, const PhysicsProperties& properties)
 	: IRigidBody(properties),
 	m_rectangleShape(rectangleShape)

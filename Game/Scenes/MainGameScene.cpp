@@ -14,6 +14,7 @@ MainGameScene::MainGameScene()
 {
 	// ---- Moving entities
 	const PhysicsProperties basicPhysicsProperties{ 7.3f, 0.5f };
+	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
 
 	sf::CircleShape defaultCircleShape;
 	defaultCircleShape.setRadius(20);
@@ -31,8 +32,8 @@ MainGameScene::MainGameScene()
 
 	m_fallingCircleOrange = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
 	m_fallingCircleRed = std::make_unique<FallingCircle>   (defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
-	m_fallingBoxOrange = std::make_unique<FallingBox>      (defaultRectShape, basicPhysicsProperties, sf::Vector2f(600, 400), 10);
-	m_fallingBoxRed = std::make_unique<FallingBox>         (defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
+	m_fallingBoxOrange = std::make_unique<FallingBox>      (defaultRectShape, playerPhysicsProperties, sf::Vector2f(600, 400), 10);
+	m_fallingBoxRed = std::make_unique<FallingBox>         (defaultRectShape, playerPhysicsProperties, sf::Vector2f(820, 500), -20);
 
 	// ---- Terrain and physics world
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };

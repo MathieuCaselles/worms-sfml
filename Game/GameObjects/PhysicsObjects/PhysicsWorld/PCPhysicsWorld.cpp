@@ -36,6 +36,9 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 				rbA->translate(hitResult.normal * hitResult.depth / 2.f);
 				rbB->translate(-hitResult.normal * hitResult.depth / 2.f);
 
+				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff) // Check if both bodies cannot bounce off from each other when colliding
+					continue;
+
 				// Change velocity due to the collision
 				sf::Vector2f relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
 
@@ -49,8 +52,11 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 
 				const auto impulse = j * hitResult.normal;
 
-				rbA->setVelocity(rbA->getVelocity() - impulse * rbA->getProperties().m_invMass);
-				rbB->setVelocity(rbB->getVelocity() + impulse * rbB->getProperties().m_invMass);
+				rbA->setVelocity(rbA->getProperties().m_canBounceOff ? 
+					rbA->getVelocity() - impulse * rbA->getProperties().m_invMass : VectorUtils::zero);
+
+				rbB->setVelocity(rbB->getProperties().m_canBounceOff ?
+					rbB->getVelocity() + impulse * rbB->getProperties().m_invMass : VectorUtils::zero);
 			}
 		}
 	}
