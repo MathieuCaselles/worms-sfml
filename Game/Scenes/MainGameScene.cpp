@@ -13,7 +13,7 @@
 MainGameScene::MainGameScene()
 {
 	// ---- Moving entities
-	const PhysicsProperties basicPhysicsProperties{ 7.3f, 0.7f };
+	const PhysicsProperties basicPhysicsProperties{ 7.3f, 0.5f };
 
 	sf::CircleShape defaultCircleShape;
 	defaultCircleShape.setRadius(20);

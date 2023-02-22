@@ -42,6 +42,10 @@ public:
 
 	static bool pointToTriangle(const sf::Vector2f& point, const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c);
 
+	// ---- Other utilities for collision
+	static float getPointLineDistanceSqr(const sf::Vector2f& point, const sf::Vector2f& linePtA, const sf::Vector2f& linePtB, sf::Vector2f& closestPoint);
+	static sf::Vector2f findPolygonPolygonContactPoint(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB);
+
 private:
 	static void projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max);
 	static void projectCircle(const sf::Vector2f& circlePos, float circleRad, const sf::Vector2f& axis, float& min, float& max);

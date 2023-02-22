@@ -16,11 +16,7 @@ bool CollisionUtils::circleAboveMultiLines(const std::vector<sf::Vector2f>& line
 		{
 			const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(linesPoints[i].x, linesPoints[i].y), sf::Vector2f(linesPoints[i + 1].x, linesPoints[i + 1].y));
 
-			if(!outHitResult.hasHit)
-			{
-				outHitResult.hasHit = true;
-			}
-
+			outHitResult.hasHit = true;
 			outHitResult.impactPoint += lineToCircleImpactPoint;
 			outHitResult.normal += VectorUtils::GetNormal(hitLine); // Making the sum of all the normal that circle has hit.
 			numCollision++;
@@ -47,27 +43,24 @@ bool CollisionUtils::polygonAboveMultilines(const std::vector<sf::Vector2f>& lin
 	{
 		for (int j = 0; j < static_cast<int>(vertices.size()) - 1; ++j)
 		{
-			if (polygonToPolygon(vertices, { linesPoints[i], linesPoints[i + 1]}, polyLineImpactPoint))
+			const auto currentLinePoints = { linesPoints[i], linesPoints[i + 1] };
+
+			if (polygonToPolygon(vertices, currentLinePoints, polyLineImpactPoint))
 			{
 				const auto hitLine = VectorUtils::GetDirectionVector(sf::Vector2f(linesPoints[i].x, linesPoints[i].y), sf::Vector2f(linesPoints[i + 1].x, linesPoints[i + 1].y));
 
-				if (!outHitResult.hasHit)
-				{
-					outHitResult.hasHit = true;
-				}
-
-				outHitResult.impactPoint += polyLineImpactPoint.impactPoint;
+				outHitResult.hasHit = true;
+				outHitResult.depth += polyLineImpactPoint.depth;
 				outHitResult.normal += VectorUtils::GetNormal(hitLine); // Making the sum of all the normal that circle has hit.
 				numCollision++;
 			}
 		}
 	}
 
-	outHitResult.impactPoint /= static_cast<float>(numCollision);
 	outHitResult.normal /= static_cast<float>(numCollision);
+	outHitResult.depth /= static_cast<float>(numCollision);
 
 	outHitResult.normal = VectorUtils::Normalize(outHitResult.normal);
-
 	return outHitResult.hasHit;
 }
 
@@ -105,8 +98,6 @@ bool CollisionUtils::polygonToPolygon(const std::vector<sf::Vector2f>& verticesA
 			}
 		}
 	}
-
-	outHitResult.depth = VectorUtils::Magnitude(outHitResult.normal);
 
 	const sf::Vector2f aToBDirection = PolygonHelper::FindArithmeticMean(verticesB) - PolygonHelper::FindArithmeticMean(verticesA);
 	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) > 0.f)
@@ -288,6 +279,51 @@ bool CollisionUtils::pointToTriangle(const sf::Vector2f& point, const sf::Vector
 	const float cross3 = VectorUtils::Cross2D(ca, cp);
 
 	return cross1 < 0.f && cross2 < 0.f && cross3 < 0.f;
+}
+
+float CollisionUtils::getPointLineDistanceSqr(const sf::Vector2f& point, const sf::Vector2f& linePtA,
+	const sf::Vector2f& linePtB, sf::Vector2f& closestPoint)
+{
+	const auto ab = linePtA - linePtB;
+	const auto ap = linePtA - point;
+
+	const auto distance = VectorUtils::Dot(ap, ab) / VectorUtils::SqrMagnitude(ab);
+
+	closestPoint =
+		distance < 0 ? linePtA :
+		distance >= 1 ? linePtB :
+		linePtA + ab * distance;
+
+	return VectorUtils::DistanceSqr(point, closestPoint);
+}
+
+sf::Vector2f CollisionUtils::findPolygonPolygonContactPoint(const std::vector<sf::Vector2f>& verticesA,
+	const std::vector<sf::Vector2f>& verticesB)
+{
+	sf::Vector2f contactResult;
+	sf::Vector2f closestPoint;
+	float minDistSqr = std::numeric_limits<float>().max();
+
+	for (int i = 0; i < static_cast<int>(verticesA.size()); ++i)
+	{
+		const auto currentPoint = verticesA[i];
+
+		for (int j = 0; j < static_cast<int>(verticesB.size()); ++j)
+		{
+			const auto vA = verticesB[j];
+			const auto vB = verticesB[(j + 1) % static_cast<int>(verticesB.size())];
+
+			float distSqr = getPointLineDistanceSqr(currentPoint, vA, vB, closestPoint);
+
+			if(distSqr < minDistSqr)
+			{
+				minDistSqr = distSqr;
+				contactResult = closestPoint;
+			}
+		}
+	}
+
+	return contactResult;
 }
 
 // ---- Private methods
