@@ -1,16 +1,19 @@
 #include "IRigidBody.h"
 
 #include "Engine/Utility/VectorUtils.h"
+#include "Game/GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h"
 
 void IRigidBody::step(const float& deltaTime)
 {
-	for (const auto& force : m_forces)
+	if (!m_rbProperties.m_isStatic)
 	{
-		m_rbVelocity += force * deltaTime;
-	}
+		m_rbVelocity += PhysicsWorld::GRAVITY * deltaTime;
 
-	if(!m_rbProperties.m_isStatic)
-	{
+		for (const auto& force : m_forces)
+		{
+			m_rbVelocity += force * deltaTime;
+		}
+
 		m_rbPosition += m_rbVelocity;
 	}
 
@@ -19,7 +22,7 @@ void IRigidBody::step(const float& deltaTime)
 
 void IRigidBody::addForce(const sf::Vector2f& force)
 {
-	m_forces.push_back(force / m_rbProperties.m_mass); // a = F / m
+	m_forces.push_back(force * m_rbProperties.m_invMass); // a = F / m
 }
 
 void IRigidBody::updateMass()

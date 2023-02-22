@@ -45,7 +45,7 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);
 
 				const auto j = -(1.f + e) * VectorUtils::Dot(relativeVelocity, hitResult.normal) /
-							  rbA->getProperties().m_invMass + rbB->getProperties().m_invMass;
+							  (rbA->getProperties().m_invMass + rbB->getProperties().m_invMass);
 
 				const auto impulse = j * hitResult.normal;
 
