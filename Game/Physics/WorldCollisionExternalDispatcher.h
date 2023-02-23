@@ -125,7 +125,7 @@ public:
 template<typename RigidBodyType>
 struct MakeCollision
 {
-	void operator()(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult) { }
+	void operator()(IRigidBody*, IRigidBody*, CollisionUtils::HitResult&) { }
 };
 
 template<>
