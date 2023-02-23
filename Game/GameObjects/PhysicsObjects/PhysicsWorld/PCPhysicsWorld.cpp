@@ -32,17 +32,22 @@ void PCPhysicsWorld::updateImplementation(const float& deltaTime, Engine::IGameO
 			CollisionUtils::HitResult hitResult;
 			if (collide(rbA, rbB, hitResult))
 			{
-				// Move bodies apart
+				/**
+				 * Move bodies apart
+				 * TODO : An object with m_canBounceOff = false will slide on surfaces, due to this calculation. If we don't the object falls.
+				 */
 				rbA->translate(hitResult.normal * hitResult.depth / 2.f);
 				rbB->translate(-hitResult.normal * hitResult.depth / 2.f);
 
-				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff) // Check if both bodies cannot bounce off from each other when colliding
+				// Check if both bodies cannot bounce off from each other when colliding
+				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff) 
 					continue;
 
 				// Change velocity due to the collision
 				const auto relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
 
-				if (VectorUtils::Dot(relativeVelocity, hitResult.normal) < 0.f) // Check if bodies are not already moving appart
+				// Check if bodies are not already moving appart
+				if (VectorUtils::Dot(relativeVelocity, hitResult.normal) < 0.f) 
 					continue;
 
 				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);

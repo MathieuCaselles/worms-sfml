@@ -7,8 +7,19 @@
 #include "RigidBodies/BoxRigidBody.h"
 #include "RigidBodies/TerrainRigidBody.h"
 
+/**
+ * External dispatcher pattern, deriving from the insane RTTI.
+ *
+ * WorldCollisionExternalDispatcher will check the two Rigid-Bodies type and will call the right
+ * CollisionHandler to solve the collision, depending of the two Rigid-Bodies type.
+ *
+ * To use all of this system, you can call MakeCollision<RigidBodyType>. For now, only working with CircleRigidBody and BoxRigidBodies.
+ */
+
 template<typename... Tl>
 struct TypeList {};
+
+using AllColisionnableRBs = TypeList<CircleRigidBody, BoxRigidBody, TerrainRigidBody>;
 
 template<typename RigidBodyTypeA, typename RigidBodyTypeB>
 struct CollisionHandler;
@@ -109,8 +120,6 @@ public:
         (invokeIfRequired<LeftRB, AllRigidBodiesTypes>(rbA, rbB, outHitResult), ...);
     }
 };
-
-using AllColisionnableRBs = TypeList<CircleRigidBody, BoxRigidBody, TerrainRigidBody>;
 
 template<typename RigidBodyType>
 struct MakeCollision

@@ -99,7 +99,7 @@ bool CollisionUtils::polygonToPolygon(const std::vector<sf::Vector2f>& verticesA
 		}
 	}
 
-	const sf::Vector2f aToBDirection = PolygonHelper::FindArithmeticMean(verticesB) - PolygonHelper::FindArithmeticMean(verticesA);
+	const sf::Vector2f aToBDirection = PolygonHelper::getArithmeticMeanOfPoints(verticesB) - PolygonHelper::getArithmeticMeanOfPoints(verticesA);
 	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) > 0.f)
 	{
 		outHitResult.normal = -outHitResult.normal;
@@ -156,7 +156,7 @@ bool CollisionUtils::polygonToCircle(const std::vector<sf::Vector2f>& vertices, 
 		outHitResult.normal = closestPointAxis;
 	}
 
-	const sf::Vector2f aToBDirection = PolygonHelper::FindArithmeticMean(vertices) - circlePos;
+	const sf::Vector2f aToBDirection = PolygonHelper::getArithmeticMeanOfPoints(vertices) - circlePos;
 	if (VectorUtils::Dot(aToBDirection, outHitResult.normal) < 0.f)
 	{
 		outHitResult.normal = -outHitResult.normal;

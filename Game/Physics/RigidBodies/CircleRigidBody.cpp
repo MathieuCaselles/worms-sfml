@@ -17,7 +17,7 @@ void CircleRigidBody::step(const float& deltaTime)
 
 void CircleRigidBody::updateMass()
 {
-	const float surfaceArea = m_circleShape.getRadius() * m_circleShape.getRadius() * MathUtils::PI;
+	const float surfaceArea = m_circleShape.getRadius() * m_circleShape.getRadius() * MathUtils::PI * PHYSICS_UNIT_METER_PER_PIXEL;
 	m_rbProperties.m_mass = surfaceArea * m_rbProperties.m_density;
 
 	IRigidBody::updateMass();

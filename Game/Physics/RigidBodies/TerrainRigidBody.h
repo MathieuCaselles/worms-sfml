@@ -18,7 +18,8 @@ public:
 
 	void step(const float& deltaTime) override;
 	void updateMass() override;
-	const std::vector<sf::Vector2f>& getEdges() const;
+
+	[[nodiscard]] const std::vector<sf::Vector2f>& getEdges() const;
 
 private:
 	Terrain& m_terrain;

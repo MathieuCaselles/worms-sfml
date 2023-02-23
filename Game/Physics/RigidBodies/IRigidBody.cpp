@@ -7,7 +7,7 @@ void IRigidBody::step(const float& deltaTime)
 {
 	if (!m_rbProperties.m_isStatic)
 	{
-		m_rbVelocity += PhysicsWorld::GRAVITY * deltaTime;
+		m_rbVelocity += PhysicsWorld::GRAVITY_FORCE * deltaTime;
 
 		for (const auto& force : m_forces)
 		{

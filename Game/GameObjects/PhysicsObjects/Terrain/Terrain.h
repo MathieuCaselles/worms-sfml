@@ -8,8 +8,6 @@
 #include "Game/Components/InputComponents/ICVoid.h"
 #include "Game/Physics/RigidBodies/TerrainRigidBody.h"
 
-constexpr float TERRAIN_DEBUG_MOUSE_RADIUS = 20;
-
 class Terrain : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
 			      public TerrainRigidBody
 {
@@ -33,7 +31,6 @@ private:
 
 	// ---- Final convex shape
 	std::vector<sf::Vector2f> m_terrainTopLines;
-	std::vector<int> m_trianglesVertices;
 	std::vector<sf::VertexArray> m_triangles;
 
 	// ---- Collision debug

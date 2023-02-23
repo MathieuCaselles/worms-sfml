@@ -16,7 +16,7 @@ void BoxRigidBody::step(const float& deltaTime)
 
 void BoxRigidBody::updateMass()
 {
-	const float surfaceArea = m_rectangleShape.getSize().x * m_rectangleShape.getSize().y;
+	const float surfaceArea = m_rectangleShape.getSize().x * m_rectangleShape.getSize().y * PHYSICS_UNIT_METER_PER_PIXEL;
 	m_rbProperties.m_mass = surfaceArea * m_rbProperties.m_density;
 
 	IRigidBody::updateMass();

@@ -13,11 +13,7 @@ class PhysicsWorld : public Engine::GameObject<PCPhysicsWorld, GCVoid, ICVoid>
 	friend PCPhysicsWorld;
 
 public:
-	// World objects density table : https://www.thoughtco.com/table-of-densities-of-common-substances-603976
-	inline static constexpr float MIN_DENSITY = 0.534f; // Lithium density
-	inline static constexpr float MAX_DENSITY = 22.6f; // Iridium density
-
-	inline static const sf::Vector2f GRAVITY{ 0, 9.81f };
+	inline static const sf::Vector2f GRAVITY_FORCE{ 0, 9.81f };
 
 public:
 	void addRigidBody(IRigidBody& rb);

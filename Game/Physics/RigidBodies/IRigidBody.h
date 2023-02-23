@@ -15,6 +15,11 @@ public:
 public:
 	virtual ~IRigidBody() = default;
 	virtual void step(const float& deltaTime);
+
+	/**
+	 * Depending of the area of the shape, you can override this method to change its mass.
+	 * The inverse mass is updated by default. Consider doing this every time you override.
+	 */
 	virtual void updateMass();
 
 	void addForce(const sf::Vector2f& force);
@@ -22,9 +27,9 @@ public:
 
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 
-	sf::Vector2f getPosition() const { return m_rbPosition; }
-	sf::Vector2f getVelocity() const { return m_rbVelocity; }
-	PhysicsProperties getProperties() const { return m_rbProperties; }
+	[[nodiscard]] sf::Vector2f getPosition() const { return m_rbPosition; }
+	[[nodiscard]] sf::Vector2f getVelocity() const { return m_rbVelocity; }
+	[[nodiscard]] PhysicsProperties getProperties() const { return m_rbProperties; }
 
 	bool operator==(const IRigidBody& other) const
 	{

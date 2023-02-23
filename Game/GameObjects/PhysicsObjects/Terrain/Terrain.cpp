@@ -51,15 +51,16 @@ void Terrain::generateTerrain(const sf::Vector2f& windowSize)
 	}
 
 	// -------- Terrain drawing
-	PolygonHelper::triangulate(allTerrainVertexPoints, m_trianglesVertices);
+	std::vector<int> triangleVertexIndexes;
+	PolygonHelper::triangulate(allTerrainVertexPoints, triangleVertexIndexes);
 
-	for (int i = 0; i < static_cast<int>(m_trianglesVertices.size()); i += 3)
+	for (int i = 0; i < static_cast<int>(triangleVertexIndexes.size()); i += 3)
 	{
 		sf::VertexArray newTriangle{ sf::Triangles, 3 };
 
-		newTriangle[0].position = allTerrainVertexPoints[m_trianglesVertices[i]];
-		newTriangle[1].position = allTerrainVertexPoints[m_trianglesVertices[i + 1]];
-		newTriangle[2].position = allTerrainVertexPoints[m_trianglesVertices[i + 2]];
+		newTriangle[0].position = allTerrainVertexPoints[triangleVertexIndexes[i]];
+		newTriangle[1].position = allTerrainVertexPoints[triangleVertexIndexes[i + 1]];
+		newTriangle[2].position = allTerrainVertexPoints[triangleVertexIndexes[i + 2]];
 
 		const sf::Color randomColor = PolygonHelper::getRandomTerrainColor();
 
