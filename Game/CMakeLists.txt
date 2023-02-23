@@ -21,6 +21,7 @@ target_sources(Worms PRIVATE
 
  "Physics/PhysicsProperties.h"
  "Physics/WorldCollisionExternalDispatcher.h"
+ "Physics/PhysicsWorld.h" "Physics/PhysicsWorld.cpp"
 
  "Physics/RigidBodies/IRigidBody.h"       "Physics/RigidBodies/IRigidBody.cpp"
  "Physics/RigidBodies/CircleRigidBody.h"  "Physics/RigidBodies/CircleRigidBody.cpp" 
@@ -42,10 +43,7 @@ target_sources(Worms PRIVATE
 
  "GameObjects/PhysicsObjects/FallingBox/FallingBox.h" "GameObjects/PhysicsObjects/FallingBox/FallingBox.cpp"
  "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
- "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp" 
-
- "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.cpp"
- "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.h" "GameObjects/PhysicsObjects/PhysicsWorld/PCPhysicsWorld.cpp"
+ "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp"  
 
  "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.cpp" 
  "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp" 

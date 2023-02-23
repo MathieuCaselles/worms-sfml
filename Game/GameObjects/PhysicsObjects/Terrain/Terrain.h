@@ -1,15 +1,16 @@
 #pragma once
 
-#include "GCTerrain.h"
-#include "PCTerrain.h"
-
 #include "Engine/GameObject/GameObject.h"
-#include "Engine/Utility/CollisionUtils.h"
-#include "Game/Components/InputComponents/ICVoid.h"
 #include "Game/Physics/RigidBodies/TerrainRigidBody.h"
 
+#include "GCTerrain.h"
+#include "PCTerrain.h"
+#include "Game/Components/InputComponents/ICVoid.h"
+
+#include "Engine/Utility/CollisionUtils.h"
+
 class Terrain : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
-			      public TerrainRigidBody
+                public TerrainRigidBody
 {
 	friend GCTerrain;
 	friend PCTerrain;

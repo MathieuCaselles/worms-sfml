@@ -1,7 +1,7 @@
 #include "IRigidBody.h"
 
 #include "Engine/Utility/VectorUtils.h"
-#include "Game/GameObjects/PhysicsObjects/PhysicsWorld/PhysicsWorld.h"
+#include "Game/Physics/PhysicsWorld.h"
 
 void IRigidBody::step(const float& deltaTime)
 {

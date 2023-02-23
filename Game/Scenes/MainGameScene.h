@@ -3,8 +3,7 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
-#include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
-
+class ForceVolume;
 class PhysicsWorld;
 class Terrain;
 class FallingBox;
@@ -26,10 +25,10 @@ private:
 
     std::unique_ptr<Terrain> m_terrain;
 
-    std::unique_ptr<FallingCircle> m_fallingCircleOrange;
-    std::unique_ptr<FallingCircle> m_fallingCircleRed;
-    std::unique_ptr<FallingBox> m_fallingBoxOrange;
-    std::unique_ptr<FallingBox> m_fallingBoxRed;
+    std::unique_ptr<FallingCircle> m_fallingCircleOrange1;
+    std::unique_ptr<FallingCircle> m_fallingCircleOrange2;
+    std::unique_ptr<FallingBox> m_fallingBoxOrange1;
+    std::unique_ptr<FallingBox> m_fallingBoxOrange2;
 
     std::unique_ptr<ForceVolume> m_windForce;
     sf::Vector2f m_windDirection;

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Game/Physics/RigidBodies/IRigidBody.h"
-
+#include "IRigidBody.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 
 struct PhysicsProperties;
