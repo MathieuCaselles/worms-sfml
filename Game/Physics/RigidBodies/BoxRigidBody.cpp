@@ -12,6 +12,7 @@ void BoxRigidBody::step(const float& deltaTime)
 	IRigidBody::step(deltaTime);
 
 	m_rectangleShape.setPosition(m_rbPosition);
+	m_rectangleShape.setRotation(m_rbRotation);
 }
 
 void BoxRigidBody::updateMass()

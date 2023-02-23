@@ -33,9 +33,9 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineThickness(1);
 
 	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
-	m_fallingCircleOrange2    = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
+	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
 	m_fallingBoxOrange1    = std::make_unique<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
-	m_fallingBoxOrange2       = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
+	m_fallingBoxOrange2    = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
 
 	// ---- Terrain and physics world
 	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);

@@ -26,9 +26,11 @@ public:
 	void translate(const sf::Vector2f& movementVector);
 
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
+	void setAngularVelocity(float angularVelocity) { m_rbAngularVelocity = angularVelocity; }
 
 	[[nodiscard]] sf::Vector2f getPosition() const { return m_rbPosition; }
 	[[nodiscard]] sf::Vector2f getVelocity() const { return m_rbVelocity; }
+	[[nodiscard]] float getAngularVelocity() const { return m_rbAngularVelocity; }
 	[[nodiscard]] PhysicsProperties getProperties() const { return m_rbProperties; }
 
 	bool operator==(const IRigidBody& other) const

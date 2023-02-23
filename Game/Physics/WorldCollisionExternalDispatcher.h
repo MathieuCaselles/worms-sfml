@@ -13,7 +13,8 @@
  * WorldCollisionExternalDispatcher will check the two Rigid-Bodies type and will call the right
  * CollisionHandler to solve the collision, depending of the two Rigid-Bodies type.
  *
- * To use all of this system, you can call MakeCollision<RigidBodyType>. For now, only working with CircleRigidBody and BoxRigidBodies.
+ * To use all of this system, you can call MakeCollision<RigidBodyType>.
+ * For now, collision working from CircleRigidBody/BoxRigidBodies to CircleRigidBody/BoxRigidBodies/TerrainRigidBody.
  */
 
 template<typename... Tl>
