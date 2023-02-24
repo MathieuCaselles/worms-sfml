@@ -68,11 +68,11 @@ bool PhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::Hit
 {
 	if (rbA->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
 	{
-		MakeCollision<CircleRigidBody>()(static_cast<CircleRigidBody*>(rbA), rbB, hitResult);
+		MakeCollision<CircleRigidBody>()(rbA, rbB, hitResult);
 	}
 	else if (rbA->getInstanceRTTI() == BoxRigidBody::getClassRTTI())
 	{
-		MakeCollision<BoxRigidBody>()(static_cast<BoxRigidBody*>(rbA), rbB, hitResult);
+		MakeCollision<BoxRigidBody>()(rbA, rbB, hitResult);
 	}
 
 	return hitResult.hasHit;

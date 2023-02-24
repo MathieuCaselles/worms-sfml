@@ -125,23 +125,8 @@ public:
 template<typename RigidBodyType>
 struct MakeCollision
 {
-	void operator()(IRigidBody*, IRigidBody*, CollisionUtils::HitResult&) { }
-};
-
-template<>
-struct MakeCollision<CircleRigidBody>
-{
-	void operator()(CircleRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
+	void operator()(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
 	{
-		CollisionExternalDispatcher<CollisionHandler, CircleRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
-	}
-};
-
-template<>
-struct MakeCollision<BoxRigidBody>
-{
-	void operator()(BoxRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
-	{
-		CollisionExternalDispatcher<CollisionHandler, BoxRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
+		CollisionExternalDispatcher<CollisionHandler, RigidBodyType, AllColisionnableRBs>()(static_cast<RigidBodyType*>(rbA), rbB, outHitResult);
 	}
 };
