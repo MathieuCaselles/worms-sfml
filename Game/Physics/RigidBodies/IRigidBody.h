@@ -38,8 +38,28 @@ public:
 		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
+	void tryOnCollisionEnter()
+	{
+		if(!m_isCurrentlyColliding)
+		{
+			m_isCurrentlyColliding = true;
+			onCollisionEnter();
+		}
+	}
+
+	void tryOnCollisionExit()
+	{
+		if (m_isCurrentlyColliding)
+		{
+			m_isCurrentlyColliding = false;
+			onCollisionExit();
+		}
+	}
+
 protected:
 	explicit IRigidBody(const PhysicsProperties& properties);
+	virtual void onCollisionEnter() {  }
+	virtual void onCollisionExit() { }
 
 	sf::Vector2f m_rbPosition;
 	sf::Vector2f m_rbVelocity;
@@ -50,4 +70,6 @@ protected:
 	std::list<sf::Vector2f> m_forces;
 
 	PhysicsProperties m_rbProperties;
+
+	bool m_isCurrentlyColliding;
 };
