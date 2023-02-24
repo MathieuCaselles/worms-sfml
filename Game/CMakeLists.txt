@@ -20,7 +20,7 @@ target_sources(Worms PRIVATE
  "Scenes/MainGameScene.h" "Scenes/MainGameScene.cpp"
 
  "Physics/PhysicsProperties.h"
- "Physics/WorldCollisionExternalDispatcher.h"
+ "Physics/CollisionExternalDispatcher.h"
  "Physics/PhysicsWorld.h" "Physics/PhysicsWorld.cpp"
 
  "Physics/RigidBodies/IRigidBody.h"       "Physics/RigidBodies/IRigidBody.cpp"

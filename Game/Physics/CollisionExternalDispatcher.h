@@ -100,10 +100,10 @@ struct CollisionHandler<BoxRigidBody, TerrainRigidBody>
 };
 
 template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename LeftRB, typename RigidBodyTypeList>
-class WorldCollisionExternalDispatcher {};
+class CollisionExternalDispatcher {};
 
 template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename LeftRB, typename... AllRigidBodiesTypes>
-class WorldCollisionExternalDispatcher<FnToDispatch, LeftRB, TypeList<AllRigidBodiesTypes...>>
+class CollisionExternalDispatcher<FnToDispatch, LeftRB, TypeList<AllRigidBodiesTypes...>>
 {
 public:
     template<typename RigidBodyTypeA, typename RigidBodyTypeB>
@@ -133,7 +133,7 @@ struct MakeCollision<CircleRigidBody>
 {
 	void operator()(CircleRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
 	{
-		WorldCollisionExternalDispatcher<CollisionHandler, CircleRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
+		CollisionExternalDispatcher<CollisionHandler, CircleRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
 	}
 };
 
@@ -142,6 +142,6 @@ struct MakeCollision<BoxRigidBody>
 {
 	void operator()(BoxRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& outHitResult)
 	{
-		WorldCollisionExternalDispatcher<CollisionHandler, BoxRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
+		CollisionExternalDispatcher<CollisionHandler, BoxRigidBody, AllColisionnableRBs>()(rbA, rbB, outHitResult);
 	}
 };

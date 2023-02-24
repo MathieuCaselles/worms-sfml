@@ -4,7 +4,7 @@
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "Game/Physics/RigidBodies/IRigidBody.h"
-#include "Game/Physics/WorldCollisionExternalDispatcher.h"
+#include "Game/Physics/CollisionExternalDispatcher.h"
 
 void PhysicsWorld::step(const float& deltaTime) const
 {
