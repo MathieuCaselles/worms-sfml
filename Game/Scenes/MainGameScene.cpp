@@ -50,7 +50,7 @@ MainGameScene::MainGameScene()
 
 	// ---- Volumes
 	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
-	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 0));
+	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
 
 	// ---- Adding gameObjects in order
 	addGameObjects(m_windForce.get());
