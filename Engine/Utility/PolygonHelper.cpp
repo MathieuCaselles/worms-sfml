@@ -80,22 +80,22 @@ bool PolygonHelper::triangulate(const std::vector<sf::Vector2f>& vertices, std::
 	return true;
 }
 
-sf::Vector2f PolygonHelper::FindArithmeticMean(const std::vector<sf::Vector2f>& vertices)
+sf::Vector2f PolygonHelper::getArithmeticMeanOfPoints(const std::vector<sf::Vector2f>& points)
 {
-	sf::Vector2f resultVector;
+	sf::Vector2f resultPointsMean;
 
-	for (const auto& vertex : vertices)
+	for (const auto& point : points)
 	{
-		resultVector += vertex;
+		resultPointsMean += point;
 	}
 
-	return resultVector / static_cast<float>(vertices.size());
+	return resultPointsMean / static_cast<float>(points.size());
 }
 
-sf::Color  PolygonHelper::getRandomTerrainColor()
+sf::Color PolygonHelper::getRandomTerrainColor()
 {
-	const auto randomRed = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.r, GameColors::terrainRandomTriangleColorMax.r);
-	const auto randomBlue = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.g, GameColors::terrainRandomTriangleColorMin.g);
+	const auto randomRed   = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.r, GameColors::terrainRandomTriangleColorMax.r);
+	const auto randomBlue  = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.g, GameColors::terrainRandomTriangleColorMin.g);
 	const auto randomGreen = MathUtils::getRandomNumber(GameColors::terrainRandomTriangleColorMin.b, GameColors::terrainRandomTriangleColorMin.b);
 
 	return { static_cast<sf::Uint8>(randomRed), static_cast<sf::Uint8>(randomBlue), static_cast<sf::Uint8>(randomGreen) };

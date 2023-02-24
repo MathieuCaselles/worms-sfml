@@ -7,8 +7,11 @@ namespace GameColors
 	static sf::Color sky{ 130, 170, 227 };
 	static sf::Color sweetPink{ 255, 170, 194 };
 	static sf::Color nightPurple{ 45, 3, 59 };
-	static sf::Color smoothPurple{ 129, 12, 168 };
+	static sf::Color smoothPurple{ 100, 5, 120 };
 	static sf::Color dirty{ 129, 91, 91 };
+	static sf::Color orange{ 255, 149, 5 };
+	static sf::Color redBlood{ 133, 0, 0 };
+
 
 	// ---- Terrain
 	static sf::Color terrainHeightMap{ 255, 0, 0 };
