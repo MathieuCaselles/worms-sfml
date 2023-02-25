@@ -5,17 +5,18 @@
 #include <Engine/Scene/Scene.h>
 
 #include <Game/GameObjects/UI/Buttons/Button.h>
-#include <Game/GameObjects/UI/Buttons/Options.h>
+
+#include <Game/Components/InputComponents/ICVoid.h>
+#include <Game/Components/PhysicsComponents/PCVoid.h>
+#include <Game/Components/GraphicsComponents/GCVoid.h>
 
 
-
-class HUD : public Engine::GameObject<Engine::IPhysicsComponent> {
+class HUD : public Engine::GameObject<PCVoid, GCVoid, ICVoid>, public Engine::IScene {
 public:
 	HUD();
 	~HUD();
-	void updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene) override;
 
-	
+	void SetButtonOptions();
 };
 
 

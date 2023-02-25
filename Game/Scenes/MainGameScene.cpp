@@ -9,7 +9,7 @@
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
-#include "Game/GameObjects/UI/Buttons/Button.h"
+#include "Game/GameObjects/UI/Buttons/Options.h"
 #include "Game/GameObjects/UI/HUD.h"
 
 #include "Game/Physics/PhysicsWorld.h"
@@ -57,12 +57,14 @@ MainGameScene::MainGameScene()
 	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
 	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
 
+
 	// ---- Adding gameObjects in order
+	addGameObjects(m_hud.get());
 	addGameObjects(m_windForce.get());
 	addGameObjects(m_terrain.get());
 
 	addGameObjects(m_fallingCircleOrange1.get(), m_fallingCircleOrange2.get(), m_fallingBoxOrange1.get(), m_fallingBoxOrange2.get());
-	addGameObjects(m_hud.get());
+	
 }
 
 void MainGameScene::onBeginPlay()
@@ -73,6 +75,7 @@ void MainGameScene::onBeginPlay()
 	initOst();
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
+	m_hud->SetButtonOptions();
 
 	// ---- Background
 	initBackground();
@@ -125,7 +128,7 @@ void MainGameScene::update(const float& deltaTime)
 void MainGameScene::render()
 {
 
-	m_window.draw(m_background);
+	//m_window.draw(m_background);
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 

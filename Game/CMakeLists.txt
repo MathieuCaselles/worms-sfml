@@ -31,7 +31,8 @@ target_sources(Worms PRIVATE
  "Components/GraphicsComponents/GCVoid.h" "Components/GraphicsComponents/GCVoid.cpp" "Components/GraphicsComponents/UI/Buttons/GCButton.h" "Components/GraphicsComponents/UI/Buttons/GCButton.cpp"
  "Components/InputComponents/ICVoid.h" "Components/InputComponents/ICVoid.cpp" "Components/InputComponents/UI/Buttons/ICButton.h" "Components/InputComponents/UI/Buttons/ICButton.cpp"
  "Components/PhysicsComponents/PCVoid.h" "Components/PhysicsComponents/PCVoid.cpp" "Components/PhysicsComponents/UI/Buttons/PCButton.h" "Components/PhysicsComponents/UI/Buttons/PCButton.cpp"
- "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp"
+ "GameObjects/UI/Buttons/Button.h" "GameObjects/UI/Buttons/Button.cpp" "GameObjects/UI/HUD.h" "GameObjects/UI/Buttons/Button.cpp" "GameObjects/UI/HUD.cpp"
+ "GameObjects/UI/Buttons/Options.h" "GameObjects/UI/Buttons/Options.cpp"
 
  "GameObjects/PhysicsObjects/Terrain/Terrain.h" "GameObjects/PhysicsObjects/Terrain/Terrain.cpp" 
  "GameObjects/PhysicsObjects/Terrain/GCTerrain.h" "GameObjects/PhysicsObjects/Terrain/GCTerrain.cpp" 
