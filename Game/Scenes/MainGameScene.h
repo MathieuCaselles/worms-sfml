@@ -3,6 +3,8 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
+#include "SFML/Audio/Music.hpp"
+
 class ForceVolume;
 class PhysicsWorld;
 class Terrain;
@@ -20,6 +22,11 @@ public:
 	void render() override;
 
 private:
+    void initBackground();
+    void initInformations();
+    void initTitle();
+    void initOst();
+
     // ---- System
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
 
@@ -35,4 +42,12 @@ private:
 
     // ---- Drawings
     sf::RectangleShape m_background;
+
+    sf::Text m_title;
+    sf::Text m_wind;
+    sf::Font m_font;
+
+    sf::Music m_ost;
+
+    sf::Texture m_backgroundTexture;
 };
