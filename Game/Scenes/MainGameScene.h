@@ -10,6 +10,7 @@ class PhysicsWorld;
 class Terrain;
 class FallingBox;
 class FallingCircle;
+class HUD;
 
 class MainGameScene : public Engine::IScene
 {
@@ -36,6 +37,7 @@ private:
     std::unique_ptr<FallingCircle> m_fallingCircleOrange2;
     std::unique_ptr<FallingBox> m_fallingBoxOrange1;
     std::unique_ptr<FallingBox> m_fallingBoxOrange2;
+    std::unique_ptr<HUD> m_hud;
 
     std::unique_ptr<ForceVolume> m_windForce;
     sf::Vector2f m_windDirection;
