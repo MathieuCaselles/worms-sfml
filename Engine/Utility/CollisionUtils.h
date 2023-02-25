@@ -11,12 +11,14 @@ class CollisionUtils
 public:
 	struct HitResult
 	{
+		bool hasHit { false };
 		sf::Vector2f impactPoint;
 		sf::Vector2f normal;
 		float depth { 0.f };
 	};
 
-	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& allPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult);
+	static bool circleAboveMultiLines(const std::vector<sf::Vector2f>& linesPoints, const sf::Vector2f& circlePos, const float circleRadius, HitResult& outHitResult);
+	static bool polygonAboveMultilines(const std::vector<sf::Vector2f>& linesPoints, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult);
 
 	// Polygons to...
 	static bool polygonToPolygon(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB, HitResult& outHitResult);
@@ -24,7 +26,9 @@ public:
 	static bool polygonToCircle(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& circlePos, float circleRadius, HitResult& outHitResult);
 
 	// ---- Circle to...
-	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& hitResult);
+	static bool circleToCircle(const sf::Vector2f& fromCirclePos, float fromCircleRad, const sf::Vector2f& toCirclePos, float toCircleRad, HitResult& outHitResult);
+
+	static bool circleToPolygon(const sf::Vector2f& circlePos, float circleRadius, const std::vector<sf::Vector2f>& vertices, HitResult& outHitResult);
 
 	// ---- Lines to...
 	static bool lineToLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, sf::Vector2f& outIntersectionPoint);
@@ -37,6 +41,10 @@ public:
 	static bool pointToCircle(float px, float py, float cx, float cy, float r);
 
 	static bool pointToTriangle(const sf::Vector2f& point, const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c);
+
+	// ---- Other utilities for collision
+	static float getPointLineDistanceSqr(const sf::Vector2f& point, const sf::Vector2f& linePtA, const sf::Vector2f& linePtB, sf::Vector2f& closestPoint);
+	static sf::Vector2f findPolygonPolygonContactPoint(const std::vector<sf::Vector2f>& verticesA, const std::vector<sf::Vector2f>& verticesB);
 
 private:
 	static void projectVertices(const std::vector<sf::Vector2f>& vertices, const sf::Vector2f& axis, float& min, float& max);

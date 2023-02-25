@@ -3,17 +3,60 @@
 #include "Engine/Game/Game.h"
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
-#include "Game/GameObjects/Terrain/Terrain.h"
-#include "Game/GameObjects/UI/Buttons/Button.h"
+
+#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBox.h"
+#include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
+#include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
+#include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
+
+#include "Game/Physics/PhysicsWorld.h"
 
 MainGameScene::MainGameScene()
 {
-	m_terrain = std::make_unique<Terrain>();
+	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
+	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
+	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
+
+	// ---- Entities
+	sf::CircleShape defaultCircleShape;
+	defaultCircleShape.setRadius(20);
+	defaultCircleShape.setOrigin(defaultCircleShape.getRadius(), defaultCircleShape.getRadius());
+	defaultCircleShape.setFillColor(GameColors::orange);
+	defaultCircleShape.setOutlineColor(sf::Color::Black);
+	defaultCircleShape.setOutlineThickness(1);
+
+	sf::RectangleShape defaultRectShape;
+	defaultRectShape.setSize(sf::Vector2f(40.f, 40.f));
+	defaultRectShape.setOrigin(defaultRectShape.getSize().x / 2.f, defaultRectShape.getSize().y / 2.f);
+	defaultRectShape.setFillColor(GameColors::orange);
+	defaultRectShape.setOutlineColor(sf::Color::Black);
+	defaultRectShape.setOutlineThickness(1);
+
+	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
+	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
+	m_fallingBoxOrange1    = std::make_unique<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
+	m_fallingBoxOrange2    = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
+	m_fallingBoxOrange2->setAngularVelocity(60);
+
+	// ---- Terrain and physics world
+	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);
+
+	m_physicsWorld = std::make_unique<PhysicsWorld>();
+	m_physicsWorld->addRigidBody(*m_fallingCircleOrange1);
+	m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
+	m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
+	m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
+	m_physicsWorld->addRigidBody(*m_terrain);
+
+	// ---- Volumes
+	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
+	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
+
+	// ---- Adding gameObjects in order
+	addGameObjects(m_windForce.get());
 	addGameObjects(m_terrain.get());
 
-	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
-		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
-		[&](Button* button) {m_window.close(); }));
+	addGameObjects(m_fallingCircleOrange1.get(), m_fallingCircleOrange2.get(), m_fallingBoxOrange1.get(), m_fallingBoxOrange2.get());
 }
 
 void MainGameScene::onBeginPlay()
@@ -26,41 +69,10 @@ void MainGameScene::onBeginPlay()
 
 	// ---- Background
 	m_background.setSize(windowSize);
+	m_background.setFillColor(GameColors::sky);
 
 	// ---- Terrain
 	m_terrain->generateTerrain(windowSize);
-
-	// ---- Debug shapes
-	m_circleMousePos.setRadius(TERRAIN_DEBUG_MOUSE_RADIUS);
-	m_circleMousePos.setFillColor(sf::Color(0, 255, 0, 100));
-	m_circleMousePos.setOrigin(m_circleMousePos.getRadius(), m_circleMousePos.getRadius());
-
-	m_blackHole.setRadius(60);
-	m_blackHole.setPosition(windowSize.x / 2, 200);
-	m_blackHole.setOrigin(m_blackHole.getRadius(), m_blackHole.getRadius());
-
-	m_hitBlackHolePoint.setRadius(10);
-	m_hitBlackHolePoint.setFillColor(sf::Color::Red);
-	m_hitBlackHolePoint.setOrigin(m_hitBlackHolePoint.getRadius(), m_hitBlackHolePoint.getRadius());
-
-	// ---- Convex shapes
-	m_convexShapeStatic.setPointCount(m_baseShape2.size());
-	for (int i = 0; i < static_cast<int>(m_convexShapeStatic.getPointCount()); ++i)
-		m_convexShapeStatic.setPoint(i, m_baseShape2[i]);
-
-	m_convexShapeMousePos.setPointCount(m_baseShape1.size());
-	for (int i = 0; i < static_cast<int>(m_convexShapeMousePos.getPointCount()); ++i)
-		m_convexShapeMousePos.setPoint(i, m_baseShape1[i]);
-
-	constexpr float CONVEX_SHAPES_SIZE = 20.f;
-
-	m_convexShapeMousePos.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
-	m_convexShapeMousePos.setFillColor(GameColors::transparentBlack);
-	m_convexShapeMousePos.setOutlineThickness(3 / CONVEX_SHAPES_SIZE);
-
-	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
-	m_convexShapeStatic.setFillColor(GameColors::dirty);
-	m_convexShapeStatic.setPosition(400, 200);
 }
 
 void MainGameScene::initTitle()
@@ -77,45 +89,9 @@ void MainGameScene::initTitle()
 
 void MainGameScene::update(const float& deltaTime)
 {
+	m_physicsWorld->step(deltaTime);
+
 	IScene::update(deltaTime);
-
-	// ---- Terrain hit test
-	m_circleMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-
-	m_background.setFillColor((m_terrain->IsHit() ? GameColors::sweetPink : GameColors::sky));
-
-	// ---- Circle circle hit test
-	CollisionUtils::HitResult ccHitResult;
-	const bool hitCircleCircleDebug = CollisionUtils::circleToCircle(
-		m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), 
-		m_blackHole.getPosition(), m_blackHole.getRadius(), 
-		ccHitResult);
-
-	m_blackHole.setFillColor(hitCircleCircleDebug ? GameColors::smoothPurple : GameColors::nightPurple);
-	m_hitBlackHolePoint.setPosition(ccHitResult.impactPoint);
-
-	// ---- Polygons hit test
-	m_convexShapeMousePos.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
-	m_convexShapeMousePos.rotate(20.f * deltaTime);
-
-	std::vector<sf::Vector2f> convexShapeEdgesStatic;
-	for (const auto& edge : m_baseShape2)
-		convexShapeEdgesStatic.emplace_back(m_convexShapeStatic.getTransform().transformPoint(edge));
-
-	std::vector<sf::Vector2f> convexShapeEdgesMouse;
-	for (const auto& edge : m_baseShape1)
-		convexShapeEdgesMouse.emplace_back(m_convexShapeMousePos.getTransform().transformPoint(edge));
-
-	CollisionUtils::HitResult ppHitResult;
-	const bool hitPolyDebug = CollisionUtils::polygonToPolygon(convexShapeEdgesStatic, convexShapeEdgesMouse, ppHitResult);
-
-	m_convexShapeMousePos.setOutlineColor(hitPolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
-
-	// ---- Polygon - Circle hit test
-	CollisionUtils::HitResult pcHitResult;
-	const bool hitCirclePolyDebug = CollisionUtils::polygonToCircle(convexShapeEdgesStatic, m_circleMousePos.getPosition(), m_circleMousePos.getRadius(), pcHitResult);
-
-	m_circleMousePos.setFillColor(hitCirclePolyDebug ? sf::Color::Blue : sf::Color(0, 255, 0, 150));
 }
 
 void MainGameScene::render()
@@ -125,23 +101,4 @@ void MainGameScene::render()
 	m_window.draw(m_title);
 
 	IScene::render();
-
-	m_window.draw(m_blackHole);
-	m_window.draw(m_hitBlackHolePoint);
-
-	m_window.draw(m_convexShapeStatic);
-
-	m_window.draw(m_convexShapeMousePos);
-	m_window.draw(m_circleMousePos);
-
-}
-
-void MainGameScene::initBackground()
-{
-	if (!m_backgroundTexture.loadFromFile("Assets/Textures/GameBackGround.jpg"))
-		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
-
-	m_background.setPosition(0.f, 0.f);
-	m_background.setSize({ 1920.f, 1080.f });
-	m_background.setTexture(&m_backgroundTexture);
 }
