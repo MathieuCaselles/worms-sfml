@@ -4,16 +4,23 @@
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
 #include "Game/GameObjects/Terrain/Terrain.h"
+#include "Game/GameObjects/UI/Buttons/Button.h"
 
 MainGameScene::MainGameScene()
 {
 	m_terrain = std::make_unique<Terrain>();
 	addGameObjects(m_terrain.get());
+
+	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
+		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) {m_window.close(); }));
 }
 
 void MainGameScene::onBeginPlay()
 {
 	IScene::onBeginPlay();
+	initBackground();
+	initTitle();
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -54,6 +61,18 @@ void MainGameScene::onBeginPlay()
 	m_convexShapeStatic.setScale(CONVEX_SHAPES_SIZE, CONVEX_SHAPES_SIZE);
 	m_convexShapeStatic.setFillColor(GameColors::dirty);
 	m_convexShapeStatic.setPosition(400, 200);
+}
+
+void MainGameScene::initTitle()
+{
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
+	}
+	m_title.setFont(m_font);
+	m_title.setString("Shoot and Destroy");
+	m_title.setFillColor(sf::Color(40, 40, 40));
+	m_title.setCharacterSize(35);
+	m_title.setPosition(730, 350);
 }
 
 void MainGameScene::update(const float& deltaTime)
@@ -101,7 +120,9 @@ void MainGameScene::update(const float& deltaTime)
 
 void MainGameScene::render()
 {
+
 	m_window.draw(m_background);
+	m_window.draw(m_title);
 
 	IScene::render();
 
@@ -112,4 +133,15 @@ void MainGameScene::render()
 
 	m_window.draw(m_convexShapeMousePos);
 	m_window.draw(m_circleMousePos);
+
+}
+
+void MainGameScene::initBackground()
+{
+	if (!m_backgroundTexture.loadFromFile("Assets/Textures/GameBackGround.jpg"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
+
+	m_background.setPosition(0.f, 0.f);
+	m_background.setSize({ 1920.f, 1080.f });
+	m_background.setTexture(&m_backgroundTexture);
 }

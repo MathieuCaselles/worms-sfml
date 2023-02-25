@@ -17,6 +17,9 @@ public:
 	void render() override;
 
 private:
+    void initBackground();
+    void initTitle();
+
     sf::RectangleShape m_background;
     std::unique_ptr<Terrain> m_terrain;
 
@@ -28,6 +31,11 @@ private:
 
     sf::ConvexShape m_convexShapeStatic;
     sf::ConvexShape m_convexShapeMousePos;
+
+    sf::Texture m_backgroundTexture;
+
+    sf::Font m_font;
+    sf::Text m_title;
 
     const std::vector<sf::Vector2f> m_baseShape1
     {
