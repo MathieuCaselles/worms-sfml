@@ -4,6 +4,5 @@
 
 void GCPlayer::renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window)
 {
-	const auto& Player = reinterpret_cast<Player&>(gameObject);
-
+	const auto& player = reinterpret_cast<Player&>(gameObject);
 }

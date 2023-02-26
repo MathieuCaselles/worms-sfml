@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include <iostream>
+
 Player::Player()
 	: Player(sf::RectangleShape(), {})
 { }
@@ -20,4 +22,42 @@ Player::Player(sf::RectangleShape rectangleShape, const PhysicsProperties& prope
 
 	m_rectangleShape.setPosition(m_rbPosition);
 	m_rectangleShape.setRotation(m_rbRotation);
+}
+
+const int& Player::getButtonState()
+{
+	return m_inputState;
+}
+
+void Player::setButtonState(input_states newState)
+{
+	m_inputState = newState;
+
+	switch (m_inputState)
+	{
+	case BUTTON_IDLE:
+		m_rectangleShape.setPosition(m_rbPosition);
+		break;
+
+	case BUTTON_RIGHT:
+		m_rectangleShape.setPosition(m_rbPosition.x + 100.f,m_rbPosition.y);
+		break;
+
+	case BUTTON_LEFT:
+		m_rectangleShape.setPosition(m_rbPosition.x - 100.f, m_rbPosition.y);
+		break;
+
+	case BUTTON_JUMP:
+		m_rectangleShape.setPosition(m_rbPosition.x, m_rbPosition.y + 100.f);
+		break;
+
+	case BUTTON_LEFTCLICK:
+		m_rectangleShape.setPosition(m_rbPosition);
+		std::cout << "Coucou" << std::endl;
+		break;
+
+	default:
+		m_rectangleShape.setPosition(m_rbPosition);
+		break;
+	}
 }
