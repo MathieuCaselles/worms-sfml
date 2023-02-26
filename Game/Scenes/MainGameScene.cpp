@@ -1,5 +1,6 @@
 #include "MainGameScene.h"
 
+#include "MainMenuScene.h"
 #include "Engine/Game/Game.h"
 #include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
@@ -8,6 +9,7 @@
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
+#include "Game/GameObjects/UI/HUD.h"
 
 
 #include <utility>
@@ -51,6 +53,7 @@ MainGameScene::MainGameScene()
 	// ---- Volumes
 
 
+
 	// ---- Adding gameObjects in order
 		// ---- Volumes
 	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(
@@ -60,17 +63,56 @@ MainGameScene::MainGameScene()
 	addGameObjects(std::move(m_terrain));
 
 	addGameObjects(std::move(m_fallingCircleOrange1), std::move(m_fallingCircleOrange2), std::move(m_fallingBoxOrange1), std::move(m_fallingBoxOrange2));
+	
+	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
+		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) {m_window.close(); }));
 }
 
 void MainGameScene::onBeginPlay()
 {
-	IScene::onBeginPlay();
+	initTitle();
+	initInformations();
+	initOst();
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
 	// ---- Background
-	m_background.setSize(windowSize);
-	m_background.setFillColor(GameColors::sky);
+	initBackground();
+}
+
+void MainGameScene::initTitle()
+{
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
+	}
+	m_title.setFont(m_font);
+	m_title.setString("Shoot and Destroy");
+	m_title.setFillColor(sf::Color(40, 40, 40));
+	m_title.setCharacterSize(35);
+	m_title.setPosition(730, 350);
+}
+
+void MainGameScene::initInformations()
+{
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
+	}
+
+	m_wind.setFont(m_font);
+	m_wind.setString("Wind: " + std::to_string(m_windForce->getForce().y));
+	m_wind.setFillColor(sf::Color(255, 255, 255));
+	m_wind.setCharacterSize(20);
+	m_wind.setPosition(80, 25);
+}
+
+void MainGameScene::initBackground()
+{
+	if (!m_backgroundTexture.loadFromFile("Assets/Textures/GameBackGround.jpg"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
+
+	m_background.setSize({ 1920.f, 1080.f });
+	m_background.setTexture(&m_backgroundTexture);
 }
 
 void MainGameScene::update(const float& deltaTime)
@@ -82,7 +124,18 @@ void MainGameScene::update(const float& deltaTime)
 
 void MainGameScene::render()
 {
+
 	m_window.draw(m_background);
+	m_window.draw(m_title);
+	m_window.draw(m_wind);
 
 	IScene::render();
+}
+
+void MainGameScene::initOst()
+{
+	if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	m_ost.setLoop(true);
+	m_ost.play();
 }
