@@ -64,13 +64,14 @@ MainGameScene::MainGameScene()
 
 	addGameObjects(std::move(m_fallingCircleOrange1), std::move(m_fallingCircleOrange2), std::move(m_fallingBoxOrange1), std::move(m_fallingBoxOrange2));
 	
-	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
+	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
 }
 
 void MainGameScene::onBeginPlay()
 {
+	IScene::onBeginPlay();
 	initTitle();
 	initInformations();
 	initOst();
@@ -79,6 +80,7 @@ void MainGameScene::onBeginPlay()
 
 	// ---- Background
 	initBackground();
+
 }
 
 void MainGameScene::initTitle()
@@ -100,7 +102,8 @@ void MainGameScene::initInformations()
 	}
 
 	m_wind.setFont(m_font);
-	m_wind.setString("Wind: " + std::to_string(m_windForce->getForce().y));
+	//m_wind.setString("Wind: " + std::to_string(m_windForce->getForce().y));
+	m_wind.setString("Wind:		TODO");
 	m_wind.setFillColor(sf::Color(255, 255, 255));
 	m_wind.setCharacterSize(20);
 	m_wind.setPosition(80, 25);
