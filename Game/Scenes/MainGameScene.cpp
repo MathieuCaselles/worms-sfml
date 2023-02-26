@@ -9,7 +9,8 @@
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
 
-#include "Game/Physics/PhysicsWorld.h"
+
+#include <utility>
 
 MainGameScene::MainGameScene()
 {
@@ -32,31 +33,33 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
-	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
-	m_fallingBoxOrange1    = std::make_unique<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
-	m_fallingBoxOrange2    = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
+	auto m_fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
+	auto m_fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
+	auto m_fallingBoxOrange1    = Engine::GameObjectFactory::create<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
+	auto m_fallingBoxOrange2    = Engine::GameObjectFactory::create<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
 	m_fallingBoxOrange2->setAngularVelocity(60);
 
 	// ---- Terrain and physics world
-	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);
+	auto m_terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
-	m_physicsWorld = std::make_unique<PhysicsWorld>();
-	m_physicsWorld->addRigidBody(*m_fallingCircleOrange1);
-	m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
-	m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
-	m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
-	m_physicsWorld->addRigidBody(*m_terrain);
+	m_physicsWorld.addRigidBody(*m_fallingCircleOrange1);
+	m_physicsWorld.addRigidBody(*m_fallingCircleOrange2);
+	m_physicsWorld.addRigidBody(*m_fallingBoxOrange1);
+	m_physicsWorld.addRigidBody(*m_fallingBoxOrange2);
+	m_physicsWorld.addRigidBody(*m_terrain);
 
 	// ---- Volumes
-	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
-	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
+
 
 	// ---- Adding gameObjects in order
-	addGameObjects(m_windForce.get());
-	addGameObjects(m_terrain.get());
+		// ---- Volumes
+	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(
+		m_physicsWorld.getAllRigidBodies(),
+		VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)
+	));
+	addGameObjects(std::move(m_terrain));
 
-	addGameObjects(m_fallingCircleOrange1.get(), m_fallingCircleOrange2.get(), m_fallingBoxOrange1.get(), m_fallingBoxOrange2.get());
+	addGameObjects(std::move(m_fallingCircleOrange1), std::move(m_fallingCircleOrange2), std::move(m_fallingBoxOrange1), std::move(m_fallingBoxOrange2));
 }
 
 void MainGameScene::onBeginPlay()
@@ -68,14 +71,11 @@ void MainGameScene::onBeginPlay()
 	// ---- Background
 	m_background.setSize(windowSize);
 	m_background.setFillColor(GameColors::sky);
-
-	// ---- Terrain
-	m_terrain->generateTerrain(windowSize);
 }
 
 void MainGameScene::update(const float& deltaTime)
 {
-	m_physicsWorld->step(deltaTime);
+	m_physicsWorld.step(deltaTime);
 
 	IScene::update(deltaTime);
 }

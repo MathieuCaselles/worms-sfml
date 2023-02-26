@@ -2,12 +2,9 @@
 
 #include "Game/Physics/RigidBodies/IRigidBody.h"
 
-ForceVolume::ForceVolume(const std::vector<IRigidBody*>& rigidBodies)
+ForceVolume::ForceVolume(const std::vector<IRigidBody*> rigidBodies, const sf::Vector2f& force)
+	: m_rigidBodies(rigidBodies), m_force(force)
 {
-	for (const auto& rb : rigidBodies)
-	{
-		addRigidBody(*rb);
-	}
 }
 
 void ForceVolume::addRigidBody(IRigidBody& rb)

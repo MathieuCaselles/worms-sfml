@@ -12,4 +12,4 @@ target_include_directories(Tools PUBLIC
 target_sources(Tools PRIVATE
    "MathUtils.h" "MathUtils.cpp"
    "DesignPatterns/Composite.h" "DesignPatterns/Singleton.h"
-)
+ "DesignPatterns/Factory.h" "Typelist.h")

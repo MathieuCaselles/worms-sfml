@@ -10,16 +10,18 @@ MainMenuScene::MainMenuScene()
 	initTitle();
 	initOst();
 
-	addGameObjects(new Button(1400, 400, 230, 80, "Jouer", 40.f,
+	addGameObjects(Engine::GameObjectFactory::create<Button>(1400, 400, 230, 80, "Jouer", 40.f,
 		sf::Color(252, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {
 			Engine::Game* game = Engine::Game::GetInstance();
 			game->setCurrentScene(ScenesEnum::MAIN_GAME);
-		}));
+		}
+	));
+	addGameObjects(Engine::GameObjectFactory::create<Button>(1400, 600, 230, 80, "Quitter", 40.f,
+		sf::Color(252, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) { m_window.close(); }
+	));
 
-	addGameObjects(new Button(1400, 600, 230, 80, "Quitter", 40.f,
-		sf::Color(252, 79, 36), sf::Color(255,120, 70), sf::Color(200, 79, 36),
-		[&](Button* button) { m_window.close(); }));
 }
 
 MainMenuScene::~MainMenuScene()

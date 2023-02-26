@@ -1,6 +1,8 @@
 #pragma once
 
+#include <utility>
 #include <SFML/Graphics.hpp>
+
 namespace Engine {
 
     class IGameObject;
@@ -9,6 +11,8 @@ namespace Engine {
 
     class IScene
     {
+        using GameObjects = std::vector<std::unique_ptr<IGameObject>>;
+
     public:
         IScene();
         virtual ~IScene();
@@ -29,13 +33,15 @@ namespace Engine {
 
         IGameObject* getGameObject(const size_t index);
 
-        std::vector<IGameObject*>& getGameObjects();
+        GameObjects& getGameObjects();
 
-        void clearGameObjects();
+        sf::RenderWindow& getWindow();
+
+
 
     protected:
         sf::RenderWindow& m_window;
-        std::vector<IGameObject*> m_gameObjects;
+        GameObjects m_gameObjects;
     };
 }
 
@@ -44,7 +50,7 @@ namespace Engine {
     template<typename ...Args>
     inline void IScene::addGameObjects(Args ...gameObjects)
     {
-        (m_gameObjects.push_back(gameObjects), ...);
+        (m_gameObjects.push_back(std::move(gameObjects)), ...);
     }
 
 }

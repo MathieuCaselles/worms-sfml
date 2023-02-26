@@ -2,11 +2,12 @@
 
 
 #include <Tools/DesignPatterns/Composite.h>
+#include <Tools/DesignPatterns/Factory.h>
 
 #include "../Components/InputComponent.h"
 #include "../Components/PhysicsComponent.h"
 #include "../Components/GraphicsComponent.h"
-
+#include "Engine/Utility/RTTI.h"
 #include <SFML/Graphics.hpp>
 
 namespace Engine {
@@ -46,4 +47,8 @@ namespace Engine {
 			this->renderImplementation(*this, window);
 		}
 	};
+
+	using AvailableGameObjectsTypes = typelist<IGameObject>;
+	using GameObjectFactory = Tools::Factory<AvailableGameObjectsTypes, true>;
+
 }
