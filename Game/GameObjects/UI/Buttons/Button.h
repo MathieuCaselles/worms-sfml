@@ -34,8 +34,8 @@ public:
 	void useOnLeftClick();
 	void useOnRightClick();
 
-protected:
 	void initShape(float x, float y, float width, float height);
+protected:
 
 	button_states m_buttonState;
 
