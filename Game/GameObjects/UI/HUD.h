@@ -16,8 +16,6 @@ public:
 	HUD();
 	~HUD();
 
-	void SetButtonOptions();
-
 	void onBeginPlay(Engine::IScene& scene) override;
 };
 

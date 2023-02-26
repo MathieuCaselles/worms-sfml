@@ -9,7 +9,6 @@
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
-#include "Game/GameObjects/UI/Buttons/Options.h"
 #include "Game/GameObjects/UI/HUD.h"
 
 #include "Game/Physics/PhysicsWorld.h"
@@ -64,7 +63,7 @@ MainGameScene::MainGameScene()
 	addGameObjects(m_terrain.get());
 
 	addGameObjects(m_fallingCircleOrange1.get(), m_fallingCircleOrange2.get(), m_fallingBoxOrange1.get(), m_fallingBoxOrange2.get());
-	addGameObjects(new Options(1700, 25, 200, 50, "Options", 30.f,
+	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
 	
@@ -77,7 +76,6 @@ void MainGameScene::onBeginPlay()
 	initOst();
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
-	m_hud->SetButtonOptions();
 
 	// ---- Background
 	initBackground();
