@@ -7,6 +7,7 @@
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
+enum input_states { BUTTON_IDLE = 0, BUTTON_RIGHT, BUTTON_LEFT, BUTTON_JUMP, BUTTON_LEFTCLICK };
 
 class Player : public Engine::GameObject<PCPlayer, GCPlayer, ICPlayer>, 
 				public BoxRigidBody
@@ -21,6 +22,11 @@ public:
 	Player(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 	~Player() override = default;
 
+	const int& getButtonState();
+	virtual void setButtonState(input_states new_state);
+
 private:
 	sf::RectangleShape m_rectangleShape;
+
+	input_states m_inputState;
 };
