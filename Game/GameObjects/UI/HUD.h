@@ -11,12 +11,14 @@
 #include <Game/Components/GraphicsComponents/GCVoid.h>
 
 
-class HUD : public Engine::GameObject<PCVoid, GCVoid, ICVoid>, public Engine::IScene {
+class HUD : public Engine::GameObject<PCVoid, GCVoid, ICVoid> {
 public:
 	HUD();
 	~HUD();
 
 	void SetButtonOptions();
+
+	void onBeginPlay(Engine::IScene& scene) override;
 };
 
 
