@@ -14,13 +14,17 @@ class BlackHole : public Engine::GameObject<PCBlackHole, GCBlackHole, ICVoid>,
 
 public:
 	BlackHole();
-	BlackHole(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition);
+	BlackHole(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float centerAttractionForce);
 
 	~BlackHole() override = default;
 
-	[[nodiscard]] const sf::CircleShape& getCircleShape() const { return m_blackHoleShape; }
+	void setCenterAttractionForce(float force);
+	float getCenterAttractionForce() const;
+
+	[[nodiscard]] const sf::CircleShape& getBlackHoleShape() const { return m_blackHoleShape; }
 
 private:
 	sf::CircleShape m_blackHoleShape;
 
+	float m_centerAttractionForce { 0.f };
 };

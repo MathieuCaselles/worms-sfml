@@ -23,7 +23,8 @@ void PhysicsWorld::step(const float& deltaTime) const
 		{
 			const auto rbB = m_rigidBodies[b];
 
-			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic) // Static bodies will never collide
+			// ---- Static bodies check
+			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic)
 				continue;
 
 			CollisionUtils::HitResult hitResult;
@@ -32,25 +33,27 @@ void PhysicsWorld::step(const float& deltaTime) const
 				rbA->tryOnCollisionEnter(rbB);
 				rbB->tryOnCollisionEnter(rbA);
 
-				/**
-				 * Move bodies apart
-				 * TODO : An object with m_canBounceOff = false will slide on surfaces, due to this calculation. If we don't the object falls due to gravity.
-				 */
+				// ---- Traversable bodies check
+				if (rbA->getProperties().m_isTraversable || rbB->getProperties().m_isTraversable)
+					continue;
+
+				// ---- Move bodies apart
+				// TODO : An object with m_canBounceOff = false will slide on surfaces, due to this calculation. If we don't the object falls due to gravity.
 				const auto depthTranslation = hitResult.normal * hitResult.depth / 2.f;
 				rbA->translate(depthTranslation);
 				rbB->translate(-depthTranslation);
 
-				// Check if both bodies cannot bounce off from each other when colliding
+				// ---- Bounce off bodies check
 				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff)
 					continue;
 
-				// Change velocity due to the collision
 				const auto relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
 
-				// Check if bodies are not already moving appart
+				// ---- Check if bodies are not already moving appart
 				if (VectorUtils::Dot(relativeVelocity, hitResult.normal) < 0.f)
 					continue;
 
+				// ---- Bounce calculations and velocity changing
 				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);
 
 				const auto j = -(1.f + e) * VectorUtils::Dot(relativeVelocity, hitResult.normal) /

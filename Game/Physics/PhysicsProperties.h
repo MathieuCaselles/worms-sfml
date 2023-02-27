@@ -10,7 +10,7 @@ struct PhysicsProperties
 public:
 	PhysicsProperties() = default;
 
-	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, bool isTraversable = true) :
+	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, bool isTraversable = false) :
 		m_density(density),
 		m_bounciness(std::clamp(bounciness, 0.f, 1.f)),
 		m_isStatic(isStatic),
@@ -51,5 +51,9 @@ public:
 	 */
 	bool m_canBounceOff{ true };
 
+	/**
+	 * An object "traversable" is not solid but will anyway call events whenever another object collides with it.
+	 * Useful to trigger events within an area.
+	 */
 	bool m_isTraversable{ false };
 };

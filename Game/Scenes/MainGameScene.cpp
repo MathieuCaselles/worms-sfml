@@ -37,28 +37,28 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	sf::CircleShape blackHoleShape(150, 60);
+	sf::CircleShape blackHoleShape(150, 40);
 	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
-	blackHoleShape.setFillColor(GameColors::transparentBlack);
+	blackHoleShape.setFillColor(sf::Color(GameColors::nightPurple.r, GameColors::nightPurple.g, GameColors::nightPurple.b, 100));
 	blackHoleShape.setOutlineColor(GameColors::nightPurple);
-	blackHoleShape.setOutlineThickness(3);
+	blackHoleShape.setOutlineThickness(6);
 
 	//m_hud = std::make_unique<HUD>();
 
-	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
-	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
+	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
+	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
 	m_fallingBoxOrange1    = std::make_unique<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
 	m_fallingBoxOrange2    = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
-	m_blackHole			   = std::make_unique<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(820, 250));
+	m_blackHole			   = std::make_unique<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
 	// ---- Terrain and physics world
 	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld = std::make_unique<PhysicsWorld>();
 	m_physicsWorld->addRigidBody(*m_fallingCircleOrange1);
-	//m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
-	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
-	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
+	m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
+	m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
+	m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
 	m_physicsWorld->addRigidBody(*m_blackHole);
 	m_physicsWorld->addRigidBody(*m_terrain);
 
