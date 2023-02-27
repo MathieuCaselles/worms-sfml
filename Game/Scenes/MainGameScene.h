@@ -6,6 +6,7 @@
 
 #include "SFML/Audio/Music.hpp"
 
+class BlackHole;
 class ForceVolume;
 class PhysicsWorld;
 class Terrain;
@@ -31,8 +32,6 @@ private:
 
     // ---- System
     PhysicsWorld m_physicsWorld;
-
-    sf::Vector2f m_windDirection;
 
     // ---- Drawings
     sf::RectangleShape m_background;

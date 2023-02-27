@@ -10,13 +10,12 @@ struct PhysicsProperties
 public:
 	PhysicsProperties() = default;
 
-	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, float surfaceArea = 0.f) :
+	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, bool isTraversable = false) :
 		m_density(density),
-		m_mass{ surfaceArea * PHYSICS_UNIT_METER_PER_PIXEL * density },
-		m_invMass(!isStatic ? 1 / m_mass : 0.f),
 		m_bounciness(std::clamp(bounciness, 0.f, 1.f)),
 		m_isStatic(isStatic),
-		m_canBounceOff(canBounceOff)
+		m_canBounceOff(canBounceOff),
+		m_isTraversable(isTraversable)
 	{ }
 
 	/**
@@ -51,4 +50,10 @@ public:
 	 * Maybe some objects would become "static" when colliding with something, without any collision response.
 	 */
 	bool m_canBounceOff{ true };
+
+	/**
+	 * An object "traversable" is not solid but will anyway call events whenever another object collides with it.
+	 * Useful to trigger events within an area.
+	 */
+	bool m_isTraversable{ false };
 };

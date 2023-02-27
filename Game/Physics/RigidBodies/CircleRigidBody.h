@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "IRigidBody.h"
 #include "SFML/Graphics/CircleShape.hpp"
 
@@ -17,7 +19,7 @@ public:
 	void step(const float& deltaTime) override;
 	void updateMass() override;
 
-	[[nodiscard]] float getRadius() const { return m_circleShape.getRadius(); }
+	[[nodiscard]] float getRadius() const { return m_circleShape.getRadius(); };
 
 private:
 	sf::CircleShape& m_circleShape;

@@ -9,6 +9,8 @@
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
+#include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
+
 #include "Game/GameObjects/UI/HUD.h"
 
 
@@ -17,6 +19,7 @@
 MainGameScene::MainGameScene()
 {
 	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
+	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
 	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 
@@ -35,34 +38,30 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
-	auto m_fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
-	auto m_fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
-	auto m_fallingBoxOrange1    = Engine::GameObjectFactory::create<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
-	auto m_fallingBoxOrange2    = Engine::GameObjectFactory::create<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
-	m_fallingBoxOrange2->setAngularVelocity(60);
+	sf::CircleShape blackHoleShape(150, 40);
+	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
+	blackHoleShape.setFillColor(sf::Color(GameColors::nightPurple.r, GameColors::nightPurple.g, GameColors::nightPurple.b, 100));
+	blackHoleShape.setOutlineColor(GameColors::nightPurple);
+	blackHoleShape.setOutlineThickness(6);
+
+	auto fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
+	auto fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
+	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
 	// ---- Terrain and physics world
-	auto m_terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
+	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
-	m_physicsWorld.addRigidBody(*m_fallingCircleOrange1);
-	m_physicsWorld.addRigidBody(*m_fallingCircleOrange2);
-	m_physicsWorld.addRigidBody(*m_fallingBoxOrange1);
-	m_physicsWorld.addRigidBody(*m_fallingBoxOrange2);
-	m_physicsWorld.addRigidBody(*m_terrain);
-
-	// ---- Volumes
-
-
+	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
+	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
+	m_physicsWorld.addRigidBody(*blackHole);
+	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
-		// ---- Volumes
-	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(
-		m_physicsWorld.getAllRigidBodies(),
-		VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)
-	));
-	addGameObjects(std::move(m_terrain));
+	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
 
-	addGameObjects(std::move(m_fallingCircleOrange1), std::move(m_fallingCircleOrange2), std::move(m_fallingBoxOrange1), std::move(m_fallingBoxOrange2));
+	addGameObjects(std::move(terrain));
+	addGameObjects(std::move(blackHole));
+	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2));
 	
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
@@ -127,7 +126,6 @@ void MainGameScene::update(const float& deltaTime)
 
 void MainGameScene::render()
 {
-
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 	m_window.draw(m_wind);

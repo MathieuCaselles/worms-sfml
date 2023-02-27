@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 
 #include "SFML/System/Vector2.hpp"
 
@@ -33,27 +34,29 @@ public:
 	[[nodiscard]] float getAngularVelocity() const { return m_rbAngularVelocity; }
 	[[nodiscard]] PhysicsProperties getProperties() const { return m_rbProperties; }
 
-	bool operator==(const IRigidBody& other) const
+	void tryOnCollisionEnter(IRigidBody* rb)
 	{
-		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
-	}
-
-	void tryOnCollisionEnter()
-	{
-		if(!m_isCurrentlyColliding)
+		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+		if(foundRbPtr == m_rbsCollidingWith.end()) // If not found
 		{
-			m_isCurrentlyColliding = true;
+			m_rbsCollidingWith.push_back(rb);
 			onCollisionEnter();
 		}
 	}
 
-	void tryOnCollisionExit()
+	void tryOnCollisionExit(IRigidBody* rb)
 	{
-		if (m_isCurrentlyColliding)
+		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+		if (foundRbPtr != m_rbsCollidingWith.end()) // If found
 		{
-			m_isCurrentlyColliding = false;
+			m_rbsCollidingWith.erase(foundRbPtr);
 			onCollisionExit();
 		}
+	}
+
+	bool operator==(const IRigidBody& other) const
+	{
+		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
 protected:
@@ -71,5 +74,5 @@ protected:
 
 	PhysicsProperties m_rbProperties;
 
-	bool m_isCurrentlyColliding;
+	std::vector<IRigidBody*> m_rbsCollidingWith;
 };
