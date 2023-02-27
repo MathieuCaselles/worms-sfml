@@ -2,6 +2,7 @@
 
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
+#include "Game/Physics/PhysicsWorld.h"
 
 #include "SFML/Audio/Music.hpp"
 
@@ -30,19 +31,7 @@ private:
     void initOst();
 
     // ---- System
-    std::unique_ptr<PhysicsWorld> m_physicsWorld;
-
-    std::unique_ptr<Terrain> m_terrain;
-
-    std::unique_ptr<FallingCircle> m_fallingCircleOrange1;
-    std::unique_ptr<FallingCircle> m_fallingCircleOrange2;
-    std::unique_ptr<FallingBox> m_fallingBoxOrange1;
-    std::unique_ptr<FallingBox> m_fallingBoxOrange2;
-    std::unique_ptr<BlackHole> m_blackHole;
-    //std::unique_ptr<HUD> m_hud;
-
-    std::unique_ptr<ForceVolume> m_windForce;
-    sf::Vector2f m_windDirection;
+    PhysicsWorld m_physicsWorld;
 
     // ---- Drawings
     sf::RectangleShape m_background;

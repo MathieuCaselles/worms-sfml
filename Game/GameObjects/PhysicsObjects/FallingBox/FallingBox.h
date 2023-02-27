@@ -10,13 +10,15 @@
 class FallingBox : public Engine::GameObject<PCVoid, GCFallingBox, ICVoid>,
 					 public BoxRigidBody
 {
+	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCFallingBox;
 
-public:
+private: 
 	FallingBox();
 	FallingBox(sf::RectangleShape rectangleShape, const PhysicsProperties& properties);
 	FallingBox(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 
+public:
 	~FallingBox() override = default;
 
 private:

@@ -58,11 +58,6 @@ Button::Button(float x, float y, float width, float height, std::string text, fl
 	m_text.setPosition(centerXOfButtons, centerYOfButtons);
 }
 
-
-Button::~Button()
-{
-}
-
 const int& Button::getButtonState()
 {
 	return m_buttonState;
