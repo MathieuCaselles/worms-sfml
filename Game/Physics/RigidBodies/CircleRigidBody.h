@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "IRigidBody.h"
 #include "SFML/Graphics/CircleShape.hpp"
 
@@ -18,6 +20,9 @@ public:
 	void updateMass() override;
 
 	[[nodiscard]] float getRadius() const { return m_circleShape.getRadius(); }
+
+	void onCollisionEnter() override { std::cout << "Enter" << std::endl; };
+	void onCollisionExit() override { std::cout << "Exit" << std::endl; };
 
 private:
 	sf::CircleShape& m_circleShape;

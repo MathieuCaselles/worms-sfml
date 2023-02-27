@@ -47,15 +47,14 @@ MainGameScene::MainGameScene()
 
 	m_physicsWorld = std::make_unique<PhysicsWorld>();
 	m_physicsWorld->addRigidBody(*m_fallingCircleOrange1);
-	m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
-	m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
-	m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
+	//m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
+	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
+	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
 	m_physicsWorld->addRigidBody(*m_terrain);
 
 	// ---- Volumes
 	m_windForce = std::make_unique<ForceVolume>(m_physicsWorld->getAllRigidBodies());
-	m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
-
+	//m_windForce->setForce(VectorUtils::Rotate(sf::Vector2f(-60, 0), 30));
 
 	// ---- Adding gameObjects in order
 	

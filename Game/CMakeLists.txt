@@ -46,5 +46,4 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp"  
 
  "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.cpp" 
- "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp" 
- "GameObjects/PhysicsObjects/ForceVolume/BlackHoleForceVolume.h")
+ "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp")

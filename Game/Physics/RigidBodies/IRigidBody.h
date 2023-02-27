@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 
 #include "SFML/System/Vector2.hpp"
 
@@ -38,20 +39,22 @@ public:
 		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
-	void tryOnCollisionEnter()
+	void tryOnCollisionEnter(IRigidBody* rb)
 	{
-		if(!m_isCurrentlyColliding)
+		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+		if(foundRbPtr == m_rbsCollidingWith.end()) // If not found
 		{
-			m_isCurrentlyColliding = true;
+			m_rbsCollidingWith.push_back(rb);
 			onCollisionEnter();
 		}
 	}
 
-	void tryOnCollisionExit()
+	void tryOnCollisionExit(IRigidBody* rb)
 	{
-		if (m_isCurrentlyColliding)
+		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+		if (foundRbPtr != m_rbsCollidingWith.end()) // If found
 		{
-			m_isCurrentlyColliding = false;
+			m_rbsCollidingWith.erase(foundRbPtr);
 			onCollisionExit();
 		}
 	}
@@ -71,5 +74,5 @@ protected:
 
 	PhysicsProperties m_rbProperties;
 
-	bool m_isCurrentlyColliding;
+	std::vector<IRigidBody*> m_rbsCollidingWith;
 };

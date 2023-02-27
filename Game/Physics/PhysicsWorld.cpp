@@ -29,12 +29,16 @@ void PhysicsWorld::step(const float& deltaTime) const
 			CollisionUtils::HitResult hitResult;
 			if (collide(rbA, rbB, hitResult))
 			{
+				rbA->tryOnCollisionEnter(rbB);
+				rbB->tryOnCollisionEnter(rbA);
+
 				/**
 				 * Move bodies apart
-				 * TODO : An object with m_canBounceOff = false will slide on surfaces, due to this calculation. If we don't the object falls.
+				 * TODO : An object with m_canBounceOff = false will slide on surfaces, due to this calculation. If we don't the object falls due to gravity.
 				 */
-				rbA->translate(hitResult.normal * hitResult.depth / 2.f);
-				rbB->translate(-hitResult.normal * hitResult.depth / 2.f);
+				const auto depthTranslation = hitResult.normal * hitResult.depth / 2.f;
+				rbA->translate(depthTranslation);
+				rbB->translate(-depthTranslation);
 
 				// Check if both bodies cannot bounce off from each other when colliding
 				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff)
@@ -59,6 +63,11 @@ void PhysicsWorld::step(const float& deltaTime) const
 
 				rbB->setVelocity(rbB->getProperties().m_canBounceOff ?
 					rbB->getVelocity() + impulse * rbB->getProperties().m_invMass : VectorUtils::zero);
+			}
+			else // If not collision
+			{
+				rbA->tryOnCollisionExit(rbB);
+				rbB->tryOnCollisionExit(rbA);
 			}
 		}
 	}
