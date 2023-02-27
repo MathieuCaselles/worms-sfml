@@ -33,7 +33,7 @@ namespace Engine {
         void addGameObjects(Args... gameObjects);
 
         IGameObject* getGameObject(const size_t index);
-        IGameObject* findGameObject(std::function<bool(IGameObject* gameObject)> const& condition);
+        IGameObject* findGameObject(std::function<bool(const IGameObject* gameObject)> const& condition);
 
         GameObjects& getGameObjects();
 

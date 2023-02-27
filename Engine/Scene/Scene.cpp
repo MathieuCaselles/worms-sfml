@@ -80,7 +80,7 @@ namespace Engine {
 		return m_gameObjects.at(index).get();
 	}
 
-	IGameObject* IScene::findGameObject(std::function<bool(IGameObject* gameObject)> const& condition) {
+	IGameObject* IScene::findGameObject(std::function<bool(const IGameObject* gameObject)> const& condition) {
 		auto it = std::find_if(m_gameObjects.begin(), m_gameObjects.end(), [condition](const std::unique_ptr<IGameObject>& gameObject) {
 			return condition(gameObject.get()); 
 		});

@@ -86,8 +86,8 @@ void MainGameScene::onBeginPlay()
 	{
 
 		// Exemple d'utilisation  de findGameObject attention à bien check si c'est pas nullptr en cas d'objet non trouvé !
-		Button* go = static_cast<Button*>(
-			findGameObject([](Engine::IGameObject* gameObj) {
+		const Button* go = static_cast<Button*>(
+			findGameObject([](const Engine::IGameObject* gameObj) {
 				return 	gameObj->getInstanceRTTI() == Button::getClassRTTI();
 				})
 			);
