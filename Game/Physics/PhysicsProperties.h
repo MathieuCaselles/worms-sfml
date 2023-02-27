@@ -10,13 +10,12 @@ struct PhysicsProperties
 public:
 	PhysicsProperties() = default;
 
-	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, float surfaceArea = 0.f) :
+	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, bool isTraversable = true) :
 		m_density(density),
-		m_mass{ surfaceArea * PHYSICS_UNIT_METER_PER_PIXEL * density },
-		m_invMass(!isStatic ? 1 / m_mass : 0.f),
 		m_bounciness(std::clamp(bounciness, 0.f, 1.f)),
 		m_isStatic(isStatic),
-		m_canBounceOff(canBounceOff)
+		m_canBounceOff(canBounceOff),
+		m_isTraversable(isTraversable)
 	{ }
 
 	/**
@@ -51,4 +50,6 @@ public:
 	 * Maybe some objects would become "static" when colliding with something, without any collision response.
 	 */
 	bool m_canBounceOff{ true };
+
+	bool m_isTraversable{ false };
 };

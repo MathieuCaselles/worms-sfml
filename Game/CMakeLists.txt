@@ -39,11 +39,11 @@ target_sources(Worms PRIVATE
 
  "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.cpp"
  "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
- "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/PCFallingCircle.cpp"
 
  "GameObjects/PhysicsObjects/FallingBox/FallingBox.h" "GameObjects/PhysicsObjects/FallingBox/FallingBox.cpp"
  "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
- "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/PCFallingBox.cpp"  
+    
+ "GameObjects/PhysicsObjects/BlackHole/BlackHole.h" "GameObjects/PhysicsObjects/BlackHole/BlackHole.cpp"
 
  "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.cpp" 
- "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp")
+ "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp" "GameObjects/PhysicsObjects/BlackHole/PCBlackHole.cpp" "GameObjects/PhysicsObjects/BlackHole/PCBlackHole.h" "GameObjects/PhysicsObjects/BlackHole/GCBlackHole.h" "GameObjects/PhysicsObjects/BlackHole/GCBlackHole.cpp")

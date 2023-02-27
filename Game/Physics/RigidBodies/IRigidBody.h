@@ -34,11 +34,6 @@ public:
 	[[nodiscard]] float getAngularVelocity() const { return m_rbAngularVelocity; }
 	[[nodiscard]] PhysicsProperties getProperties() const { return m_rbProperties; }
 
-	bool operator==(const IRigidBody& other) const
-	{
-		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
-	}
-
 	void tryOnCollisionEnter(IRigidBody* rb)
 	{
 		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
@@ -57,6 +52,11 @@ public:
 			m_rbsCollidingWith.erase(foundRbPtr);
 			onCollisionExit();
 		}
+	}
+
+	bool operator==(const IRigidBody& other) const
+	{
+		return m_rbPosition == other.m_rbPosition && m_rbVelocity == other.m_rbVelocity;
 	}
 
 protected:

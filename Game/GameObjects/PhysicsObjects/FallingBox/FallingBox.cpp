@@ -9,7 +9,7 @@ FallingBox::FallingBox(sf::RectangleShape rectangleShape, const PhysicsPropertie
 { }
 
 FallingBox::FallingBox(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
-	: GameObject<PCFallingBox, GCFallingBox, ICVoid>(),
+	: GameObject<PCVoid, GCFallingBox, ICVoid>(),
 		BoxRigidBody(m_rectangleShape, properties),
 		m_rectangleShape(std::move(rectangleShape))
 {

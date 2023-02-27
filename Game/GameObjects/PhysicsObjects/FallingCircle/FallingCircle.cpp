@@ -12,7 +12,7 @@ FallingCircle::FallingCircle(const sf::CircleShape& circleShape, const PhysicsPr
 { }
 
 FallingCircle::FallingCircle(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
-	: GameObject<PCFallingCircle, GCFallingCircle, ICVoid>(),
+	: GameObject<PCVoid, GCFallingCircle, ICVoid>(),
 	CircleRigidBody(m_circleShape, properties),
 	m_circleShape(std::move(circleShape))
 {

@@ -5,6 +5,7 @@
 
 #include "SFML/Audio/Music.hpp"
 
+class BlackHole;
 class ForceVolume;
 class PhysicsWorld;
 class Terrain;
@@ -37,6 +38,7 @@ private:
     std::unique_ptr<FallingCircle> m_fallingCircleOrange2;
     std::unique_ptr<FallingBox> m_fallingBoxOrange1;
     std::unique_ptr<FallingBox> m_fallingBoxOrange2;
+    std::unique_ptr<BlackHole> m_blackHole;
     //std::unique_ptr<HUD> m_hud;
 
     std::unique_ptr<ForceVolume> m_windForce;

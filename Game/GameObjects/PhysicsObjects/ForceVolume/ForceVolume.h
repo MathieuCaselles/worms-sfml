@@ -24,5 +24,4 @@ public:
 protected:
 	std::vector<IRigidBody*> m_rigidBodies;
 	sf::Vector2f m_force { 0.f, 0.f };
-
 };

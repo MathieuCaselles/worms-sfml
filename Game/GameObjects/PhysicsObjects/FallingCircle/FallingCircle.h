@@ -1,16 +1,15 @@
 #pragma once
 
 #include "GCFallingCircle.h"
-#include "PCFallingCircle.h"
 #include "Game/Components/InputComponents/ICVoid.h"
+#include "Game/Components/PhysicsComponents/PCVoid.h"
 
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
-class FallingCircle : public Engine::GameObject<PCFallingCircle, GCFallingCircle, ICVoid>,
+class FallingCircle : public Engine::GameObject<PCVoid, GCFallingCircle, ICVoid>,
                         public CircleRigidBody
 {
-	friend PCFallingCircle;
 	friend GCFallingCircle;
 
 public:

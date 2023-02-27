@@ -1,16 +1,15 @@
 #pragma once
 
 #include "GCFallingBox.h"
-#include "PCFallingBox.h"
 #include "Game/Components/InputComponents/ICVoid.h"
+#include "Game/Components/PhysicsComponents/PCVoid.h"
 
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
-class FallingBox : public Engine::GameObject<PCFallingBox, GCFallingBox, ICVoid>,
+class FallingBox : public Engine::GameObject<PCVoid, GCFallingBox, ICVoid>,
 					 public BoxRigidBody
 {
-	friend PCFallingBox;
 	friend GCFallingBox;
 
 public:

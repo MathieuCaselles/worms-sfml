@@ -9,6 +9,8 @@
 #include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
+#include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
+
 #include "Game/GameObjects/UI/HUD.h"
 
 #include "Game/Physics/PhysicsWorld.h"
@@ -16,6 +18,7 @@
 MainGameScene::MainGameScene()
 {
 	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
+	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
 	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 
@@ -34,13 +37,19 @@ MainGameScene::MainGameScene()
 	defaultRectShape.setOutlineColor(sf::Color::Black);
 	defaultRectShape.setOutlineThickness(1);
 
+	sf::CircleShape blackHoleShape(150, 60);
+	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
+	blackHoleShape.setFillColor(GameColors::transparentBlack);
+	blackHoleShape.setOutlineColor(GameColors::nightPurple);
+	blackHoleShape.setOutlineThickness(3);
+
 	//m_hud = std::make_unique<HUD>();
 
 	m_fallingCircleOrange1 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(900, 0));
 	m_fallingCircleOrange2 = std::make_unique<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(520, 300));
 	m_fallingBoxOrange1    = std::make_unique<FallingBox>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(200, 400), 0);
 	m_fallingBoxOrange2    = std::make_unique<FallingBox>(defaultRectShape, basicPhysicsProperties, sf::Vector2f(820, 500), -20);
-	m_fallingBoxOrange2->setAngularVelocity(60);
+	m_blackHole			   = std::make_unique<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(820, 250));
 
 	// ---- Terrain and physics world
 	m_terrain = std::make_unique<Terrain>(terrainPhysicsProperties);
@@ -50,6 +59,7 @@ MainGameScene::MainGameScene()
 	//m_physicsWorld->addRigidBody(*m_fallingCircleOrange2);
 	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange1);
 	//m_physicsWorld->addRigidBody(*m_fallingBoxOrange2);
+	m_physicsWorld->addRigidBody(*m_blackHole);
 	m_physicsWorld->addRigidBody(*m_terrain);
 
 	// ---- Volumes
@@ -60,6 +70,7 @@ MainGameScene::MainGameScene()
 	
 	addGameObjects(m_windForce.get());
 	addGameObjects(m_terrain.get());
+	addGameObjects(m_blackHole.get());
 
 	addGameObjects(m_fallingCircleOrange1.get(), m_fallingCircleOrange2.get(), m_fallingBoxOrange1.get(), m_fallingBoxOrange2.get());
 	addGameObjects(new Button(1700, 25, 200, 50, "Options", 30.f,
