@@ -13,6 +13,9 @@ class FallingCircle : public Engine::GameObject<PCVoid, GCFallingCircle, ICVoid>
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCFallingCircle;
 
+public:
+	DECLARE_RTTI(GameObject, FallingCircle)
+
 private:
 	FallingCircle();
 	// The initial position will be the position from circleShape.getPosition()

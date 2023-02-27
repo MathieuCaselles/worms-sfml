@@ -13,6 +13,9 @@
 
 class HUD : public Engine::GameObject<PCVoid, GCVoid, ICVoid> {
 public:
+	DECLARE_RTTI(GameObject, HUD)
+
+public:
 	HUD();
 	~HUD();
 

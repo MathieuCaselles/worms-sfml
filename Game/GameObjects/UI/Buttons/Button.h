@@ -13,6 +13,8 @@ enum button_states { BUTTON_IDLE = 0, BUTTON_HOVER, BUTTON_PRESSED };
 
 class Button: public Engine::GameObject<ICButton, PCButton, GCButton> {
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+public:
+	DECLARE_RTTI(GameObject, Button)
 
 private:
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick);

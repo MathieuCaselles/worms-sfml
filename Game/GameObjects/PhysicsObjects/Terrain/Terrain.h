@@ -16,6 +16,9 @@ class Terrain : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
 	friend GCTerrain;
 	friend PCTerrain;
 
+public:
+	DECLARE_RTTI(GameObject, Terrain)
+
 private:
 	Terrain(const PhysicsProperties& physicsProperties);
 

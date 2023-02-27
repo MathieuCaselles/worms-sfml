@@ -11,6 +11,10 @@ class ForceVolume : public Engine::GameObject<PCForceVolume, GCVoid, ICVoid>
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend PCForceVolume;
 
+public:
+	DECLARE_RTTI(GameObject, ForceVolume)
+
+
 private:
 	ForceVolume() = default;
 	ForceVolume(const std::vector<IRigidBody*> rigidBodies, const sf::Vector2f& force = { 0.f, 0.f });

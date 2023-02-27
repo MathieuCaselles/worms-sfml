@@ -11,6 +11,8 @@ class BlackHole : public Engine::GameObject<PCBlackHole, GCBlackHole, ICVoid>,
 {
 	friend GCBlackHole;
 	friend PCBlackHole;
+public:
+	DECLARE_RTTI(GameObject, BlackHole)
 
 public:
 	BlackHole();

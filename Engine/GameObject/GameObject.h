@@ -14,8 +14,11 @@ namespace Engine {
 	class IScene;
 
 
-	class IGameObject : public Tools::Composite<IGameObject>
+	class IGameObject : public Tools::Composite<IGameObject>, public HasRTTI
 	{
+	public:
+		DECLARE_RTTI(IGameObject, NoRTTIRoot)
+
 	public:
 		virtual ~IGameObject() {};
 
@@ -30,6 +33,9 @@ namespace Engine {
 	template<typename... MixinGameComponents>
 	class GameObject : public IGameObject, public MixinGameComponents...
 	{
+	public:
+		DECLARE_RTTI(GameObject, IGameObject)
+
 	public:
 		void processInput(sf::Event& inputEvent, IScene& scene) override
 		{
