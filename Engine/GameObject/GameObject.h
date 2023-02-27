@@ -34,9 +34,6 @@ namespace Engine {
 	class GameObject : public IGameObject, public MixinGameComponents...
 	{
 	public:
-		DECLARE_RTTI(GameObject, IGameObject)
-
-	public:
 		void processInput(sf::Event& inputEvent, IScene& scene) override
 		{
 			this->processInputImplementation(*this, inputEvent, scene);

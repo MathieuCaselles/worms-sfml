@@ -11,9 +11,6 @@ class ForceVolume : public Engine::GameObject<PCForceVolume, GCVoid, ICVoid>
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend PCForceVolume;
 
-public:
-	DECLARE_RTTI(GameObject, ForceVolume)
-
 
 private:
 	ForceVolume() = default;

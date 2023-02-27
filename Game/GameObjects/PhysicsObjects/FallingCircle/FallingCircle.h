@@ -13,8 +13,6 @@ class FallingCircle : public Engine::GameObject<PCVoid, GCFallingCircle, ICVoid>
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCFallingCircle;
 
-public:
-	DECLARE_RTTI(GameObject, FallingCircle)
 
 private:
 	FallingCircle();

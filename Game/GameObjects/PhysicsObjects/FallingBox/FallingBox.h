@@ -13,8 +13,6 @@ class FallingBox : public Engine::GameObject<PCVoid, GCFallingBox, ICVoid>,
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCFallingBox;
 
-public:
-	DECLARE_RTTI(GameObject, FallingBox)
 
 private: 
 	FallingBox();

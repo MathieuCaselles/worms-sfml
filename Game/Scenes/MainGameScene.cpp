@@ -15,6 +15,8 @@
 
 
 #include <utility>
+#include <string>
+#include <iostream>
 
 MainGameScene::MainGameScene()
 {
@@ -80,6 +82,19 @@ void MainGameScene::onBeginPlay()
 	// ---- Background
 	initBackground();
 
+
+	{
+
+		// Exemple d'utilisation  de findGameObject attention à bien check si c'est pas nullptr en cas d'objet non trouvé !
+		Button* go = static_cast<Button*>(
+			findGameObject([](Engine::IGameObject* gameObj) {
+				return 	gameObj->getInstanceRTTI() == Button::getClassRTTI();
+				})
+			);
+
+		std::cout << static_cast<std::string>(go->getText().getString()) << std::endl;
+
+	}
 }
 
 void MainGameScene::initTitle()

@@ -9,7 +9,7 @@
 class MapInfo : public Engine::GameObject<PCVoid, GCVoid, ICVoid>
 {
 public:
-	DECLARE_RTTI(GameObject, MapInfo)
+	DECLARE_RTTI(MapInfo, Engine::IGameObject)
 
 public:
 	MapInfo();
