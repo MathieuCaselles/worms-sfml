@@ -12,12 +12,16 @@ enum button_states { BUTTON_IDLE = 0, BUTTON_HOVER, BUTTON_PRESSED };
 
 
 class Button: public Engine::GameObject<ICButton, PCButton, GCButton> {
-public:
+	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+
+private:
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick);
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick, std::function<void(Button* button)> const& onRightClick);
 	Button(float x, float y, float width, float height, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
 	Button(float x, float y, float width, float height, std::string text, float sizeText, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
-	~Button();
+
+public:
+	~Button() = default;
 
 	const int& getButtonState();
 	virtual void setButtonState(button_states newState);
@@ -34,8 +38,8 @@ public:
 	void useOnLeftClick();
 	void useOnRightClick();
 
-	void initShape(float x, float y, float width, float height);
 protected:
+	void initShape(float x, float y, float width, float height);
 
 	button_states m_buttonState;
 

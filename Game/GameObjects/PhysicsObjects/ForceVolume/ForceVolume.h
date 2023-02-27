@@ -8,12 +8,15 @@
 
 class ForceVolume : public Engine::GameObject<PCForceVolume, GCVoid, ICVoid>
 {
+	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend PCForceVolume;
 
-public:
+private:
 	ForceVolume() = default;
-	explicit ForceVolume(const std::vector<IRigidBody*>& rigidBodies);
+	ForceVolume(const std::vector<IRigidBody*> rigidBodies, const sf::Vector2f& force = { 0.f, 0.f });
 
+public:
+	~ForceVolume() = default;
 	void addRigidBody(IRigidBody& rb);
 	void removeRigidBody(IRigidBody& rb);
 
@@ -23,6 +26,5 @@ public:
 
 protected:
 	std::vector<IRigidBody*> m_rigidBodies;
-	sf::Vector2f m_force { 0.f, 0.f };
-
+	sf::Vector2f m_force;
 };

@@ -3,6 +3,7 @@
 #include "../Game/Game.h"
 #include "../GameObject/GameObject.h"
 namespace Engine {
+	using GameObjects = std::vector<std::unique_ptr<IGameObject>>;
 
 	IScene::IScene() : m_window(*Game::GetInstance()->getWindow())
 	{
@@ -10,7 +11,6 @@ namespace Engine {
 
 	IScene::~IScene()
 	{
-		clearGameObjects();
 	}
 
 
@@ -32,7 +32,7 @@ namespace Engine {
 
 
 	void IScene::onBeginPlay() {
-		for (IGameObject* pGameObject : m_gameObjects)
+		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->onBeginPlay(*this);
 		}
@@ -40,7 +40,7 @@ namespace Engine {
 
 
 	void IScene::onEndPlay() {
-		for (IGameObject* pGameObject : m_gameObjects)
+		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->onEndPlay(*this);
 		}
@@ -49,7 +49,7 @@ namespace Engine {
 
 	void IScene::processInput(sf::Event& inputEvent)
 	{
-		for (IGameObject* pGameObject : m_gameObjects)
+		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->processInput(inputEvent, *this);
 		}
@@ -57,15 +57,16 @@ namespace Engine {
 
 	void IScene::update(const float& deltaTime)
 	{
-		for (IGameObject* pGameObject : m_gameObjects)
+		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->update(deltaTime, *this);
 		}
+
 	}
 
 	void IScene::render()
 	{
-		for (IGameObject* pGameObject : m_gameObjects)
+		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->render(m_window);
 		}
@@ -76,20 +77,16 @@ namespace Engine {
 
 	IGameObject* IScene::getGameObject(const size_t index)
 	{
-		return m_gameObjects.at(index);
+		return m_gameObjects.at(index).get();
 	}
 
-	std::vector<IGameObject*>& IScene::getGameObjects()
+	GameObjects& IScene::getGameObjects()
 	{
 		return m_gameObjects;
 	}
 
-	void IScene::clearGameObjects()
+	sf::RenderWindow& IScene::getWindow()
 	{
-		for (IGameObject* pGameObject : m_gameObjects)
-		{
-			delete pGameObject;
-		}
-		m_gameObjects.clear();
+		return m_window;
 	}
 }

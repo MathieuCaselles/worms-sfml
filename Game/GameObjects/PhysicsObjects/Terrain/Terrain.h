@@ -12,11 +12,15 @@
 class Terrain : public Engine::GameObject<PCTerrain, GCTerrain, ICVoid>,
                 public TerrainRigidBody
 {
+	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCTerrain;
 	friend PCTerrain;
 
-public:
+private:
 	Terrain(const PhysicsProperties& physicsProperties);
+
+public:
+	~Terrain() = default;
 	void onBeginPlay(Engine::IScene& scene) override;
 
 	void generateTerrain(const sf::Vector2f& windowSize);

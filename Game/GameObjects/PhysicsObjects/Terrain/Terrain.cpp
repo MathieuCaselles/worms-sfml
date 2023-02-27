@@ -5,6 +5,7 @@
 
 #include "Engine/Utility/PolygonHelper.h"
 #include "Game/Assets/GameColors.h"
+#include <Engine/Scene/Scene.h>
 
 constexpr int NUM_VERTEX_FOR_BASE_IMAGE = 30;
 constexpr sf::Uint8 HEIGHT_MAP_COLOR_INCERTITUDE = 40;
@@ -28,6 +29,11 @@ void Terrain::onBeginPlay(Engine::IScene& scene)
 	m_hitSurfaceNormalLine.setSize(sf::Vector2f(5, 80));
 	m_hitSurfaceNormalLine.setFillColor(sf::Color::Green);
 	m_hitSurfaceNormalLine.setOrigin(m_hitSurfaceNormalLine.getSize().x / 2, m_hitSurfaceNormalLine.getSize().y); // Bottom-centered
+
+	const auto windowSize = static_cast<sf::Vector2f>(scene.getWindow().getSize());
+
+	// ---- Terrain
+	generateTerrain(windowSize);
 }
 
 void Terrain::generateTerrain(const sf::Vector2f& windowSize)
