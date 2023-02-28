@@ -71,7 +71,7 @@ MainGameScene::MainGameScene()
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
-	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
+	// addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
 
 	addGameObjects(std::move(terrain));
 	addGameObjects(std::move(blackHole));
@@ -151,10 +151,10 @@ void MainGameScene::initBackground()
 }
 void MainGameScene::initOst()
 {
-	if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
-		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
-	m_ost.setLoop(true);
-	m_ost.play();
+	//if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
+	//	throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	//m_ost.setLoop(true);
+	//m_ost.play();
 }
 
 void MainGameScene::update(const float& deltaTime)

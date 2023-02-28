@@ -13,8 +13,8 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	switch (player.m_inputState)
 	{
 	case BUTTON_RIGHT:
-		//player.m_rbPosition.x += 150 * deltaTime;
-		player.addForce({ 60.f,0.f });
+		player.m_rbPosition.x += 150 * deltaTime;
+		//player.addForce({ 6000.f,0.f });
 		player.m_circleShape.setScale(-1.f, 1.f);
 		break;
 
@@ -25,7 +25,9 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 	case BUTTON_JUMP:
 		// TODO:Make jump
-		player.m_rbPosition.y -= 1000.f * deltaTime;
+		player.addForce({ 0.f,-3000.f });
+
+		//player.m_rbPosition.y -= 1000.f * deltaTime;
 		break;
 
 	case BUTTON_LEFTCLICK:
