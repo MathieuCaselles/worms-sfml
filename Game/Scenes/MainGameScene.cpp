@@ -24,8 +24,11 @@ MainGameScene::MainGameScene()
 {
 	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
-	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, true };
+	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
+
+	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.jpg"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
 
 	// ---- Entities
 	sf::CircleShape defaultCircleShape;
@@ -38,8 +41,8 @@ MainGameScene::MainGameScene()
 	sf::RectangleShape defaultRectShape;
 	defaultRectShape.setSize(sf::Vector2f(40.f, 40.f));
 	defaultRectShape.setOrigin(defaultRectShape.getSize().x / 2.f, defaultRectShape.getSize().y / 2.f);
-	defaultRectShape.setFillColor(GameColors::orange);
 	defaultRectShape.setOutlineColor(sf::Color::Black);
+	defaultRectShape.setTexture(&m_textureCalvin);
 	defaultRectShape.setOutlineThickness(1);
 
 	sf::CircleShape blackHoleShape(150, 40);
@@ -57,8 +60,8 @@ MainGameScene::MainGameScene()
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
+	// m_physicsWorld.addRigidBody(*fallingCircleOrange1);
+	// m_physicsWorld.addRigidBody(*fallingCircleOrange2);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
@@ -135,12 +138,23 @@ void MainGameScene::initBackground()
 	m_background.setSize({ 1920.f, 1080.f });
 	m_background.setTexture(&m_backgroundTexture);
 }
+void MainGameScene::initOst()
+{
+	if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	m_ost.setLoop(true);
+	m_ost.play();
+}
+PhysicsWorld& MainGameScene::getPhysicsWorld()
+{
+	return m_physicsWorld;
+}
+
 
 void MainGameScene::update(const float& deltaTime)
 {
-	//m_physicsWorld.step(deltaTime);
-
 	IScene::update(deltaTime);
+	m_physicsWorld.step(deltaTime);
 }
 
 void MainGameScene::render()
@@ -152,10 +166,4 @@ void MainGameScene::render()
 	IScene::render();
 }
 
-void MainGameScene::initOst()
-{
-	if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
-		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
-	m_ost.setLoop(true);
-	m_ost.play();
-}
+

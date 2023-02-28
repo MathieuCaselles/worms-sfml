@@ -23,6 +23,7 @@ public:
     void onBeginPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
+    PhysicsWorld& getPhysicsWorld();
 
 private:
     void initBackground();
@@ -43,4 +44,5 @@ private:
     sf::Music m_ost;
 
     sf::Texture m_backgroundTexture;
+    sf::Texture m_textureCalvin;
 };

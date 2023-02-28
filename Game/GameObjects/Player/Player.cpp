@@ -36,15 +36,15 @@ void Player::setButtonState(input_states newState)
 	switch (m_inputState)
 	{
 	case BUTTON_RIGHT:
-		m_rectangleShape.setPosition(m_rectangleShape.getPosition().x + 100.f, m_rectangleShape.getPosition().y);
+		m_rbPosition.x += 5;
 		break;
 
 	case BUTTON_LEFT:
-		m_rectangleShape.setPosition(m_rectangleShape.getPosition().x - 100.f, m_rectangleShape.getPosition().y);
+		m_rbPosition.x -= 5;
 		break;
 
 	case BUTTON_JUMP:
-		m_rectangleShape.setPosition(m_rectangleShape.getPosition().x, m_rectangleShape.getPosition().y - 100.f);
+		m_rbVelocity.y -= 1;
 		std::cout << "x:" << m_rectangleShape.getPosition().x << " y:" << m_rectangleShape.getPosition().y << std::endl;
 		break;
 
