@@ -25,6 +25,8 @@ public:
 	const int& getButtonState();
 	virtual void setButtonState(input_states new_state);
 
+	const bool getCanPlay();
+	void setCanPlay(bool newBool);
 
 private:
 	Player();
@@ -32,6 +34,6 @@ private:
 	Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 
 	sf::CircleShape m_circleShape;
-
+	bool m_canPlay = false;
 	input_states m_inputState;
 };

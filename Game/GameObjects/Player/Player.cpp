@@ -33,3 +33,14 @@ void Player::setButtonState(input_states newState)
 {
 	m_inputState = newState;
 }
+
+const bool Player::getCanPlay()
+{
+	return m_canPlay;
+}
+
+void Player::setCanPlay(bool newBool)
+{
+	m_canPlay = newBool;
+}
+
