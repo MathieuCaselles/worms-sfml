@@ -24,10 +24,10 @@ MainGameScene::MainGameScene()
 {
 	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
-	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
+	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 
-	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.jpg"))
+	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
 
 	// ---- Entities
@@ -41,9 +41,14 @@ MainGameScene::MainGameScene()
 	sf::RectangleShape defaultRectShape;
 	defaultRectShape.setSize(sf::Vector2f(40.f, 40.f));
 	defaultRectShape.setOrigin(defaultRectShape.getSize().x / 2.f, defaultRectShape.getSize().y / 2.f);
+	defaultCircleShape.setFillColor(GameColors::orange);
 	defaultRectShape.setOutlineColor(sf::Color::Black);
-	defaultRectShape.setTexture(&m_textureCalvin);
 	defaultRectShape.setOutlineThickness(1);
+
+	sf::CircleShape playerShape;
+	playerShape.setRadius(40);
+	playerShape.setOrigin(playerShape.getRadius(), playerShape.getRadius());
+	playerShape.setTexture(&m_textureCalvin);
 
 	sf::CircleShape blackHoleShape(150, 40);
 	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
@@ -53,15 +58,15 @@ MainGameScene::MainGameScene()
 
 	auto fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
 	auto fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(defaultRectShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
-	// m_physicsWorld.addRigidBody(*fallingCircleOrange1);
-	// m_physicsWorld.addRigidBody(*fallingCircleOrange2);
+	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
+	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
@@ -144,10 +149,6 @@ void MainGameScene::initOst()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	m_ost.setLoop(true);
 	m_ost.play();
-}
-PhysicsWorld& MainGameScene::getPhysicsWorld()
-{
-	return m_physicsWorld;
 }
 
 

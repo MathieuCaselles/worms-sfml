@@ -6,5 +6,5 @@ void GCPlayer::renderImplementation(Engine::IGameObject& gameObject, sf::RenderW
 {
 	const auto& player = reinterpret_cast<Player&>(gameObject);
 
-	window.draw(player.m_rectangleShape);
+	window.draw(player.m_circleShape);
 }

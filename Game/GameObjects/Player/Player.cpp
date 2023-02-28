@@ -3,25 +3,25 @@
 #include <iostream>
 
 Player::Player()
-	: Player(sf::RectangleShape(), {})
+	: Player(sf::CircleShape(), {})
 { }
 
-Player::Player(sf::RectangleShape rectangleShape, const PhysicsProperties& properties)
-	: Player(std::move(rectangleShape), properties, rectangleShape.getPosition(), rectangleShape.getRotation())
+Player::Player(sf::CircleShape circleShape, const PhysicsProperties& properties)
+	: Player(std::move(circleShape), properties, circleShape.getPosition(), circleShape.getRotation())
 { }
 
-Player::Player(sf::RectangleShape rectangleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
+Player::Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
-	BoxRigidBody(m_rectangleShape, properties),
-	m_rectangleShape(std::move(rectangleShape))
+	CircleRigidBody(m_circleShape, properties),
+	m_circleShape(std::move(circleShape))
 {
-	BoxRigidBody::updateMass();
+	CircleRigidBody::updateMass();
 
 	m_rbPosition = initialPosition;
 	m_rbRotation = initialRotation;
 
-	m_rectangleShape.setPosition(m_rbPosition);
-	m_rectangleShape.setRotation(m_rbRotation);
+	m_circleShape.setPosition(m_rbPosition);
+	m_circleShape.setRotation(m_rbRotation);
 }
 
 const int& Player::getButtonState()
@@ -37,19 +37,21 @@ void Player::setButtonState(input_states newState)
 	{
 	case BUTTON_RIGHT:
 		m_rbPosition.x += 5;
+		m_circleShape.setScale(-1.f,1.f);
 		break;
 
 	case BUTTON_LEFT:
 		m_rbPosition.x -= 5;
+		m_circleShape.setScale(1.f, 1.f);
 		break;
 
 	case BUTTON_JUMP:
-		m_rbVelocity.y -= 1;
-		std::cout << "x:" << m_rectangleShape.getPosition().x << " y:" << m_rectangleShape.getPosition().y << std::endl;
+		// TODO:Make jump
+		m_rbPosition.y -= 50.f;
 		break;
 
 	case BUTTON_LEFTCLICK:
-		m_rectangleShape.setPosition(m_rectangleShape.getPosition());
+		// TODO: Make shoot
 		std::cout << "clicked" << std::endl;
 		break;
 
