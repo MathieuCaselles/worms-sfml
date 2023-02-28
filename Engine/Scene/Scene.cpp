@@ -57,6 +57,8 @@ namespace Engine {
 
 	void IScene::update(const float& deltaTime)
 	{
+		m_physicsWorld.step(deltaTime);
+
 		for (const auto& pGameObject : m_gameObjects)
 		{
 			pGameObject->update(deltaTime, *this);

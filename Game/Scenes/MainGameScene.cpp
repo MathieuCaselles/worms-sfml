@@ -167,7 +167,6 @@ void MainGameScene::initOst()
 
 void MainGameScene::update(const float& deltaTime)
 {
-	m_physicsWorld.step(deltaTime);
 	IScene::update(deltaTime);
 }
 
