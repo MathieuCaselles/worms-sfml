@@ -40,7 +40,7 @@ public:
 		if(foundRbPtr == m_rbsCollidingWith.end()) // If not found
 		{
 			m_rbsCollidingWith.push_back(rb);
-			onCollisionEnter();
+			onCollisionEnter(rb);
 		}
 	}
 
@@ -50,7 +50,7 @@ public:
 		if (foundRbPtr != m_rbsCollidingWith.end()) // If found
 		{
 			m_rbsCollidingWith.erase(foundRbPtr);
-			onCollisionExit();
+			onCollisionExit(rb);
 		}
 	}
 
@@ -61,8 +61,10 @@ public:
 
 protected:
 	explicit IRigidBody(const PhysicsProperties& properties);
-	virtual void onCollisionEnter() {  }
-	virtual void onCollisionExit() { }
+	IRigidBody(const IRigidBody& rigidBody);
+
+	virtual void onCollisionEnter(IRigidBody* rb) {  }
+	virtual void onCollisionExit(IRigidBody* rb) { }
 
 	sf::Vector2f m_rbPosition;
 	sf::Vector2f m_rbVelocity;

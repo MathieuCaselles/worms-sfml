@@ -41,3 +41,7 @@ void IRigidBody::translate(const sf::Vector2f& movementVector)
 
 IRigidBody::IRigidBody(const PhysicsProperties& properties)
 	: m_rbProperties(properties) { }
+
+IRigidBody::IRigidBody(const IRigidBody& rigidBody)
+	: m_rbProperties(rigidBody.m_rbProperties)
+{ }

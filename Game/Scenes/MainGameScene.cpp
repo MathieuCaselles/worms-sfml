@@ -26,6 +26,7 @@ MainGameScene::MainGameScene()
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
+	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
@@ -61,22 +62,35 @@ MainGameScene::MainGameScene()
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
+	// ---- Grenade
+	sf::CircleShape grenadeShape(15);
+	grenadeShape.setFillColor(GameColors::iron);
+	grenadeShape.setOutlineColor(sf::Color::Black);
+	grenadeShape.setOutlineThickness(2);
+	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
+
+	auto grenade = Engine::GameObjectFactory::create<Grenade>(
+		grenadeShape,
+		grenadePhysicsProperties,
+		sf::Vector2f(500, 300),
+		sf::Vector2f(5.f * VectorUtils::Normalize(sf::Vector2f(1.f, -1.f))));
+
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
 	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
 	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
+	m_physicsWorld.addRigidBody(*grenade);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
-	// addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
-
 	addGameObjects(std::move(terrain));
 	addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2), std::move(wormPlayer1));
-	
+	addGameObjects(std::move(grenade));
+
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
@@ -108,12 +122,6 @@ void MainGameScene::onBeginPlay()
 
 	}
 }
-
-PhysicsWorld& MainGameScene::getPhysics()
-{
-	return m_physicsWorld;
-}
-
 
 void MainGameScene::initTitle()
 {

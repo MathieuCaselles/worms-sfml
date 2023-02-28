@@ -3,6 +3,7 @@
 #include "GCPlayer.h"
 #include "PCPlayer.h"
 #include "ICPlayer.h"
+#include "Game/GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.h"
 
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"

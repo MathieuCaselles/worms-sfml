@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Game/Assets/GameColors.h"
+
 Player::Player()
 	: Player(sf::CircleShape(), {})
 { }

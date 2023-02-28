@@ -12,6 +12,7 @@ public:
 
 public:
 	BoxRigidBody(sf::RectangleShape& rectangleShape, const PhysicsProperties& properties);
+	BoxRigidBody(const BoxRigidBody& boxRb) = default;
 	~BoxRigidBody() override = default;
 
 	void step(const float& deltaTime) override;
@@ -20,5 +21,5 @@ public:
 	[[nodiscard]] std::vector<sf::Vector2f> getTransformRectPoints() const;
 
 private:
-	sf::RectangleShape& m_rectangleShape;
+	sf::RectangleShape& m_rectangleCollisionShape;
 };

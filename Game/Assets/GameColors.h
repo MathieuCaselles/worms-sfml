@@ -11,6 +11,7 @@ namespace GameColors
 	static sf::Color dirty{ 129, 91, 91 };
 	static sf::Color orange{ 255, 149, 5 };
 	static sf::Color redBlood{ 133, 0, 0 };
+	static sf::Color iron{ 215, 215, 215 };
 
 
 	// ---- Terrain

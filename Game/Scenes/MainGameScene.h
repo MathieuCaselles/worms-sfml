@@ -23,16 +23,12 @@ public:
     void onBeginPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
-    PhysicsWorld& getPhysics();
 
 private:
     void initBackground();
     void initInformations();
     void initTitle();
     void initOst();
-
-    // ---- System
-    PhysicsWorld m_physicsWorld;
 
     // ---- Drawings
     sf::RectangleShape m_background;

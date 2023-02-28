@@ -18,6 +18,14 @@ public:
 		m_isTraversable(isTraversable)
 	{ }
 
+	void setActive(bool isActive) { m_isActive = isActive; }
+	bool IsActive() const { return m_isActive; }
+
+	/**
+	 * Is this object physics active or not
+	 */
+	bool m_isActive { true };
+
 	/**
 	 * World objects density table : https://www.thoughtco.com/table-of-densities-of-common-substances-603976
 	 */

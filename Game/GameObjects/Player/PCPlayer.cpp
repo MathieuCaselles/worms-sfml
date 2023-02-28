@@ -1,5 +1,8 @@
 #include "PCPlayer.h"
 #include "Player.h"
+#include "Engine/Utility/VectorUtils.h"
+#include "Game/Assets/GameColors.h"
+#include "Game/GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.h"
 #include "Game/Scenes/MainGameScene.h"
 
 void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
@@ -8,7 +11,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	// auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
 	// player.addForce()
 	// currentScene.getPhysics().getAllRigidBodies();
-	std::cout << player.m_rbPosition.x << std::endl;
+
 	// TODO: make move here
 	switch (player.m_inputState)
 	{
@@ -32,7 +35,24 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 	case BUTTON_LEFTCLICK:
 		// TODO: Make shoot
-		std::cout << "clicked" << std::endl;
+		{
+			sf::CircleShape grenadeShape(15);
+			grenadeShape.setFillColor(GameColors::iron);
+			grenadeShape.setOutlineColor(sf::Color::Black);
+			grenadeShape.setOutlineThickness(2);
+
+			PhysicsProperties physicsProperties(4.f, 0.3f);
+
+			//auto grenade = Engine::GameObjectFactory::create<Grenade>(
+			//	grenadeShape,
+			//	physicsProperties,
+			//	sf::Vector2f(player.getPosition().x, player.getPosition().y - 100.f),
+			//	sf::Vector2f(10.f * VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - player.getPosition())));
+
+			//scene.getPhysicsWorld().addRigidBody(*grenade);
+			//scene.addGameObjects(std::move(grenade));
+
+		}
 		break;
 
 	default:

@@ -19,9 +19,15 @@ void PhysicsWorld::step(const float& deltaTime) const
 	{
 		const auto rbA = m_rigidBodies[a];
 
+		if (!rbA->getProperties().IsActive())
+			continue;
+
 		for (int b = a + 1; b < static_cast<int>(m_rigidBodies.size()); ++b)
 		{
 			const auto rbB = m_rigidBodies[b];
+
+			if (!rbB->getProperties().IsActive())
+				continue;
 
 			// ---- Static bodies check
 			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic)

@@ -93,6 +93,11 @@ namespace Engine {
 		return m_gameObjects;
 	}
 
+	PhysicsWorld& IScene::getPhysicsWorld()
+	{
+		return m_physicsWorld;
+	}
+
 	sf::RenderWindow& IScene::getWindow()
 	{
 		return m_window;
