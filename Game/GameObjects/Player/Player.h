@@ -7,11 +7,13 @@
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
-enum input_states { BUTTON_IDLE = 0, BUTTON_RIGHT, BUTTON_LEFT, BUTTON_JUMP, BUTTON_LEFTCLICK };
+enum input_states { BUTTON, BUTTON_RIGHT, BUTTON_LEFT, BUTTON_JUMP, BUTTON_LEFTCLICK };
 
 class Player : public Engine::GameObject<PCPlayer, GCPlayer, ICPlayer>, 
 				public BoxRigidBody
 {
+	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+
 	friend PCPlayer;
 	friend GCPlayer;
 	friend ICPlayer;
