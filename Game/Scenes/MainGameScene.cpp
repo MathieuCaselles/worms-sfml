@@ -24,7 +24,7 @@ MainGameScene::MainGameScene()
 {
 	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
-	const PhysicsProperties playerPhysicsProperties{ 4.0f, 0.5f, false, false };
+	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
@@ -109,6 +109,12 @@ void MainGameScene::onBeginPlay()
 	}
 }
 
+PhysicsWorld& MainGameScene::getPhysics()
+{
+	return m_physicsWorld;
+}
+
+
 void MainGameScene::initTitle()
 {
 	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
@@ -151,11 +157,10 @@ void MainGameScene::initOst()
 	m_ost.play();
 }
 
-
 void MainGameScene::update(const float& deltaTime)
 {
-	IScene::update(deltaTime);
 	m_physicsWorld.step(deltaTime);
+	IScene::update(deltaTime);
 }
 
 void MainGameScene::render()

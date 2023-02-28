@@ -20,15 +20,17 @@ class Player : public Engine::GameObject<PCPlayer, GCPlayer, ICPlayer>,
 	friend ICPlayer;
 
 public:
-	Player();
-	Player(sf::CircleShape circleShape, const PhysicsProperties& properties);
-	Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 	~Player() override = default;
 
 	const int& getButtonState();
 	virtual void setButtonState(input_states new_state);
 
+
 private:
+	Player();
+	Player(sf::CircleShape circleShape, const PhysicsProperties& properties);
+	Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
+
 	sf::CircleShape m_circleShape;
 
 	input_states m_inputState;

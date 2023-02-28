@@ -11,10 +11,10 @@ void ICPlayer::processInputImplementation(Engine::IGameObject& gameObject, sf::E
 {
 	Player& button = reinterpret_cast<Player&>(gameObject);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
 		button.setButtonState(BUTTON_LEFT);
-	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		button.setButtonState(BUTTON_RIGHT);
 	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -23,6 +23,9 @@ void ICPlayer::processInputImplementation(Engine::IGameObject& gameObject, sf::E
 	} else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		button.setButtonState(BUTTON_LEFTCLICK);
+	} else
+	{
+		button.setButtonState(BUTTON);
 	}
 	
 }

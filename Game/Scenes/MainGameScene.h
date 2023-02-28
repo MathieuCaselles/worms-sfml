@@ -23,6 +23,7 @@ public:
     void onBeginPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
+    PhysicsWorld& getPhysics();
 
 private:
     void initBackground();

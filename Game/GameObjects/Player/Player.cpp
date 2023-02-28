@@ -32,31 +32,4 @@ const int& Player::getButtonState()
 void Player::setButtonState(input_states newState)
 {
 	m_inputState = newState;
-
-	switch (m_inputState)
-	{
-	case BUTTON_RIGHT:
-		m_rbPosition.x += 5;
-		m_circleShape.setScale(-1.f,1.f);
-		break;
-
-	case BUTTON_LEFT:
-		m_rbPosition.x -= 5;
-		m_circleShape.setScale(1.f, 1.f);
-		break;
-
-	case BUTTON_JUMP:
-		// TODO:Make jump
-		m_rbPosition.y -= 50.f;
-		break;
-
-	case BUTTON_LEFTCLICK:
-		// TODO: Make shoot
-		std::cout << "clicked" << std::endl;
-		break;
-
-	default:
-		
-		break;
-	}
 }
