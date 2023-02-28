@@ -13,6 +13,8 @@ enum button_states { BUTTON_IDLE = 0, BUTTON_HOVER, BUTTON_PRESSED };
 
 class Button: public Engine::GameObject<ICButton, PCButton, GCButton> {
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+public:
+	DECLARE_RTTI(Button, Engine::IGameObject)
 
 private:
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick);
@@ -29,7 +31,7 @@ public:
 	const sf::RectangleShape& getShape();
 	sf::RectangleShape& getEditableShape();
 
-	const sf::Text getText();
+	const sf::Text getText() const;
 
 	const sf::Color& getIdleColor();
 	const sf::Color& getHoverColor();

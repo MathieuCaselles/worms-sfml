@@ -97,7 +97,7 @@ sf::RectangleShape& Button::getEditableShape()
 	return m_shape;
 }
 
-const sf::Text Button::getText()
+const sf::Text Button::getText() const
 {
 	return m_text;
 }

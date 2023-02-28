@@ -19,7 +19,7 @@ private:
 class HasRTTI
 {
 public:
-    virtual RTTI* getInstanceRTTI() = 0;
+    const virtual RTTI* getInstanceRTTI() const = 0;
 };
 
 class NoRTTIRoot
@@ -30,4 +30,4 @@ public:
 
 #define DECLARE_RTTI(Classname, ParentType) \
     static RTTI* getClassRTTI() { static RTTI insaneRTTI{#Classname, ParentType::getClassRTTI()}; return &insaneRTTI; } \
-    virtual RTTI* getInstanceRTTI() { return getClassRTTI(); }
+    const virtual RTTI* getInstanceRTTI() const { return getClassRTTI(); }

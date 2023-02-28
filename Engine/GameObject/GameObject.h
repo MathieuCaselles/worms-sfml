@@ -14,8 +14,11 @@ namespace Engine {
 	class IScene;
 
 
-	class IGameObject : public Tools::Composite<IGameObject>
+	class IGameObject : public Tools::Composite<IGameObject>, public HasRTTI
 	{
+	public:
+		DECLARE_RTTI(IGameObject, NoRTTIRoot)
+
 	public:
 		virtual ~IGameObject() {};
 
