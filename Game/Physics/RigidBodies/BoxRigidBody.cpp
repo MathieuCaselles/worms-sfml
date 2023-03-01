@@ -2,10 +2,15 @@
 
 #include "Game/Physics/PhysicsWorld.h"
 
-BoxRigidBody::BoxRigidBody(sf::RectangleShape& rectangleShape, const PhysicsProperties& properties)
+BoxRigidBody::BoxRigidBody(const sf::RectangleShape& rectangleShape, const PhysicsProperties& properties)
 	: IRigidBody(properties),
 	m_rectangleCollisionShape(rectangleShape)
-{ }
+{
+	m_rectangleCollisionShape.setFillColor(sf::Color(0, 0, 0, 0));
+	m_rectangleCollisionShape.setOutlineColor(sf::Color(0, 0, 0, 0));
+
+	m_rectangleCollisionShape.setOrigin(m_rectangleCollisionShape.getSize().x / 2, m_rectangleCollisionShape.getSize().y / 2);
+}
 
 void BoxRigidBody::step(const float& deltaTime)
 {

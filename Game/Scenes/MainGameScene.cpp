@@ -17,7 +17,6 @@
 
 MainGameScene::MainGameScene()
 {
-	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
