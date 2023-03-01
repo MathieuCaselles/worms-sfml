@@ -2,15 +2,12 @@
 
 #include "MainMenuScene.h"
 #include "Engine/Game/Game.h"
-#include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
 
-#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBox.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
 
 #include "Game/GameObjects/UI/HUD.h"
-
 
 #include <utility>
 #include <string>
