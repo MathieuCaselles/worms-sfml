@@ -47,6 +47,7 @@ protected:
 
 	sf::RectangleShape m_shape;
 	sf::Text m_text;
+	sf::Font m_font;
 
 
 	sf::Color m_idleColor;

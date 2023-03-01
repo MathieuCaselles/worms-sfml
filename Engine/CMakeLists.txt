@@ -24,8 +24,4 @@ target_sources(Engine PRIVATE
    "Utility/PolygonHelper.h" "Utility/PolygonHelper.cpp"
    "Utility/MathUtils.h" "Utility/MathUtils.cpp"
    "Utility/CollisionUtils.h" "Utility/CollisionUtils.cpp"
-   "Utility/RTTI.h" 
-   "Dictionaries/Dictionary.h" 
-   "Dictionaries/SoundBuffersDictionary.h"  
-
- "Dictionaries/FontsDictionary.h" "Dictionaries/MusicsDictionary.h")
+   "Utility/RTTI.h")

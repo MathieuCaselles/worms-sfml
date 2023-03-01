@@ -1,7 +1,5 @@
 #include "Button.h"
 
-#include <Engine/Dictionaries/FontsDictionary.h>
-
 Button::Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick) :
 	m_buttonState(BUTTON_IDLE), m_idleColor(sf::Color::White), m_hoverColor(sf::Color::White), m_pressedColor(sf::Color::White), m_callbackOnLeftClick(onLeftClick), m_callbackOnRightClick(nullptr)
 {
@@ -21,8 +19,11 @@ Button::Button(float x, float y, float width, float height, std::string text, sf
 	initShape(x, y, width, height);
 
 
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::BUTTTON::COULD NOT LOAD FONT");
+	}
 
-	m_text.setFont(Engine::FontsDictionary::get("WormsFont.ttf"));
+	m_text.setFont(m_font);
 
 	m_text.setString(text);
 	m_text.setFillColor(sf::Color::White);
@@ -40,7 +41,12 @@ Button::Button(float x, float y, float width, float height, std::string text, fl
 {
 	initShape(x, y, width, height);
 
-	m_text.setFont(Engine::FontsDictionary::get("WormsFont.ttf"));
+
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::BUTTTON::COULD NOT LOAD FONT");
+	}
+
+	m_text.setFont(m_font);
 
 	m_text.setString(text);
 	m_text.setFillColor(sf::Color::White);
