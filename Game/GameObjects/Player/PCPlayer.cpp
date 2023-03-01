@@ -5,7 +5,8 @@
 void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
 	auto& player = reinterpret_cast<Player&>(gameObject);
-	
+	auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
+
 	if (player.getCanPlay())
 	{
 		switch (player.m_inputState)
@@ -29,6 +30,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 		case BUTTON_LEFTCLICK:
 			// TODO: Make shoot
+			currentScene.m_changeTurn = true;
 			std::cout << "clicked" << std::endl;
 			break;
 

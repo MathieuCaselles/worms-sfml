@@ -168,21 +168,21 @@ void MainGameScene::initTime()
 	m_timeLeft.setPosition(80, 200);
 }
 
-
 void MainGameScene::updateTimeLeft()
 {
 	m_elapsed = m_clock.getElapsedTime();
-	if (m_elapsed.asSeconds() >= 5.f)
+	if (m_elapsed.asSeconds() >= 10.f || m_changeTurn)
 	{
+		m_changeTurn = false;
 		m_wormPlayer1->setCanPlay(!m_wormPlayer1->getCanPlay());
 		m_wormPlayer2->setCanPlay(!m_wormPlayer2->getCanPlay());
 		m_clock.restart();
 	}
 	
 	if (m_wormPlayer1->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(5 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
+		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(10 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
 	else
-		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(5 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
+		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(10 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
 }
 
 

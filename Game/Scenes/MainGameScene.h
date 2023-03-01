@@ -25,7 +25,7 @@ public:
     void onBeginPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
-
+    bool m_changeTurn;
 private:
     void initBackground();
     void initInformations();
@@ -43,6 +43,8 @@ private:
     // ---- Players
 	Player* m_wormPlayer1;
     Player* m_wormPlayer2;
+
+    // ---- Game
 
     sf::Text m_title;
     sf::Text m_wind;
