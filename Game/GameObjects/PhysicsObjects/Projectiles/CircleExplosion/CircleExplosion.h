@@ -7,7 +7,7 @@
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 
 class CircleExplosion : public Engine::GameObject<PCCircleExplosion, GCCircleExplosion, ICVoid>,
-						public CircleRigidBody
+                        public CircleRigidBody
 {
 	friend class Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend PCCircleExplosion;
@@ -16,11 +16,11 @@ class CircleExplosion : public Engine::GameObject<PCCircleExplosion, GCCircleExp
 public:
 	~CircleExplosion() override = default;
 
+	sf::CircleShape& getExplosionCircleShape() { return m_explosionCircleShape; }
+
 private:
 	CircleExplosion();
 	CircleExplosion(const sf::CircleShape& circleShape);
-
-	void onCollisionEnter(IRigidBody* rb) override;
 
 private:
 	sf::CircleShape m_explosionCircleShape;

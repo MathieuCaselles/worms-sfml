@@ -20,10 +20,3 @@ CircleExplosion::CircleExplosion(const sf::CircleShape& circleShape)
 
 	setIsActive(false);
 }
-
-void CircleExplosion::onCollisionEnter(IRigidBody* rb)
-{
-	CircleRigidBody::onCollisionEnter(rb);
-
-	setIsActive(false);
-}

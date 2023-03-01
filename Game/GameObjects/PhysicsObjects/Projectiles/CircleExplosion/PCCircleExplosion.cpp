@@ -9,6 +9,5 @@ void PCCircleExplosion::updateImplementation(const float& deltaTime, Engine::IGa
 	auto& circleExplosion = reinterpret_cast<CircleExplosion&>(gameObject);
 	auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
 
-	circleExplosion.m_explosionCircleShape.setPosition(circleExplosion.m_rbPosition);
-	circleExplosion.m_explosionCircleShape.setRotation(circleExplosion.m_rbRotation);
+
 }

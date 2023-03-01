@@ -153,13 +153,7 @@ void MainGameScene::initOst()
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	if (m_grenade->isActive()) // Already spawned
-		return;
-
-	m_grenade->setVelocity(direction * m_grenade->getLaunchForce());
-	m_grenade->setPosition(position);
-
-	m_grenade->setIsActive(true);
+	m_grenade->shot(position, direction);
 }
 
 void MainGameScene::update(const float& deltaTime)

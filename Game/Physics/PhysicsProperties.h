@@ -27,9 +27,6 @@ public:
 		m_isTraversable(isTraversable)
 	{ }
 
-	void setActive(bool isActive) { m_isActive = isActive; }
-	bool IsActive() const { return m_isActive; }
-
 	/**
 	 * Is this object physics active or not
 	 */

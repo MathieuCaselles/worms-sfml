@@ -19,18 +19,18 @@ void PhysicsWorld::step(const float& deltaTime) const
 	{
 		const auto rbA = m_rigidBodies[a];
 
-		if (!rbA->getProperties().IsActive())
+		if (!rbA->getPhysicsProperties().m_isActive)
 			continue;
 
 		for (int b = a + 1; b < static_cast<int>(m_rigidBodies.size()); ++b)
 		{
 			const auto rbB = m_rigidBodies[b];
 
-			if (!rbB->getProperties().IsActive())
+			if (!rbB->getPhysicsProperties().m_isActive)
 				continue;
 
 			// ---- Static bodies check
-			if (rbA->getProperties().m_isStatic && rbB->getProperties().m_isStatic)
+			if (rbA->getPhysicsProperties().m_isStatic && rbB->getPhysicsProperties().m_isStatic)
 				continue;
 
 			CollisionUtils::HitResult hitResult;
@@ -40,7 +40,7 @@ void PhysicsWorld::step(const float& deltaTime) const
 				rbB->tryOnCollisionEnter(rbA);
 
 				// ---- Traversable bodies check
-				if (rbA->getProperties().m_isTraversable || rbB->getProperties().m_isTraversable)
+				if (rbA->getPhysicsProperties().m_isTraversable || rbB->getPhysicsProperties().m_isTraversable)
 					continue;
 
 				// ---- Move bodies apart
@@ -50,7 +50,7 @@ void PhysicsWorld::step(const float& deltaTime) const
 				rbB->translate(-depthTranslation);
 
 				// ---- Bounce off bodies check
-				if (!rbA->getProperties().m_canBounceOff && !rbB->getProperties().m_canBounceOff)
+				if (!rbA->getPhysicsProperties().m_canBounceOff && !rbB->getPhysicsProperties().m_canBounceOff)
 					continue;
 
 				const auto relativeVelocity = rbB->getVelocity() - rbA->getVelocity();
@@ -60,18 +60,18 @@ void PhysicsWorld::step(const float& deltaTime) const
 					continue;
 
 				// ---- Bounce calculations and velocity changing
-				const auto e = std::min(rbA->getProperties().m_bounciness, rbB->getProperties().m_bounciness);
+				const auto e = std::min(rbA->getPhysicsProperties().m_bounciness, rbB->getPhysicsProperties().m_bounciness);
 
 				const auto j = -(1.f + e) * VectorUtils::Dot(relativeVelocity, hitResult.normal) /
-					(rbA->getProperties().m_invMass + rbB->getProperties().m_invMass);
+					(rbA->getPhysicsProperties().m_invMass + rbB->getPhysicsProperties().m_invMass);
 
 				const auto impulse = j * hitResult.normal;
 
-				rbA->setVelocity(rbA->getProperties().m_canBounceOff ?
-					rbA->getVelocity() - impulse * rbA->getProperties().m_invMass : VectorUtils::zero);
+				rbA->setVelocity(rbA->getPhysicsProperties().m_canBounceOff ?
+					rbA->getVelocity() - impulse * rbA->getPhysicsProperties().m_invMass : VectorUtils::zero);
 
-				rbB->setVelocity(rbB->getProperties().m_canBounceOff ?
-					rbB->getVelocity() + impulse * rbB->getProperties().m_invMass : VectorUtils::zero);
+				rbB->setVelocity(rbB->getPhysicsProperties().m_canBounceOff ?
+					rbB->getVelocity() + impulse * rbB->getPhysicsProperties().m_invMass : VectorUtils::zero);
 			}
 			else // If not collision
 			{
