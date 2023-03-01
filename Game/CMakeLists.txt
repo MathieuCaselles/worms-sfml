@@ -48,4 +48,7 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/BlackHole/GCBlackHole.h" "GameObjects/PhysicsObjects/BlackHole/GCBlackHole.cpp"
 
  "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/ForceVolume.cpp" 
- "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp")
+ "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp"
+
+ "GameObjects/Player/Player.h" "GameObjects/Player/Player.cpp" "GameObjects/Player/GCPlayer.h" "GameObjects/Player/GCPlayer.cpp"
+ "GameObjects/Player/ICPlayer.h" "GameObjects/Player/ICPlayer.cpp" "GameObjects/Player/PCPlayer.h" "GameObjects/Player/PCPlayer.cpp")
