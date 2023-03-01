@@ -1,30 +1,33 @@
 #pragma once
 
 #include "GCGrenade.h"
+#include "PCGrenade.h"
 #include "Game/Components/InputComponents/ICVoid.h"
-#include "Game/Components/PhysicsComponents/PCVoid.h"
 
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "Game/Physics/PhysicsProperties.h"
 
-class Grenade : public Engine::GameObject<PCVoid, GCGrenade, ICVoid>,
+class Grenade : public Engine::GameObject<PCGrenade, GCGrenade, ICVoid>,
 				public CircleRigidBody
 {
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCGrenade;
-
-private:
-	Grenade();
-	Grenade(const Grenade& grenade) = default;
-	Grenade(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition = {}, const sf::Vector2f& initialVelocity = {});
-
-	void onCollisionEnter(IRigidBody* rb) override;
+	friend PCGrenade;
 
 public:
 	~Grenade() override = default;
 
-	[[nodiscard]] const sf::CircleShape& getCircleShape() const { return m_circleShape; }
+	void setLaunchForce(float force) { m_launchForce = force; }
+	float getLaunchForce() const { return m_launchForce; }
+
+private:
+	Grenade();
+	Grenade(const Grenade& grenade) = default;
+	Grenade(sf::CircleShape circleShape, const PhysicsProperties& properties);
+
+	void onCollisionEnter(IRigidBody* rb) override;
 
 private:
 	sf::CircleShape m_circleShape;
+	float m_launchForce{ 10.f };
 };

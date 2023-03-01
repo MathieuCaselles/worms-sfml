@@ -6,9 +6,7 @@
 #include "Game/Assets/GameColors.h"
 
 #include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBox.h"
-#include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
-#include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
 #include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
 
 #include "Game/GameObjects/UI/HUD.h"
@@ -57,27 +55,23 @@ MainGameScene::MainGameScene()
 	blackHoleShape.setOutlineColor(GameColors::nightPurple);
 	blackHoleShape.setOutlineThickness(6);
 
-		auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
-	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
-
-	// ---- Grenade
 	sf::CircleShape grenadeShape(15);
 	grenadeShape.setFillColor(GameColors::iron);
 	grenadeShape.setOutlineColor(sf::Color::Black);
 	grenadeShape.setOutlineThickness(2);
 	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
 
-	auto grenade = Engine::GameObjectFactory::create<Grenade>(
-		grenadeShape,
-		grenadePhysicsProperties,
-		sf::Vector2f(500, 300),
-		sf::Vector2f(7.f * VectorUtils::Normalize(sf::Vector2f(1.f, -1.f))));
+	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
+	m_grenade = grenade.get();
+
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
-	m_physicsWorld.addRigidBody(*grenade);
+	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
@@ -159,6 +153,17 @@ void MainGameScene::initOst()
 	//	throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	//m_ost.setLoop(true);
 	//m_ost.play();
+}
+
+void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
+{
+	if (m_grenade->isActive()) // Already spawned
+		return;
+
+	m_grenade->setVelocity(direction * m_grenade->getLaunchForce());
+	m_grenade->setPosition(position);
+
+	m_grenade->setIsActive(true);
 }
 
 void MainGameScene::update(const float& deltaTime)

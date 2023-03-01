@@ -1,29 +1,15 @@
 #include "Player.h"
 
-#include <iostream>
-
-#include "Game/Assets/GameColors.h"
-
-Player::Player()
-	: Player(sf::CircleShape(), {})
-{ }
-
-Player::Player(sf::CircleShape circleShape, const PhysicsProperties& properties)
-	: Player(std::move(circleShape), properties, circleShape.getPosition(), circleShape.getRotation())
-{ }
-
-Player::Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
+Player::Player(const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
-	CircleRigidBody(m_circleShape, properties),
-	m_circleShape(std::move(circleShape))
+	CircleRigidBody(circleShape, properties),
+	m_playerShape(circleShape)
 {
 	CircleRigidBody::updateMass();
 
 	m_rbPosition = initialPosition;
-	m_rbRotation = initialRotation;
 
-	m_circleShape.setPosition(m_rbPosition);
-	m_circleShape.setRotation(m_rbRotation);
+	m_playerShape.setPosition(m_rbPosition);
 }
 
 const int& Player::getButtonState()

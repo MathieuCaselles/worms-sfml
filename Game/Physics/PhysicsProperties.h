@@ -8,6 +8,15 @@ constexpr float PHYSICS_UNIT_METER_PER_PIXEL = 0.01f;
 struct PhysicsProperties
 {
 public:
+	enum class CollisionLayer
+	{
+		DEFAULT,
+		PLAYER,
+		TERRAIN,
+		PROJECTILE,
+		COUNT
+	};
+
 	PhysicsProperties() = default;
 
 	PhysicsProperties(float density, float bounciness, bool isStatic = false, bool canBounceOff = true, bool isTraversable = false) :

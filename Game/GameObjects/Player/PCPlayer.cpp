@@ -8,7 +8,10 @@
 void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
 	auto& player = reinterpret_cast<Player&>(gameObject);
-	// auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
+	auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
+
+	player.m_playerShape.setPosition(player.m_rbPosition);
+
 	// player.addForce()
 	// currentScene.getPhysics().getAllRigidBodies();
 
@@ -18,12 +21,12 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	case BUTTON_RIGHT:
 		player.m_rbPosition.x += 150 * deltaTime;
 		//player.addForce({ 6000.f,0.f });
-		player.m_circleShape.setScale(-1.f, 1.f);
+		player.m_playerShape.setScale(-1.f, 1.f);
 		break;
 
 	case BUTTON_LEFT:
 		player.m_rbPosition.x -= 150 * deltaTime;
-		player.m_circleShape.setScale(1.f, 1.f);
+		player.m_playerShape.setScale(1.f, 1.f);
 		break;
 
 	case BUTTON_JUMP:
@@ -36,21 +39,12 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	case BUTTON_LEFTCLICK:
 		// TODO: Make shoot
 		{
-			sf::CircleShape grenadeShape(15);
-			grenadeShape.setFillColor(GameColors::iron);
-			grenadeShape.setOutlineColor(sf::Color::Black);
-			grenadeShape.setOutlineThickness(2);
+			const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 50.f);
 
-			PhysicsProperties physicsProperties(4.f, 0.3f);
-
-			//auto grenade = Engine::GameObjectFactory::create<Grenade>(
-			//	grenadeShape,
-			//	physicsProperties,
-			//	sf::Vector2f(player.getPosition().x, player.getPosition().y - 100.f),
-			//	sf::Vector2f(10.f * VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - player.getPosition())));
-
-			//scene.getPhysicsWorld().addRigidBody(*grenade);
-			//scene.addGameObjects(std::move(grenade));
+			currentScene.spawnGrenade(
+				grenadeSpawnPoint,
+				VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - grenadeSpawnPoint)
+			);
 
 		}
 		break;

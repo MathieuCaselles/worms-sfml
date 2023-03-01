@@ -2,10 +2,15 @@
 
 #include "Engine/Utility/MathUtils.h"
 
-CircleRigidBody::CircleRigidBody(sf::CircleShape& circleShape, const PhysicsProperties& properties)
+CircleRigidBody::CircleRigidBody(const sf::CircleShape& circleCollisionShape, const PhysicsProperties& properties)
 	: IRigidBody(properties),
-	  m_circleCollisionShape(circleShape)
-{ }
+	  m_circleCollisionShape(circleCollisionShape)
+{
+	m_circleCollisionShape.setFillColor(sf::Color(0, 0, 0, 0));
+	m_circleCollisionShape.setOutlineColor(sf::Color(0, 0, 0, 0));
+
+	m_circleCollisionShape.setOrigin(circleCollisionShape.getRadius(), circleCollisionShape.getRadius());
+}
 
 void CircleRigidBody::step(const float& deltaTime)
 {

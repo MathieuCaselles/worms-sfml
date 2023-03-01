@@ -28,11 +28,9 @@ public:
 
 
 private:
-	Player();
-	Player(sf::CircleShape circleShape, const PhysicsProperties& properties);
-	Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
+	Player(const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition);
 
-	sf::CircleShape m_circleShape;
+	sf::CircleShape m_playerShape;
 
 	input_states m_inputState;
 };

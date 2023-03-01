@@ -2,17 +2,11 @@
 
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
-#include "Game/Physics/PhysicsWorld.h"
 
 #include "SFML/Audio/Music.hpp"
 
-class BlackHole;
-class ForceVolume;
+class Grenade;
 class PhysicsWorld;
-class Terrain;
-class FallingBox;
-class FallingCircle;
-class HUD;
 
 class MainGameScene : public Engine::IScene
 {
@@ -24,11 +18,16 @@ public:
     void update(const float& deltaTime) override;
 	void render() override;
 
+    void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
+
 private:
     void initBackground();
     void initInformations();
     void initTitle();
     void initOst();
+
+    // ---- Grenade
+    Grenade* m_grenade;
 
     // ---- Drawings
     sf::RectangleShape m_background;
