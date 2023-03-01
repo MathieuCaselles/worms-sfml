@@ -39,6 +39,26 @@ void IRigidBody::translate(const sf::Vector2f& movementVector)
 	}
 }
 
+void IRigidBody::tryOnCollisionEnter(IRigidBody* rb)
+{
+	const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+	if (foundRbPtr == m_rbsCollidingWith.end()) // If not found
+	{
+		m_rbsCollidingWith.push_back(rb);
+		onCollisionEnter(rb);
+	}
+}
+
+void IRigidBody::tryOnCollisionExit(IRigidBody* rb)
+{
+	const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+	if (foundRbPtr != m_rbsCollidingWith.end()) // If found
+	{
+		m_rbsCollidingWith.erase(foundRbPtr);
+		onCollisionExit(rb);
+	}
+}
+
 IRigidBody::IRigidBody(const PhysicsProperties& properties)
 	: m_rbProperties(properties) { }
 

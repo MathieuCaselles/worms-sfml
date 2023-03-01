@@ -57,9 +57,7 @@ MainGameScene::MainGameScene()
 	blackHoleShape.setOutlineColor(GameColors::nightPurple);
 	blackHoleShape.setOutlineThickness(6);
 
-	auto fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
-	auto fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+		auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
 	// ---- Grenade
@@ -73,14 +71,12 @@ MainGameScene::MainGameScene()
 		grenadeShape,
 		grenadePhysicsProperties,
 		sf::Vector2f(500, 300),
-		sf::Vector2f(5.f * VectorUtils::Normalize(sf::Vector2f(1.f, -1.f))));
+		sf::Vector2f(7.f * VectorUtils::Normalize(sf::Vector2f(1.f, -1.f))));
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
 	m_physicsWorld.addRigidBody(*grenade);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
@@ -88,7 +84,7 @@ MainGameScene::MainGameScene()
 	// ---- Adding gameObjects in order
 	addGameObjects(std::move(terrain));
 	addGameObjects(std::move(blackHole));
-	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2), std::move(wormPlayer1));
+	addGameObjects(std::move(wormPlayer1));
 	addGameObjects(std::move(grenade));
 
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,

@@ -26,5 +26,4 @@ void Grenade::onCollisionEnter(IRigidBody* rb)
 {
 	CircleRigidBody::onCollisionEnter(rb);
 
-	//Grenade::~Grenade();
 }
