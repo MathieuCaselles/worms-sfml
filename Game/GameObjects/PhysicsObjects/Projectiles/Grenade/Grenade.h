@@ -10,7 +10,7 @@
 class Grenade : public Engine::GameObject<PCGrenade, GCGrenade, ICVoid>,
 				public CircleRigidBody
 {
-	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+	friend class Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 	friend GCGrenade;
 	friend PCGrenade;
 

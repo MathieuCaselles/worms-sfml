@@ -33,7 +33,7 @@ public:
 	[[nodiscard]] sf::Vector2f getPosition() const { return m_rbPosition; }
 	[[nodiscard]] sf::Vector2f getVelocity() const { return m_rbVelocity; }
 	[[nodiscard]] float getAngularVelocity() const { return m_rbAngularVelocity; }
-	[[nodiscard]] PhysicsProperties getProperties() const { return m_rbProperties; }
+	[[nodiscard]] PhysicsProperties& getProperties() { return m_rbProperties; }
 
 	void tryOnCollisionEnter(IRigidBody* rb);
 	void tryOnCollisionExit(IRigidBody* rb);
