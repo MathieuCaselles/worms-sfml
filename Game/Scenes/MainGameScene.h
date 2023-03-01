@@ -61,7 +61,6 @@ private:
     sf::Music m_ost;
 
     sf::Clock m_clock;
-    sf::Clock clock;
     int m_elapsed;
 
     bool m_changeTurn = false;
