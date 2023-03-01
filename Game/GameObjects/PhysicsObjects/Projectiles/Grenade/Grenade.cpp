@@ -28,8 +28,8 @@ void Grenade::onBeginPlay(Engine::IScene& scene)
 	auto circleExplosion = Engine::GameObjectFactory::create<CircleExplosion>(explosionShape);
 	m_circleExplosion = circleExplosion.get();
 
-	scene.addNewGameObjects(std::move(circleExplosion));
 	scene.getPhysicsWorld().addRigidBody(*m_circleExplosion);
+	scene.addNewGameObjects(std::move(circleExplosion));
 
 	// ----
 	updateGrenadeActivation(false, false);
@@ -37,8 +37,8 @@ void Grenade::onBeginPlay(Engine::IScene& scene)
 
 void Grenade::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	if (isActive()) // Already spawned
-		return;
+	if (isActive())
+		return; // Already spawned
 
 	setVelocity(direction * m_launchForce);
 	setPosition(position);
@@ -74,11 +74,11 @@ void Grenade::onCollisionEnter(IRigidBody* rb)
 
 void Grenade::updateGrenadeActivation(bool showGrenade, bool showExplosion)
 {
-	setIsActive(showGrenade);
 	getPhysicsProperties().m_isActive = showGrenade;
+	setIsActive(showGrenade);
 
-	m_circleExplosion->setIsActive(showExplosion);
 	m_circleExplosion->getPhysicsProperties().m_isActive = showExplosion;
+	m_circleExplosion->setIsActive(showExplosion);
 
 	m_currentTime = 0;
 }

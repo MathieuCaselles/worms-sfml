@@ -27,6 +27,7 @@ public:
 	void translate(const sf::Vector2f& movementVector);
 
 	void setPosition(const sf::Vector2f& position) { m_rbPosition = position; }
+	void setRotation(float rotation)			   { m_rbRotation = rotation; }
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 	void setAngularVelocity(float angularVelocity) { m_rbAngularVelocity = angularVelocity; }
 

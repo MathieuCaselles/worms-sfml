@@ -1,6 +1,7 @@
 #include "PhysicsWorld.h"
 
 #include "Engine/Utility/VectorUtils.h"
+#include "Game/GameObjects/Player/Player.h"
 #include "Game/Physics/RigidBodies/BoxRigidBody.h"
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 #include "Game/Physics/RigidBodies/IRigidBody.h"

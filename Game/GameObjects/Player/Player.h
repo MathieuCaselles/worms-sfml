@@ -14,13 +14,13 @@ enum input_states { BUTTON, BUTTON_RIGHT, BUTTON_LEFT, BUTTON_JUMP, BUTTON_LEFTC
 class Player : public Engine::GameObject<PCPlayer, GCPlayer, ICPlayer>, 
 				public CircleRigidBody
 {
-	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+public:
+	friend class Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
 
 	friend PCPlayer;
 	friend GCPlayer;
 	friend ICPlayer;
 
-public:
 	~Player() override = default;
 
 	const int& getButtonState();

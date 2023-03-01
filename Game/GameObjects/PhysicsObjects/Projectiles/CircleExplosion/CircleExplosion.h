@@ -17,7 +17,8 @@ public:
 	~CircleExplosion() override = default;
 
 	void setDurationExplosion(float duration) { m_durationExplosion = duration; }
-	sf::CircleShape& getExplosionCircleShape() { return m_explosionCircleShape; }
+
+	void onCollisionEnter(IRigidBody* rb) override;
 
 private:
 	CircleExplosion();
@@ -26,7 +27,7 @@ private:
 private:
 	sf::CircleShape m_explosionCircleShape;
 
-	float m_durationExplosion{ 0.5f };
+	float m_durationExplosion{ .5f };
 	float m_currentTime{ 0.f };
 
 };
