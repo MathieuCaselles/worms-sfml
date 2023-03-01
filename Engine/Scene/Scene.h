@@ -32,6 +32,9 @@ namespace Engine {
         template <typename... Args>
         void addGameObjects(Args... gameObjects);
 
+        template <typename... Args>
+        void addNewGameObjects(Args... gameObjects);
+
         IGameObject* getGameObject(const size_t index);
         IGameObject* findGameObject(std::function<bool(const IGameObject* gameObject)> const& condition);
 
@@ -44,15 +47,23 @@ namespace Engine {
     protected:
         sf::RenderWindow& m_window;
         GameObjects m_gameObjects;
-    };
-}
+        GameObjects m_newGameObjects;
 
-namespace Engine {
+    private:
+         void moveNewGameObjects();
+    };
+
 
     template<typename ...Args>
     inline void IScene::addGameObjects(Args ...gameObjects)
     {
         (m_gameObjects.push_back(std::move(gameObjects)), ...);
+    }
+
+    template<typename ...Args>
+    inline void IScene::addNewGameObjects(Args ...gameObjects)
+    {
+        (m_newGameObjects.push_back(std::move(gameObjects)), ...);
     }
 
 }

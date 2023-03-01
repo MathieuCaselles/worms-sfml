@@ -5,7 +5,7 @@
 namespace Engine {
 	using GameObjects = std::vector<std::unique_ptr<IGameObject>>;
 
-	IScene::IScene() : m_window(*Game::GetInstance()->getWindow())
+	IScene::IScene() : m_window(*GameInstance::GetInstance()->getWindow())
 	{
 	}
 
@@ -57,11 +57,20 @@ namespace Engine {
 
 	void IScene::update(const float& deltaTime)
 	{
-		for (const auto& pGameObject : m_gameObjects)
-		{
-			pGameObject->update(deltaTime, *this);
+		for (auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ) {
+			IGameObject* gameObject = (*it).get();
+
+			if (gameObject == nullptr || gameObject->isWaitingToBeDestroyed()) {
+				gameObject->onEndPlay(*this);
+				it = m_gameObjects.erase(it);
+			}
+			else {
+				gameObject->update(deltaTime, *this);
+				++it;
+			}
 		}
 
+		moveNewGameObjects();
 	}
 
 	void IScene::render()
@@ -71,8 +80,17 @@ namespace Engine {
 			pGameObject->render(m_window);
 		}
 	}
-
-
+	void IScene::moveNewGameObjects()
+	{
+		if (!m_newGameObjects.empty())
+		{
+			for (auto& newGameObject : m_newGameObjects) {
+				newGameObject->onBeginPlay(*this);
+				m_gameObjects.push_back(std::move(newGameObject));
+			}
+			m_newGameObjects.clear();
+		}
+	}
 
 
 	IGameObject* IScene::getGameObject(const size_t index)

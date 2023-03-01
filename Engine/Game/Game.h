@@ -7,7 +7,7 @@
 namespace Engine {
     class IScene;
 
-    class Game : public Tools::Singleton<Game>
+    class Game
     {
         friend class  Tools::Singleton<Game>;
 
@@ -42,12 +42,12 @@ namespace Engine {
         std::vector<IScene*> m_scenes;
         IScene* m_pCurrentScene = nullptr;
     };
-}
 
-namespace Engine {
     template<typename ...Args>
     inline void Game::addScenes(Args ...scenes)
     {
         (m_scenes.push_back(scenes), ...);
     }
+
+    using GameInstance = Tools::Singleton<Game>;
 }
