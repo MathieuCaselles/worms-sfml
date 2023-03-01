@@ -35,7 +35,6 @@ void Grenade::onBeginPlay(Engine::IScene& scene)
 	updateGrenadeActivation(false, false);
 }
 
-
 void Grenade::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
 	if (isActive()) // Already spawned
@@ -47,11 +46,30 @@ void Grenade::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
 	updateGrenadeActivation(true, false);
 }
 
+void Grenade::startExplosion()
+{
+	if (hasExploded())
+		return;
+
+	updateGrenadeActivation(false, true);
+
+	if (m_onExplosionCallback != nullptr)
+		m_onExplosionCallback();
+}
+
+void Grenade::stopExplosion()
+{
+	updateGrenadeActivation(false, false);
+}
+
 void Grenade::onCollisionEnter(IRigidBody* rb)
 {
 	CircleRigidBody::onCollisionEnter(rb);
 
-	updateGrenadeActivation(false, true);
+	if (rb->getPhysicsProperties().m_isTraversable)
+		return;
+
+	startExplosion();
 }
 
 void Grenade::updateGrenadeActivation(bool showGrenade, bool showExplosion)
@@ -61,4 +79,11 @@ void Grenade::updateGrenadeActivation(bool showGrenade, bool showExplosion)
 
 	m_circleExplosion->setIsActive(showExplosion);
 	m_circleExplosion->getPhysicsProperties().m_isActive = showExplosion;
+
+	m_currentTime = 0;
+}
+
+bool Grenade::hasExploded() const
+{
+	return !isActive() || m_circleExplosion->isActive();
 }

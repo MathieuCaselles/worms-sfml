@@ -25,20 +25,33 @@ public:
 
 	void setLaunchForce(float force) { m_launchForce = force; }
 	float getLaunchForce() const { return m_launchForce; }
+	
+	void setDurationBeforeExplosion(float duration) { m_durationBeforeExplosion = duration; }
+
+	bool hasExploded() const;
+
+	std::function<void()> m_onExplosionCallback;
 
 private:
 	Grenade(const Grenade& grenade) = default;
 	Grenade(sf::CircleShape circleShape, const PhysicsProperties& properties);
 
 	void onBeginPlay(Engine::IScene& scene) override;
-
 	void onCollisionEnter(IRigidBody* rb) override;
 
+	void startExplosion();
+	void stopExplosion();
 	void updateGrenadeActivation(bool showGrenade, bool showExplosion);
 
 private:
 	CircleExplosion* m_circleExplosion;
 
 	sf::CircleShape m_circleShape;
+
+	/** Velocity when it spawn */
 	float m_launchForce{ 10.f };
+
+	/** Duration before forcing explosing (useful when it goes off the map) */
+	float m_durationBeforeExplosion{ 4.f };
+	float m_currentTime{ 0.f };
 };

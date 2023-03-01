@@ -16,6 +16,7 @@ class CircleExplosion : public Engine::GameObject<PCCircleExplosion, GCCircleExp
 public:
 	~CircleExplosion() override = default;
 
+	void setDurationExplosion(float duration) { m_durationExplosion = duration; }
 	sf::CircleShape& getExplosionCircleShape() { return m_explosionCircleShape; }
 
 private:
@@ -24,4 +25,8 @@ private:
 
 private:
 	sf::CircleShape m_explosionCircleShape;
+
+	float m_durationExplosion{ 0.5f };
+	float m_currentTime{ 0.f };
+
 };

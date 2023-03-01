@@ -14,4 +14,12 @@ void PCGrenade::updateImplementation(const float& deltaTime, Engine::IGameObject
 
 	grenade.m_circleExplosion->getExplosionCircleShape().setPosition(grenade.m_rbPosition);
 	grenade.m_circleExplosion->getExplosionCircleShape().setRotation(grenade.m_rbRotation);
+
+	grenade.m_currentTime += deltaTime;
+
+	if (grenade.m_currentTime > grenade.m_durationBeforeExplosion)
+	{
+		grenade.m_currentTime = 0;
+		grenade.startExplosion();
+	}
 }
