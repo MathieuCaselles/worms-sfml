@@ -13,7 +13,7 @@ MainMenuScene::MainMenuScene()
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1400, 400, 230, 80, "Jouer", 40.f,
 		sf::Color(252, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {
-			Engine::Game* game = Engine::Game::GetInstance();
+			Engine::Game* game = Engine::GameInstance::GetInstance();
 			game->setCurrentScene(ScenesEnum::MAIN_GAME);
 		}
 	));
