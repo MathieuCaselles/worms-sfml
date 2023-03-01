@@ -11,24 +11,26 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	{
 		switch (player.m_inputState)
 		{
-		case BUTTON_RIGHT:
-			player.m_rbPosition.x += 150 * deltaTime;
+		case RIGHT:
+			if (player.m_rbPosition.x < 1880)
+				player.m_rbPosition.x += player.m_movement * deltaTime;
 			//player.addForce({ 6000.f,0.f });
 			player.m_circleShape.setScale(-1.f, 1.f);
 			break;
 
-		case BUTTON_LEFT:
-			player.m_rbPosition.x -= 150 * deltaTime;
+		case LEFT:
+			if (player.m_rbPosition.x > 40)
+				player.m_rbPosition.x -= player.m_movement * deltaTime;
 			player.m_circleShape.setScale(1.f, 1.f);
 			break;
 
-		case BUTTON_JUMP:
-			// TODO:Make better jump
+		case JUMP:
+			
 			player.addForce({ 0.f,-3000.f });
 
 			break;
 
-		case BUTTON_LEFTCLICK:
+		case CLICK:
 			// TODO: Make shoot
 			currentScene.m_hasPlayed = true;
 			break;

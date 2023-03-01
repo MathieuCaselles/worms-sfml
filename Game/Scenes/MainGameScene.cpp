@@ -96,6 +96,8 @@ void MainGameScene::onBeginPlay()
 	initTime();
 	m_wormPlayer1->setCanPlay(true);
 	m_currentPlayer = m_wormPlayer1;
+	m_timeByTurn = 60;
+	m_timeBetweenTransition = 3;
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -165,14 +167,32 @@ void MainGameScene::initTime()
 	m_timeLeft.setFont(m_font);
 	m_timeLeft.setString("Temps: " + std::to_string(static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
 	m_timeLeft.setFillColor(sf::Color(255, 255, 255));
-	m_timeLeft.setCharacterSize(20);
-	m_timeLeft.setPosition(80, 200);
+	m_timeLeft.setCharacterSize(30);
+	m_timeLeft.setPosition(80, 150);
+}
+
+void MainGameScene::printPlayerToPlay()
+{
+	if (m_elapsed < m_timeBetweenTransition && m_changeTurn)
+	{
+		if (m_currentPlayer == m_wormPlayer1)
+		{
+			m_title.setString("Joueur 2 Préparez vous !");
+		}
+		else
+		{
+			m_title.setString("Joueur 1 Préparez vous !");
+		}
+	} else
+	{
+		m_title.setString("");
+	}
 }
 
 void MainGameScene::updateTimeLeftForPlayers()
 {
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
-	if (m_elapsed >= 10 || m_hasPlayed)
+	if (m_elapsed >= m_timeByTurn || m_hasPlayed)
 	{
 		m_wormPlayer1->setCanPlay(false);
 		m_wormPlayer2->setCanPlay(false);
@@ -181,12 +201,13 @@ void MainGameScene::updateTimeLeftForPlayers()
 		m_clock.restart();
 	}
 	makeTransition();
+	printPlayerToPlay();
 }
 
 void MainGameScene::makeTransition()
 {
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
-	if (m_elapsed >= 3 && m_changeTurn)
+	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
 	{
 		m_currentPlayer = (m_currentPlayer == m_wormPlayer1) ? m_wormPlayer2 : m_wormPlayer1;
 		m_changeTurn = false;
@@ -203,11 +224,11 @@ void MainGameScene::makeTransition()
 
 	// ---- Display
 	if (m_wormPlayer1->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(10 - m_elapsed));
+		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(m_timeByTurn - m_elapsed));
 	else if (m_wormPlayer2->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(10 - m_elapsed));
+		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(m_timeByTurn - m_elapsed));
 	else
-		m_timeLeft.setString("Transition: " + std::to_string(3 - m_elapsed));
+		m_timeLeft.setString("Transition: " + std::to_string(m_timeBetweenTransition - m_elapsed));
 }
 
 

@@ -13,19 +13,19 @@ void ICPlayer::processInputImplementation(Engine::IGameObject& gameObject, sf::E
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		player.setButtonState(BUTTON_LEFT);
+		player.setButtonState(LEFT);
 	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		player.setButtonState(BUTTON_RIGHT);
+		player.setButtonState(RIGHT);
 	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		player.setButtonState(BUTTON_JUMP);
+		player.setButtonState(JUMP);
 	} else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		player.setButtonState(BUTTON_LEFTCLICK);
+		player.setButtonState(CLICK);
 	} else
 	{
-		player.setButtonState(BUTTON);
+		player.setButtonState(IDLE);
 	}
 	
 }

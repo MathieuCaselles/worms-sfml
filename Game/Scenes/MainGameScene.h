@@ -34,6 +34,9 @@ private:
     void initTitle();
     void initOst();
     void initTime();
+
+    void printPlayerToPlay();
+
     void updateTimeLeftForPlayers();
     void makeTransition();
 
@@ -62,6 +65,8 @@ private:
     int m_elapsed;
 
     bool m_changeTurn = false;
+    int m_timeByTurn;
+    int m_timeBetweenTransition;
 
     sf::Texture m_backgroundTexture;
     sf::Texture m_textureCalvin;

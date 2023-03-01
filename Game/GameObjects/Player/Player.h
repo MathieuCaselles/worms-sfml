@@ -8,7 +8,7 @@
 #include "Game/Physics/PhysicsProperties.h"
 #include "Game/Physics/RigidBodies/CircleRigidBody.h"
 
-enum input_states { BUTTON, BUTTON_RIGHT, BUTTON_LEFT, BUTTON_JUMP, BUTTON_LEFTCLICK };
+enum input_states { IDLE, RIGHT, LEFT, JUMP, CLICK };
 
 class Player : public Engine::GameObject<PCPlayer, GCPlayer, ICPlayer>, 
 				public CircleRigidBody
@@ -39,6 +39,8 @@ private:
 	sf::CircleShape m_circleShape;
 	bool m_canPlay = false;
 	input_states m_inputState;
+
+	float m_movement = 150.f;
 
 	int m_health;
 };
