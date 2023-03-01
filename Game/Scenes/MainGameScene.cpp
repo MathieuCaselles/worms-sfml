@@ -59,8 +59,8 @@ MainGameScene::MainGameScene()
 
 	auto fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
 	auto fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
-	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(100,playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(100,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
 
 	// ---- Terrain and physics world
@@ -95,6 +95,7 @@ void MainGameScene::onBeginPlay()
 	initOst();
 	initTime();
 	m_wormPlayer1->setCanPlay(true);
+	m_currentPlayer = m_wormPlayer1;
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -168,22 +169,47 @@ void MainGameScene::initTime()
 	m_timeLeft.setPosition(80, 200);
 }
 
-void MainGameScene::updateTimeLeft()
+void MainGameScene::updateTimeLeftForPlayers()
 {
-	m_elapsed = m_clock.getElapsedTime();
-	if (m_elapsed.asSeconds() >= 10.f || m_changeTurn)
+	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
+	if (m_elapsed >= 10 || m_hasPlayed)
 	{
-		m_changeTurn = false;
-		m_wormPlayer1->setCanPlay(!m_wormPlayer1->getCanPlay());
-		m_wormPlayer2->setCanPlay(!m_wormPlayer2->getCanPlay());
+		m_wormPlayer1->setCanPlay(false);
+		m_wormPlayer2->setCanPlay(false);
+		m_changeTurn = true;
+		m_hasPlayed = false;
 		m_clock.restart();
 	}
-	
-	if (m_wormPlayer1->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(10 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
-	else
-		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(10 - static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
+	makeTransition();
 }
+
+void MainGameScene::makeTransition()
+{
+	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
+	if (m_elapsed >= 3 && m_changeTurn)
+	{
+		m_currentPlayer = (m_currentPlayer == m_wormPlayer1) ? m_wormPlayer2 : m_wormPlayer1;
+		m_changeTurn = false;
+		m_clock.restart();
+		if (m_currentPlayer == m_wormPlayer1)
+		{
+			m_wormPlayer1->setCanPlay(true);
+		}
+		else
+		{
+			m_wormPlayer2->setCanPlay(true);
+		}
+	}
+
+	// ---- Display
+	if (m_wormPlayer1->getCanPlay())
+		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(10 - m_elapsed));
+	else if (m_wormPlayer2->getCanPlay())
+		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(10 - m_elapsed));
+	else
+		m_timeLeft.setString("Transition: " + std::to_string(3 - m_elapsed));
+}
+
 
 
 void MainGameScene::update(const float& deltaTime)
@@ -191,7 +217,7 @@ void MainGameScene::update(const float& deltaTime)
 	m_physicsWorld.step(deltaTime);
 	IScene::update(deltaTime);
 
-	updateTimeLeft();
+	updateTimeLeftForPlayers();
 }
 
 void MainGameScene::render()
@@ -200,7 +226,7 @@ void MainGameScene::render()
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
-
+	
 	IScene::render();
 }
 

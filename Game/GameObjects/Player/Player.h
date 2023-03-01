@@ -28,12 +28,17 @@ public:
 	const bool getCanPlay();
 	void setCanPlay(bool newBool);
 
+	int getHealth();
+	void setHealth(int newHealth);
+	void removeHealth(int healthRemoved);
 private:
 	Player();
 	Player(sf::CircleShape circleShape, const PhysicsProperties& properties);
-	Player(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
+	Player(int health,sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation = 0.f);
 
 	sf::CircleShape m_circleShape;
 	bool m_canPlay = false;
 	input_states m_inputState;
+
+	int m_health;
 };

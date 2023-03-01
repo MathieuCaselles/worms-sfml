@@ -30,8 +30,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 		case BUTTON_LEFTCLICK:
 			// TODO: Make shoot
-			currentScene.m_changeTurn = true;
-			std::cout << "clicked" << std::endl;
+			currentScene.m_hasPlayed = true;
 			break;
 
 		default:

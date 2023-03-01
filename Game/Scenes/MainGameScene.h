@@ -25,14 +25,17 @@ public:
     void onBeginPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
-    bool m_changeTurn;
+
+    bool m_hasPlayed = false;
+
 private:
     void initBackground();
     void initInformations();
     void initTitle();
     void initOst();
     void initTime();
-    void updateTimeLeft();
+    void updateTimeLeftForPlayers();
+    void makeTransition();
 
     // ---- System
     PhysicsWorld m_physicsWorld;
@@ -43,6 +46,7 @@ private:
     // ---- Players
 	Player* m_wormPlayer1;
     Player* m_wormPlayer2;
+    Player* m_currentPlayer;
 
     // ---- Game
 
@@ -54,7 +58,10 @@ private:
     sf::Music m_ost;
 
     sf::Clock m_clock;
-    sf::Time m_elapsed;
+    sf::Clock clock;
+    int m_elapsed;
+
+    bool m_changeTurn = false;
 
     sf::Texture m_backgroundTexture;
     sf::Texture m_textureCalvin;
