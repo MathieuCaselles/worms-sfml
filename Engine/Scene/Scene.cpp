@@ -61,6 +61,7 @@ namespace Engine {
 			IGameObject* gameObject = (*it).get();
 
 			if (gameObject == nullptr || gameObject->isWaitingToBeDestroyed()) {
+				gameObject->onEndPlay(*this);
 				it = m_gameObjects.erase(it);
 			}
 			else {
@@ -84,6 +85,7 @@ namespace Engine {
 		if (!m_newGameObjects.empty())
 		{
 			for (auto& newGameObject : m_newGameObjects) {
+				newGameObject->onBeginPlay(*this);
 				m_gameObjects.push_back(std::move(newGameObject));
 			}
 			m_newGameObjects.clear();
