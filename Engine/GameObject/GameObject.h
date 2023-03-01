@@ -28,6 +28,20 @@ namespace Engine {
 		virtual void processInput(sf::Event& inputEvent, IScene& scene) = 0;
 		virtual void update(const float& deltaTime, IScene& scene) = 0;
 		virtual void render(sf::RenderWindow& window) = 0;
+
+		virtual void destroy() { m_waitingToBeDestroyed = true; }
+
+		inline void setIsActive(bool isActive) { m_isActive = isActive; }
+		inline void setIsVisible(bool isVisible) { m_isVisible = isVisible; }
+
+		inline bool isActive() const { return m_isActive; }
+		inline bool isVisible() const { return m_isVisible; }
+		inline bool isWaitingToBeDestroyed() const { return m_waitingToBeDestroyed; }
+
+	protected:
+		bool m_isActive = true;
+		bool m_isVisible = true;
+		bool m_waitingToBeDestroyed = false;
 	};
 
 	template<typename... MixinGameComponents>
@@ -36,18 +50,20 @@ namespace Engine {
 	public:
 		void processInput(sf::Event& inputEvent, IScene& scene) override
 		{
-			this->processInputImplementation(*this, inputEvent, scene);
+			if (m_isActive)
+				this->processInputImplementation(*this, inputEvent, scene);
 		}
 
 		void update(const float& deltaTime, IScene& scene) override
 		{
-			this->updateImplementation(deltaTime, *this, scene);
+			if (m_isActive)
+				this->updateImplementation(deltaTime, *this, scene);
 		}
 
 		void render(sf::RenderWindow& window) override
 		{
-
-			this->renderImplementation(*this, window);
+			if (m_isActive && m_isVisible)
+				this->renderImplementation(*this, window);
 		}
 	};
 
