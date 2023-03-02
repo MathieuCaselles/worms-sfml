@@ -43,6 +43,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 					case BANANA: {
 						if (const int numberBanana = player.getNumberBanana(); numberBanana > 0)
 						{
+							currentScene.playShootSound();
 							player.setNumberBanana(numberBanana-1);
 							currentScene.spawnFragBall(
 								spawnPoint,
@@ -65,13 +66,11 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 							spawnPoint,
 							VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionWindow()) - spawnPoint)
 						);
+						currentScene.playShootSound();
 					} break;
 
 
 				}
-
-
-
 				break;
 			}
 
