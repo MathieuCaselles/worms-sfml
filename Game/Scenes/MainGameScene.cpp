@@ -70,12 +70,14 @@ MainGameScene::MainGameScene()
 	grenade->setDamages(15.f);
 	m_grenade = grenade.get();
 
-	auto fragBall = Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties);
+	auto fragBall = 
+		Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties, 15);
 	fragBall->setLaunchForce(9.f);
 	fragBall->setDamages(10.f);
-	fragBall->setFragmentsForceMinMax(5.f, 8.f);
-	fragBall->setFragmentsDamage(7.f);
-	fragBall->setFragmentsDurationBeforeExplosion(2.f);
+	fragBall->setFragmentsForceMinMax(7.f, 12.f);
+	fragBall->setFragmentsDamage(3.f);
+	fragBall->setFragmentsDurationBeforeExplosion(4.f);
+	fragBall->setFragsSpawnXAngleIncertitude(15);
 	m_fragBall = fragBall.get();
 
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
