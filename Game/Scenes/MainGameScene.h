@@ -3,17 +3,11 @@
 #include <Engine/Scene/Scene.h>
 #include <SFML/Graphics.hpp>
 
-#include "Game/Physics/PhysicsWorld.h"
-
 #include "SFML/Audio/Music.hpp"
 
-class BlackHole;
-class ForceVolume;
+class FragmentationBall;
+class Grenade;
 class PhysicsWorld;
-class Terrain;
-class FallingBox;
-class FallingCircle;
-class HUD;
 class Player;
 
 class MainGameScene : public Engine::IScene
@@ -26,6 +20,7 @@ public:
     void update(const float& deltaTime) override;
 	void render() override;
 
+    void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
     bool m_hasPlayed = false;
 
     void playShootSound();
@@ -46,8 +41,9 @@ private:
     void updateTimeLeftForPlayers();
     void makeTransition();
 
-    // ---- System
-    PhysicsWorld m_physicsWorld;
+    // ---- Grenade
+    Grenade* m_grenade;
+    FragmentationBall* m_fragBall;
 
     // ---- Drawings
     sf::RectangleShape m_background;
