@@ -17,7 +17,7 @@
 
 constexpr int PLAYER_HEALTH = 100;
 
-MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m_fragBall(nullptr)
+MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBetweenTransition(0), m_timeByTurn(0), m_grenade(nullptr), m_fragBall(nullptr)
 {
 	
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
