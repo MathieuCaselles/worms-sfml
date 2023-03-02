@@ -20,6 +20,10 @@ public:
     void update(const float& deltaTime) override;
 	void render() override;
 
+    Player* getCurrentPlayer();
+
+    const bool isChangeTurn() const;
+
     void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
     bool m_hasPlayed = false;
 

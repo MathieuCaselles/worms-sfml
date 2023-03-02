@@ -41,6 +41,12 @@ void Player::removeHealth(int healthRemoved)
 	}
 }
 
+void Player::setSkillState(skill_states newState)
+{
+	m_skillState = newState;
+}
+
+
 Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties,
 	const sf::Vector2f& initialPosition)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
