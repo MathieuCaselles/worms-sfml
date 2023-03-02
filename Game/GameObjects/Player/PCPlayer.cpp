@@ -34,14 +34,43 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 		case CLICK:
 			{
 				// TODO: Make shoot
-				currentScene.m_hasPlayed = true;
 
-				const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
+				const auto spawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
 
-				currentScene.spawnGrenade(
-					grenadeSpawnPoint,
-					VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - grenadeSpawnPoint)
-				);
+				switch(player.m_skillState)
+				{
+		
+					case BANANA: {
+						if (const int numberBanana = player.getNumberBanana(); numberBanana > 0)
+						{
+							player.setNumberBanana(numberBanana-1);
+							currentScene.spawnFragBall(
+								spawnPoint,
+								VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionWindow()) - spawnPoint)
+							);
+						}
+					} break;
+					case BLACK_HOLE: {
+						if (const int numberBlackHole = player.getNumberBlackHole(); numberBlackHole > 0)
+						{
+							player.setNumberBlackHole(numberBlackHole - 1);
+							currentScene.spawnBlackHole(
+								static_cast<sf::Vector2f>(scene.getMousePositionWindow())
+							);
+						}
+					} break;
+
+					default: {
+						currentScene.spawnGrenade(
+							spawnPoint,
+							VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionWindow()) - spawnPoint)
+						);
+					} break;
+
+
+				}
+
+
 
 				break;
 			}

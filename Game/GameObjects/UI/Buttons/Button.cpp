@@ -120,9 +120,18 @@ sf::RectangleShape& Button::getEditableShape()
 	return m_shape;
 }
 
-const sf::Text Button::getText() const
+const sf::Text& Button::getText() const
 {
 	return m_text;
+}
+
+void Button::setText(std::string text)
+{
+	m_text.setString(text);
+	const float centerXOfButtons = m_shape.getPosition().x + m_shape.getGlobalBounds().width / 2.f - m_text.getGlobalBounds().width / 2.f;
+	const float centerYOfButtons = m_shape.getPosition().y + m_shape.getGlobalBounds().height / 2.f - m_text.getGlobalBounds().height / 2.f;
+
+	m_text.setPosition(centerXOfButtons, centerYOfButtons);
 }
 
 const sf::Color& Button::getIdleColor()

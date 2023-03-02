@@ -34,7 +34,8 @@ public:
 	const sf::RectangleShape& getShape();
 	sf::RectangleShape& getEditableShape();
 
-	const sf::Text getText() const;
+	const sf::Text& getText() const;
+	void setText(std::string text);
 
 	const sf::Color& getIdleColor();
 	const sf::Color& getHoverColor();
