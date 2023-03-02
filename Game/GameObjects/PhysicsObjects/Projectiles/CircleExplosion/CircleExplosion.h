@@ -20,6 +20,9 @@ public:
 
 	void onCollisionEnter(IRigidBody* rb) override;
 
+	void tryToPlayExplosionFX();
+
+	bool m_canPlayExplosionFX;
 private:
 	CircleExplosion();
 	CircleExplosion(const sf::CircleShape& circleShape);
@@ -27,7 +30,14 @@ private:
 private:
 	sf::CircleShape m_explosionCircleShape;
 
-	float m_durationExplosion{ .5f };
+	float m_durationExplosion{ 0.1f };
 	float m_currentTime{ 0.f };
+
+	sf::Texture m_explosionFX;
+
+	sf::IntRect m_rectSourceSprite;
+
+	sf::Sprite m_spriteExplosionFX;
+	sf::Clock m_clockForExplosionFX;
 
 };
