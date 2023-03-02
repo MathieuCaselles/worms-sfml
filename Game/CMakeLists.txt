@@ -36,12 +36,6 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/Terrain/Terrain.h" "GameObjects/PhysicsObjects/Terrain/Terrain.cpp" 
  "GameObjects/PhysicsObjects/Terrain/GCTerrain.h" "GameObjects/PhysicsObjects/Terrain/GCTerrain.cpp" 
  "GameObjects/PhysicsObjects/Terrain/PCTerrain.h" "GameObjects/PhysicsObjects/Terrain/PCTerrain.cpp"
-
- "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/FallingCircle.cpp"
- "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.h" "GameObjects/PhysicsObjects/FallingCircle/GCFallingCircle.cpp" 
-
- "GameObjects/PhysicsObjects/FallingBox/FallingBox.h" "GameObjects/PhysicsObjects/FallingBox/FallingBox.cpp"
- "GameObjects/PhysicsObjects/FallingBox/GCFallingBox.h" "GameObjects/PhysicsObjects/FallingBox/GCFallingbox.cpp"
     
  "GameObjects/PhysicsObjects/BlackHole/BlackHole.h" "GameObjects/PhysicsObjects/BlackHole/BlackHole.cpp"
  "GameObjects/PhysicsObjects/BlackHole/PCBlackHole.h" "GameObjects/PhysicsObjects/BlackHole/PCBlackHole.cpp"
@@ -51,4 +45,17 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.h" "GameObjects/PhysicsObjects/ForceVolume/PCForceVolume.cpp"
 
  "GameObjects/Player/Player.h" "GameObjects/Player/Player.cpp" "GameObjects/Player/GCPlayer.h" "GameObjects/Player/GCPlayer.cpp"
- "GameObjects/Player/ICPlayer.h" "GameObjects/Player/ICPlayer.cpp" "GameObjects/Player/PCPlayer.h" "GameObjects/Player/PCPlayer.cpp")
+ "GameObjects/Player/ICPlayer.h" "GameObjects/Player/ICPlayer.cpp" "GameObjects/Player/PCPlayer.h" "GameObjects/Player/PCPlayer.cpp"
+
+ "GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.h" "GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.cpp"
+ "GameObjects/PhysicsObjects/Projectiles/Grenade/GCGrenade.h" "GameObjects/PhysicsObjects/Projectiles/Grenade/GCGrenade.cpp"
+ "GameObjects/PhysicsObjects/Projectiles/Grenade/PCGrenade.h" "GameObjects/PhysicsObjects/Projectiles/Grenade/PCGrenade.cpp"
+
+ "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h" "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.cpp"
+
+ "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/CircleExplosion.h" "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/CircleExplosion.cpp" 
+ "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/PCCircleExplosion.h" "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/PCCircleExplosion.cpp" 
+ "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/GCCircleExplosion.h" "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/GCCircleExplosion.cpp"
+ 
+ "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/ExplosionFragments/ExplosionFragment.h"
+ "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/ExplosionFragments/ExplosionFragment.cpp")

@@ -2,28 +2,6 @@
 
 #include <iostream>
 
-Player::Player()
-	: Player(sf::CircleShape(), {})
-{ }
-
-Player::Player(sf::CircleShape circleShape, const PhysicsProperties& properties)
-	: Player(m_health,std::move(circleShape), properties, circleShape.getPosition(), circleShape.getRotation())
-{ }
-
-Player::Player(int health,sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float initialRotation)
-	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
-	CircleRigidBody(m_circleShape, properties),
-	m_circleShape(std::move(circleShape)), m_health(health)
-{
-	CircleRigidBody::updateMass();
-
-	m_rbPosition = initialPosition;
-	m_rbRotation = initialRotation;
-
-	m_circleShape.setPosition(m_rbPosition);
-	m_circleShape.setRotation(m_rbRotation);
-}
-
 const int& Player::getButtonState()
 {
 	return m_inputState;
@@ -34,7 +12,7 @@ void Player::setButtonState(input_states newState)
 	m_inputState = newState;
 }
 
-const bool Player::getCanPlay()
+bool Player::getCanPlay() const
 {
 	return m_canPlay;
 }
@@ -69,4 +47,15 @@ void Player::setSkillState(skill_states newState)
 }
 
 
+Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties,
+	const sf::Vector2f& initialPosition)
+	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
+	CircleRigidBody(circleShape, properties),
+	m_playerShape(circleShape), m_health(health)
+{
+	CircleRigidBody::updateMass();
 
+	m_rbPosition = initialPosition;
+
+	m_playerShape.setPosition(m_rbPosition);
+}

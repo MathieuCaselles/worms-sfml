@@ -57,7 +57,9 @@ namespace Engine {
 
 	void IScene::update(const float& deltaTime)
 	{
-		for (	auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ) {
+		m_physicsWorld.step(deltaTime);
+
+		for (auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ) {
 			IGameObject* gameObject = (*it).get();
 
 			if (gameObject == nullptr || gameObject->isWaitingToBeDestroyed()) {
@@ -109,6 +111,11 @@ namespace Engine {
 	GameObjects& IScene::getGameObjects()
 	{
 		return m_gameObjects;
+	}
+
+	PhysicsWorld& IScene::getPhysicsWorld()
+	{
+		return m_physicsWorld;
 	}
 
 	sf::RenderWindow& IScene::getWindow()

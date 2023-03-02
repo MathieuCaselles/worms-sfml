@@ -2,33 +2,31 @@
 
 #include "MainMenuScene.h"
 #include "Engine/Game/Game.h"
-#include "Engine/Utility/VectorUtils.h"
 #include "Game/Assets/GameColors.h"
 
-#include "Game/GameObjects/PhysicsObjects/FallingBox/FallingBox.h"
-#include "Game/GameObjects/PhysicsObjects/FallingCircle/FallingCircle.h"
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
-#include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
 #include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
 #include "Game/GameObjects/UI/Buttons/Button.h"
-
 
 #include <utility>
 #include <string>
 #include <iostream>
 
+#include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/Player/Player.h"
+
+constexpr int PLAYER_HEALTH = 100;
 
 MainGameScene::MainGameScene()
 {
-	const PhysicsProperties basicPhysicsProperties{ 1.2f, 0.5f };
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
+	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
+	const PhysicsProperties fragBallPhysicsProperties(1.5f, 0.8f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
-
 
 	// ---- Entities
 	sf::CircleShape defaultCircleShape;
@@ -56,32 +54,59 @@ MainGameScene::MainGameScene()
 	blackHoleShape.setOutlineColor(GameColors::nightPurple);
 	blackHoleShape.setOutlineThickness(6);
 
-	auto fallingCircleOrange1 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(920, 0));
-	auto fallingCircleOrange2 = Engine::GameObjectFactory::create<FallingCircle>(defaultCircleShape, basicPhysicsProperties, sf::Vector2f(700, 100));
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(100,playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
-	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(100,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
-	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(800, 250), PhysicsWorld::GRAVITY_FORCE.y * 1.5);
+	sf::CircleShape grenadeShape(15);
+	grenadeShape.setFillColor(GameColors::iron);
+	grenadeShape.setOutlineColor(sf::Color::Black);
+	grenadeShape.setOutlineThickness(2);
+	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
+
+	sf::CircleShape fragBallShape(12);
+	fragBallShape.setFillColor(GameColors::banana);
+	fragBallShape.setOutlineColor(sf::Color::Black);
+	fragBallShape.setOutlineThickness(1);
+	fragBallShape.setOrigin(fragBallShape.getRadius(), fragBallShape.getRadius());
+
+	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
+	grenade->setLaunchForce(14.f);
+	grenade->setDamages(15.f);
+	m_grenade = grenade.get();
+
+	auto fragBall = 
+		Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties, 15);
+	fragBall->setLaunchForce(9.f);
+	fragBall->setDamages(10.f);
+	fragBall->setFragmentsForceMinMax(7.f, 12.f);
+	fragBall->setFragmentsDamage(3.f);
+	fragBall->setFragmentsDurationBeforeExplosion(4.f);
+	fragBall->setFragsSpawnXAngleIncertitude(15);
+	m_fragBall = fragBall.get();
+
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
+	m_wormPlayer1 = wormPlayer1.get();
+	m_wormPlayer2 = wormPlayer2.get();
+
+	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
-	m_wormPlayer1 = wormPlayer1.get();
-	m_wormPlayer2 = wormPlayer2.get();
-	m_physicsWorld.addRigidBody(*wormPlayer1);
-	m_physicsWorld.addRigidBody(*wormPlayer2);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
+
+	m_physicsWorld.addRigidBody(*m_wormPlayer1);
+	m_physicsWorld.addRigidBody(*m_wormPlayer2);
+	m_physicsWorld.addRigidBody(*m_grenade);
+	m_physicsWorld.addRigidBody(*m_fragBall);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
-	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
-
 	addGameObjects(std::move(terrain));
 	addGameObjects(std::move(blackHole));
-	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2), std::move(wormPlayer1)
-	, std::move(wormPlayer2));
-	
-	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Quitter", 30.f,
+	addGameObjects(std::move(wormPlayer1));
+	addGameObjects(std::move(wormPlayer2));
+	addGameObjects(std::move(grenade));
+	addGameObjects(std::move(fragBall));
+
+	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
 
@@ -168,9 +193,7 @@ void MainGameScene::onBeginPlay()
 		std::cout << static_cast<std::string>(go->getText().getString()) << std::endl;
 
 	}
-	
 }
-
 
 void MainGameScene::initTitle()
 {
@@ -212,6 +235,11 @@ void MainGameScene::initOst()
 	//	throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	//m_ost.setLoop(true);
 	//m_ost.play();
+}
+
+void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
+{
+	m_fragBall->shot(position, direction * m_fragBall->getLaunchForce());
 }
 
 void MainGameScene::initTime()
@@ -285,11 +313,8 @@ void MainGameScene::makeTransition()
 	
 }
 
-
-
 void MainGameScene::update(const float& deltaTime)
 {
-	m_physicsWorld.step(deltaTime);
 	IScene::update(deltaTime);
 
 	updateTimeLeftForPlayers();

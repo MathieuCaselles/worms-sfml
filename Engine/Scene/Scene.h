@@ -4,6 +4,8 @@
 #include <functional>
 #include <utility>
 
+#include "Game/Physics/PhysicsWorld.h"
+
 namespace Engine {
 
     class IGameObject;
@@ -39,13 +41,14 @@ namespace Engine {
         IGameObject* findGameObject(std::function<bool(const IGameObject* gameObject)> const& condition);
 
         GameObjects& getGameObjects();
-
+        PhysicsWorld& getPhysicsWorld();
         sf::RenderWindow& getWindow();
 
 
 
     protected:
         sf::RenderWindow& m_window;
+        PhysicsWorld m_physicsWorld;
         GameObjects m_gameObjects;
         GameObjects m_newGameObjects;
 
