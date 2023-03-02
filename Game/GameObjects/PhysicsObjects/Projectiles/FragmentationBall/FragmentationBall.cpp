@@ -15,6 +15,7 @@ FragmentationBall::FragmentationBall(sf::CircleShape circleShape, const PhysicsP
 
 void FragmentationBall::updateImplementation(const float& deltaTime, IGameObject& gameObject, Engine::IScene& scene)
 {
+
 	Grenade::updateImplementation(deltaTime, gameObject, scene);
 }
 

@@ -15,6 +15,7 @@ Grenade::Grenade(sf::CircleShape circleShape, const PhysicsProperties& propertie
 	CircleRigidBody::updateMass();
 
 	m_grenadeShape.setPosition(m_rbPosition);
+
 }
 
 void Grenade::onBeginPlay(Engine::IScene& scene)

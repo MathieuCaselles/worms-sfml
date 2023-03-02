@@ -38,11 +38,15 @@ public:
 
     bool m_hasPlayed = false;
 
+    void playShootSound();
+    void playExplosionSound();
+    void playHitSound();
+
 private:
     void initBackground();
     void initInformations();
     void initTitle();
-    void initOst();
+    void initAllSounds();
     void initTime();
 
     void printPlayerToPlay();
@@ -79,6 +83,9 @@ private:
     Terrain* m_terrain;
 
     sf::Music m_ost;
+    sf::Music m_explosionSound;
+    sf::Music m_shootSound;
+    sf::Music m_hitSound;
 
     sf::Clock m_clock;
     int m_elapsed;
@@ -89,4 +96,5 @@ private:
 
     sf::Texture m_backgroundTexture;
     sf::Texture m_textureCalvin;
+    
 };

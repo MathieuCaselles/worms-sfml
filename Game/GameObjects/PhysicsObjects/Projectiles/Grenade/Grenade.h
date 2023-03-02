@@ -59,4 +59,5 @@ protected:
 	/** Duration before forcing explosing (useful when it goes off the map) */
 	float m_durationBeforeExplosion{ 4.f };
 	float m_currentTime{ 0.f };
+
 };
