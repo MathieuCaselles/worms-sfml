@@ -54,6 +54,10 @@ private:
 	float m_movementSpeed{ 150.f };
 
 	int m_health;
+	int m_maxHealth;
+
+	sf::Font m_font;
+	sf::Text m_currentHealthText;
 
 	int m_numberBanana;
 	int m_numberBlackHole;

@@ -76,7 +76,7 @@ Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProp
 	const sf::Vector2f& initialPosition)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
 	CircleRigidBody(circleShape, properties),
-	m_playerShape(circleShape), m_health(health),
+	m_playerShape(circleShape), m_health(health), m_maxHealth(health),
 	m_numberBanana(1), m_numberBlackHole(1), m_inputState(IDLE), m_skillState(GRENADE)
 {
 	CircleRigidBody::updateMass();
@@ -84,4 +84,14 @@ Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProp
 	m_rbPosition = initialPosition;
 
 	m_playerShape.setPosition(m_rbPosition);
+
+
+
+	if (!m_font.loadFromFile("Assets/Fonts/WormsFont.ttf")) {
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
+	}
+	m_currentHealthText.setFont(m_font);
+	m_currentHealthText.setFillColor(sf::Color(0, 255, 0));
+	m_currentHealthText.setCharacterSize(35);
+	m_currentHealthText.setString(std::to_string(m_health));
 }

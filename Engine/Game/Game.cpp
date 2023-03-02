@@ -46,6 +46,12 @@ void Game::setCurrentScene(const size_t index)
 
 }
 
+void  Game::deleteSceneByIndex(const size_t index)
+{
+    m_scenes.erase(m_scenes.begin() + index);
+}
+
+
 void Game::clearScenes()
 {
     for (IScene* pScene : m_scenes)

@@ -8,7 +8,7 @@ int MathUtils::getRandomNumber(int minRangeInclusive, int maxRangeInclusive)
 	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> range(minRangeInclusive, maxRangeInclusive);
 
-	return static_cast<int>(range(rng)) + 1;
+	return static_cast<int>(range(rng));
 }
 
 float MathUtils::convertKmPerHToMS(const float valueKmPerH)

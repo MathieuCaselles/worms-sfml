@@ -81,4 +81,21 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 	player.m_playerShape.setPosition(player.m_rbPosition);
 	player.m_playerShape.setRotation(player.m_rbRotation);
+
+	auto thirdOfLife = player.m_maxHealth / 3;
+	auto twoThirdOfLife = player.m_maxHealth - thirdOfLife;
+
+
+
+	if (player.m_health < twoThirdOfLife)
+	{
+		if (player.m_health < thirdOfLife)
+			player.m_currentHealthText.setFillColor(sf::Color(255, 181, 54));
+		else
+			player.m_currentHealthText.setFillColor(sf::Color(255, 0, 0));
+
+	}
+
+	player.m_currentHealthText.setPosition(player.m_rbPosition + sf::Vector2f(-35.f, -80.f ));
+	player.m_currentHealthText.setString(std::to_string(player.m_health));
 }

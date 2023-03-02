@@ -12,8 +12,11 @@ public:
     MainMenuScene();
     ~MainMenuScene();
 
-    virtual void processInput(sf::Event& inputEvent) override;
-    virtual void render() override;
+     void processInput(sf::Event& inputEvent) override;
+     void render() override;
+
+     void onBeginPlay() override;
+     void onEndPlay() override;
 
 
 private:

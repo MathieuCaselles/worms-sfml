@@ -10,6 +10,7 @@ class Grenade;
 class PhysicsWorld;
 class Player;
 class Button;
+class ForceVolume;
 
 class MainGameScene : public Engine::IScene
 {
@@ -18,6 +19,7 @@ public:
     ~MainGameScene() override = default;
 
     void onBeginPlay() override;
+    void onEndPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
 
@@ -38,6 +40,8 @@ public:
     void playShootSound();
     void playExplosionSound();
     void playHitSound();
+
+    void changeRandomWindForce();
 
 private:
     void initBackground();
@@ -70,7 +74,7 @@ private:
     Button* m_buttonBlackHole;
 
     // ---- Game
-
+    ForceVolume* m_windForce;
     sf::Text m_title;
     sf::Text m_wind;
     sf::Text m_timeLeft;
