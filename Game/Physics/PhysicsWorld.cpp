@@ -85,6 +85,8 @@ void PhysicsWorld::step(const float& deltaTime) const
 
 bool PhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::HitResult& hitResult)
 {
+	// Todo : Use a double dynamic dispatcher to handle those if-statements.
+
 	if (rbA->getInstanceRTTI() == CircleRigidBody::getClassRTTI())
 	{
 		MakeCollision<CircleRigidBody>()(rbA, rbB, hitResult);
@@ -92,6 +94,10 @@ bool PhysicsWorld::collide(IRigidBody* rbA, IRigidBody* rbB, CollisionUtils::Hit
 	else if (rbA->getInstanceRTTI() == BoxRigidBody::getClassRTTI())
 	{
 		MakeCollision<BoxRigidBody>()(rbA, rbB, hitResult);
+	}
+	else if (rbA->getInstanceRTTI() == TerrainRigidBody::getClassRTTI())
+	{
+		MakeCollision<TerrainRigidBody>()(rbA, rbB, hitResult);
 	}
 
 	return hitResult.hasHit;

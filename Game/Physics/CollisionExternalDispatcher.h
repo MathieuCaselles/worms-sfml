@@ -99,6 +99,40 @@ struct CollisionHandler<BoxRigidBody, TerrainRigidBody>
 	}
 };
 
+// ---- Terrain to...
+template<>
+struct CollisionHandler<TerrainRigidBody, CircleRigidBody>
+{
+	void operator()(TerrainRigidBody* rbA, CircleRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
+	{
+		CollisionUtils::circleAboveMultiLines(
+			rbA->getEdges(),
+			rbB->getPosition(), rbB->getRadius(),
+			outHitResult);
+	}
+};
+
+template<>
+struct CollisionHandler<TerrainRigidBody, BoxRigidBody>
+{
+	void operator()(TerrainRigidBody* rbA, BoxRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
+	{
+		CollisionUtils::polygonAboveMultilines(
+			rbA->getEdges(),
+			rbB->getTransformRectPoints(),
+			outHitResult);
+	}
+};
+
+template<>
+struct CollisionHandler<TerrainRigidBody, TerrainRigidBody>
+{
+	void operator()(TerrainRigidBody* rbA, TerrainRigidBody* rbB, CollisionUtils::HitResult& outHitResult) const
+	{
+
+	}
+};
+
 template<template<typename RigidBodyTypeA, typename RigidBodyTypeB> class FnToDispatch, typename LeftRB, typename RigidBodyTypeList>
 class CollisionExternalDispatcher {};
 
