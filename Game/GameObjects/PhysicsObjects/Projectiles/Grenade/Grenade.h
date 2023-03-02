@@ -31,6 +31,9 @@ public:
 
 	std::function<void()> m_onExplosionCallback;
 
+	void setDamages(float dmg) { m_damages = dmg; }
+	float getDamages() const { return m_damages; }
+
 protected:
 	Grenade(const Grenade& grenade) = default;
 	Grenade(sf::CircleShape circleShape, const PhysicsProperties& properties);
@@ -47,6 +50,8 @@ protected:
 	CircleExplosion* m_circleExplosion;
 
 	sf::CircleShape m_grenadeShape;
+
+	float m_damages{ 0.f };
 
 	/** Velocity when it spawn */
 	float m_launchForce{ 10.f };

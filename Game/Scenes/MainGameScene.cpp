@@ -13,9 +13,8 @@
 #include <string>
 #include <iostream>
 
-#include "Game/GameObjects/Player/Player.h"
-#include "Game/GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.h"
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
+#include "Game/GameObjects/Player/Player.h"
 
 MainGameScene::MainGameScene()
 {
@@ -60,7 +59,7 @@ MainGameScene::MainGameScene()
 	grenadeShape.setOutlineThickness(2);
 	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
 
-	sf::CircleShape fragBallShape(10);
+	sf::CircleShape fragBallShape(12);
 	fragBallShape.setFillColor(GameColors::banana);
 	fragBallShape.setOutlineColor(sf::Color::Black);
 	fragBallShape.setOutlineThickness(1);
@@ -68,11 +67,15 @@ MainGameScene::MainGameScene()
 
 	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
 	grenade->setLaunchForce(14.f);
+	grenade->setDamages(15.f);
 	m_grenade = grenade.get();
 
 	auto fragBall = Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties);
 	fragBall->setLaunchForce(9.f);
-	fragBall->setFragmentsForceMinMax(3.f, 6.f);
+	fragBall->setDamages(10.f);
+	fragBall->setFragmentsForceMinMax(5.f, 8.f);
+	fragBall->setFragmentsDamage(7.f);
+	fragBall->setFragmentsDurationBeforeExplosion(2.f);
 	m_fragBall = fragBall.get();
 
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
@@ -170,7 +173,7 @@ void MainGameScene::initOst()
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	m_fragBall->shot(position, direction);
+	m_fragBall->shot(position, direction * m_fragBall->getLaunchForce());
 }
 
 void MainGameScene::update(const float& deltaTime)

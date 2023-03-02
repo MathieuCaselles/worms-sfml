@@ -23,7 +23,33 @@ void ExplosionFragment::onBeginPlay(Engine::IScene& scene)
 	updateGrenadeActivation(false, false);
 }
 
+void ExplosionFragment::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
+{
+	Grenade::shot(position, direction);
+}
+
+void ExplosionFragment::startExplosion()
+{
+	Grenade::startExplosion();
+}
+
 void ExplosionFragment::onCollisionEnter(IRigidBody* rb)
 {
+	if (dynamic_cast<ExplosionFragment*>(rb) != nullptr) // rip
+		return; // We don't want to collide with others ExplosionFragment
+
+	if (rb->getPhysicsProperties().m_isTraversable)
+		return;
+
 	Grenade::onCollisionEnter(rb);
+}
+
+void ExplosionFragment::updateImplementation(const float& deltaTime, IGameObject& gameObject, Engine::IScene& scene)
+{
+	Grenade::updateImplementation(deltaTime, gameObject, scene);
+}
+
+void ExplosionFragment::renderImplementation(IGameObject& gameObject, sf::RenderWindow& window)
+{
+	Grenade::renderImplementation(gameObject, window);
 }

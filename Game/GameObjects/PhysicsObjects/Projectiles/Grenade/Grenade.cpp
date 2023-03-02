@@ -2,6 +2,7 @@
 
 #include "Engine/GameObject/GameObject.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Utility/MathUtils.h"
 #include "Game/Scenes/MainGameScene.h"
 
 constexpr float GRENADE_EXPLOSION_RADIUS = 100;
@@ -40,7 +41,7 @@ void Grenade::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
 	if (isActive())
 		return; // Already spawned
 
-	setVelocity(direction * m_launchForce);
+	setVelocity(direction);
 	setPosition(position);
 
 	updateGrenadeActivation(true, false);
