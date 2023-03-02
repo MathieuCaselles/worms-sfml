@@ -9,6 +9,7 @@ class FragmentationBall;
 class Grenade;
 class PhysicsWorld;
 class Player;
+class Button;
 
 class MainGameScene : public Engine::IScene
 {
@@ -25,6 +26,13 @@ public:
     const bool isChangeTurn() const;
 
     void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
+    void spawnFragBall(const sf::Vector2f& position, const sf::Vector2f& direction);
+    void spawnBlackHole(const  sf::Vector2f& position);
+
+    void unselectPreviousButton();
+
+    void updateButtonsSKillInfo();
+
     bool m_hasPlayed = false;
 
 private:
@@ -50,6 +58,12 @@ private:
 	Player* m_wormPlayer1;
     Player* m_wormPlayer2;
     Player* m_currentPlayer;
+
+    // ---- Buttons
+
+    Button* m_buttonGrenade;
+    Button* m_buttonFragBall;
+    Button* m_buttonBlackHole;
 
     // ---- Game
 

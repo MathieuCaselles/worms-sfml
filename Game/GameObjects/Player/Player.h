@@ -35,6 +35,13 @@ public:
 	void removeHealth(int healthRemoved);
 
 	void setSkillState(skill_states newState);
+	const skill_states getSkillState() const;
+
+	void setNumberBanana(int number);
+	void setNumberBlackHole(int number);
+
+	const int getNumberBanana() const;
+	const int getNumberBlackHole() const;
 
 private:
 	Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition);
@@ -47,4 +54,7 @@ private:
 	float m_movementSpeed{ 150.f };
 
 	int m_health;
+
+	int m_numberBanana;
+	int m_numberBlackHole;
 };
