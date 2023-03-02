@@ -18,7 +18,7 @@
 #include "Game/GameObjects/Player/Player.h"
 
 constexpr int PLAYER_HEALTH = 100;
-constexpr int BANANA_COLLECTIBLE_SPAWN_RATE = 4; // is equal to 1 / BANANA_COLLECTIBLE_SPAWN_RATE;
+constexpr int BANANA_COLLECTIBLE_SPAWN_RATE = 3; // is equal to 1 / BANANA_COLLECTIBLE_SPAWN_RATE;
 
 MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m_fragBall(nullptr)
 {
@@ -260,6 +260,8 @@ void MainGameScene::initAllSounds()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	if (!m_blackHoleSound.openFromFile("Assets/Musics/BlackHole.wav"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+
+	m_ost.setVolume(m_ost.getVolume() / 2.f);
 	m_ost.setLoop(true);
 	m_ost.play();
 }
