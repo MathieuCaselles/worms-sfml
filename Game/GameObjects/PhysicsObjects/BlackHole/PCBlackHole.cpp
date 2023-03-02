@@ -5,7 +5,9 @@
 
 void PCBlackHole::updateImplementation(const float& deltaTime, Engine::IGameObject& gameObject, Engine::IScene& scene)
 {
-	const auto& blackHole = reinterpret_cast<BlackHole&>(gameObject);
+	auto& blackHole = reinterpret_cast<BlackHole&>(gameObject);
+
+	blackHole.m_blackHoleShape.setPosition(blackHole.m_rbPosition);
 
 	for (const auto& rb : blackHole.m_rbsCollidingWith)
 	{

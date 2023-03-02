@@ -86,7 +86,7 @@ MainGameScene::MainGameScene()
 	m_wormPlayer1 = wormPlayer1.get();
 	m_wormPlayer2 = wormPlayer2.get();
 
-	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
+	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(400, 500), PhysicsWorld::GRAVITY_FORCE.y * 1.f);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
