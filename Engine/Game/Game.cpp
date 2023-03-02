@@ -20,11 +20,10 @@ void Game::run(sf::VideoMode videoMode, std::string windowTitle, sf::Uint32 styl
     m_pCurrentScene->onBeginPlay();
 
     sf::Clock DeltaTimeClock;
-    float deltaTime;
 
     while (m_window.isOpen()) {
 
-        deltaTime = DeltaTimeClock.restart().asSeconds();
+        float deltaTime = DeltaTimeClock.restart().asSeconds();
 
         processInput();
         update(deltaTime);
@@ -68,7 +67,8 @@ Game::Game()
 void Game::initWindow(sf::VideoMode videoMode, std::string windowTitle, sf::Uint32 style)
 {
     m_window.create(videoMode, windowTitle, style);
-    m_window.setVerticalSyncEnabled(true);
+    // m_window.setVerticalSyncEnabled(true);
+    m_window.setFramerateLimit(60);
 }
 
 void Game::processInput()
