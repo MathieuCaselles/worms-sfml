@@ -15,6 +15,7 @@ void IRigidBody::step(const float& deltaTime)
 		}
 
 		m_rbPosition += m_rbVelocity;
+
 		m_rbRotation += m_rbAngularVelocity * deltaTime;
 	}
 
