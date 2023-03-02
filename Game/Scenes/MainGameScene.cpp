@@ -31,7 +31,10 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
 
-	// ---- Entities
+	m_cursor.setRadius(8);
+	m_cursor.setOrigin(m_cursor.getRadius(), m_cursor.getRadius());
+	m_cursor.setFillColor(sf::Color::Red);
+
 	sf::CircleShape defaultCircleShape;
 	defaultCircleShape.setRadius(20);
 	defaultCircleShape.setOrigin(defaultCircleShape.getRadius(), defaultCircleShape.getRadius());
@@ -436,8 +439,9 @@ void MainGameScene::makeTransition()
 
 void MainGameScene::update(const float& deltaTime)
 {
-
 	IScene::update(deltaTime);
+
+	m_cursor.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
 	updateTimeLeftForPlayers();
 }
 
@@ -450,6 +454,7 @@ void MainGameScene::render()
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
 
+	m_window.draw(m_cursor);
 }
 
 Player* MainGameScene::getCurrentPlayer()

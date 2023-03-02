@@ -74,6 +74,7 @@ private:
     Button* m_buttonBlackHole;
 
     // ---- Game
+    sf::CircleShape m_cursor;
 
     sf::Text m_title;
     sf::Text m_wind;
