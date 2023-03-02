@@ -96,8 +96,6 @@ MainGameScene::MainGameScene()
 	m_wormPlayer2 = wormPlayer2.get();
 	m_physicsWorld.addRigidBody(*wormPlayer1);
 	m_physicsWorld.addRigidBody(*wormPlayer2);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
-	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
 	//m_physicsWorld.addRigidBody(*blackHole);
 
 	m_physicsWorld.addRigidBody(*m_wormPlayer1);
@@ -109,11 +107,6 @@ MainGameScene::MainGameScene()
 
 	// ---- Adding gameObjects in order
 	addGameObjects(std::move(terrain));
-	//addGameObjects(std::move(blackHole));
-	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2), std::move(wormPlayer1)
-	, std::move(wormPlayer2));
-	
-	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Quitter", 30.f,
 	addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(wormPlayer1));
 	addGameObjects(std::move(wormPlayer2));
