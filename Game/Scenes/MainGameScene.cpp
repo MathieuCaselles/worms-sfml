@@ -82,7 +82,6 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	m_wormPlayer1 = wormPlayer1.get();
 	m_wormPlayer2 = wormPlayer2.get();
 
-	//auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
@@ -91,12 +90,10 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
 	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*m_fragBall);
-	//m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
 	addGameObjects(std::move(terrain));
-	//addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(wormPlayer1));
 	addGameObjects(std::move(wormPlayer2));
 	addGameObjects(std::move(grenade));
@@ -197,18 +194,6 @@ void MainGameScene::onBeginPlay()
 	// ---- Background
 	initBackground();
 
-	{
-
-		// Exemple d'utilisation  de findGameObject attention à bien check si c'est pas nullptr en cas d'objet non trouvé !
-		const Button* go = static_cast<Button*>(
-			findGameObject([](const Engine::IGameObject* gameObj) {
-				return 	gameObj->getInstanceRTTI() == Button::getClassRTTI();
-				})
-			);
-
-		std::cout << static_cast<std::string>(go->getText().getString()) << std::endl;
-
-	}
 }
 
 void MainGameScene::initTitle()

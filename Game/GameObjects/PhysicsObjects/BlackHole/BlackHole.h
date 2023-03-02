@@ -12,10 +12,8 @@ class BlackHole : public Engine::GameObject<PCBlackHole, GCBlackHole, ICVoid>,
 	friend GCBlackHole;
 	friend PCBlackHole;
 
-
 public:
-	BlackHole();
-	BlackHole(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float centerAttractionForce);
+	BlackHole(const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float centerAttractionForce);
 
 	~BlackHole() override = default;
 
