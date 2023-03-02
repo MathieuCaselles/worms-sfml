@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "Engine/Utility/MathUtils.h"
+#include "Game/GameObjects/PhysicsObjects/Collectibles/Banana/BananaCollectible.h"
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/Player/Player.h"
 
