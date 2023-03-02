@@ -18,6 +18,7 @@
 #include <string>
 #include <iostream>
 
+#include "Engine/Utility/MathUtils.h"
 #include "Game/GameObjects/Player/Player.h"
 
 MainGameScene::MainGameScene()
@@ -71,14 +72,14 @@ MainGameScene::MainGameScene()
 	m_physicsWorld.addRigidBody(*wormPlayer2);
 	m_physicsWorld.addRigidBody(*fallingCircleOrange1);
 	m_physicsWorld.addRigidBody(*fallingCircleOrange2);
-	m_physicsWorld.addRigidBody(*blackHole);
+	//m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
-	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(-60, 0), 30)));
+	addGameObjects(Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies(), VectorUtils::Rotate(sf::Vector2f(0, 200), 180*MathUtils::DEG_TO_RAD)));
 
 	addGameObjects(std::move(terrain));
-	addGameObjects(std::move(blackHole));
+	//addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(fallingCircleOrange1), std::move(fallingCircleOrange2), std::move(wormPlayer1)
 	, std::move(wormPlayer2));
 	
@@ -92,12 +93,19 @@ void MainGameScene::onBeginPlay()
 	IScene::onBeginPlay();
 	initTitle();
 	initInformations();
-	initOst();
+	initAllSounds();
 	initTime();
 	m_wormPlayer1->setCanPlay(true);
 	m_currentPlayer = m_wormPlayer1;
 	m_timeByTurn = 60;
 	m_timeBetweenTransition = 3;
+	m_rectSourceSprite = { 0, 0, 105, 155 };
+
+	m_explosionFX.loadFromFile("Assets/Textures/VFXExplosion.png");
+
+	m_spriteExplosionFX.setTexture(m_explosionFX);
+	m_spriteExplosionFX.setTextureRect(m_rectSourceSprite);
+	//m_sprite.setPosition({ 960,240 });
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -154,13 +162,60 @@ void MainGameScene::initBackground()
 	m_background.setSize({ 1920.f, 1080.f });
 	m_background.setTexture(&m_backgroundTexture);
 }
-void MainGameScene::initOst()
+void MainGameScene::initAllSounds()
 {
-	//if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
-	//	throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
-	//m_ost.setLoop(true);
-	//m_ost.play();
+	if (!m_ost.openFromFile("Assets/Musics/MapOST.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_shootSound.openFromFile("Assets/Musics/Shoot.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_explosionSound.openFromFile("Assets/Musics/Explosion.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_hitSound.openFromFile("Assets/Musics/Hit.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	m_ost.setLoop(true);
+	m_ost.play();
 }
+
+void MainGameScene::playExplosionSound()
+{
+	m_explosionSound.play();
+}
+
+void MainGameScene::playShootSound()
+{
+	m_shootSound.play();
+}
+
+void MainGameScene::playHitSound()
+{
+	m_hitSound.play();
+}
+
+void MainGameScene::playExplosionFX()
+{
+	if (clock.getElapsedTime().asSeconds() > 0.2f && canPlayExplosionFX) {
+		if (m_rectSourceSprite.left == 400)
+		{
+			m_rectSourceSprite.left = 0;
+			canPlayExplosionFX = false;
+		}
+		else if (m_rectSourceSprite.left == 100)
+			m_rectSourceSprite.left += 150;
+		else if (m_rectSourceSprite.left == 250)
+			m_rectSourceSprite.left += 150;
+		else
+		{
+			m_rectSourceSprite.left += 100;
+			// TODO: detect coords of projectile
+		}
+		m_spriteExplosionFX.setTextureRect(m_rectSourceSprite);
+		clock.restart();
+	} else
+	{
+		m_spriteExplosionFX.setPosition(3000.f, 3000.f);
+	}
+}
+
 
 void MainGameScene::initTime()
 {
@@ -236,9 +291,11 @@ void MainGameScene::makeTransition()
 void MainGameScene::update(const float& deltaTime)
 {
 	m_physicsWorld.step(deltaTime);
+	updateTimeLeftForPlayers();
+	playExplosionFX();
+
 	IScene::update(deltaTime);
 
-	updateTimeLeftForPlayers();
 }
 
 void MainGameScene::render()
@@ -247,6 +304,7 @@ void MainGameScene::render()
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
+	m_window.draw(m_spriteExplosionFX);
 	
 	IScene::render();
 }

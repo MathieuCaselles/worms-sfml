@@ -32,6 +32,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 		case CLICK:
 			// TODO: Make shoot
+			currentScene.playShootSound();
 			currentScene.m_hasPlayed = true;
 			break;
 

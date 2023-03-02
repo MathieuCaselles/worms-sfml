@@ -28,11 +28,17 @@ public:
 
     bool m_hasPlayed = false;
 
+    void playShootSound();
+    void playExplosionSound();
+    void playHitSound();
+
+    void playExplosionFX();
+
 private:
     void initBackground();
     void initInformations();
     void initTitle();
-    void initOst();
+    void initAllSounds();
     void initTime();
 
     void printPlayerToPlay();
@@ -59,8 +65,12 @@ private:
     sf::Font m_font;
 
     sf::Music m_ost;
+    sf::Music m_explosionSound;
+    sf::Music m_shootSound;
+    sf::Music m_hitSound;
 
     sf::Clock m_clock;
+    sf::Clock clock;
     int m_elapsed;
 
     bool m_changeTurn = false;
@@ -69,4 +79,10 @@ private:
 
     sf::Texture m_backgroundTexture;
     sf::Texture m_textureCalvin;
+    sf::Texture m_explosionFX;
+
+    sf::IntRect m_rectSourceSprite;
+
+    bool canPlayExplosionFX;
+    sf::Sprite m_spriteExplosionFX;
 };
