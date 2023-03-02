@@ -12,17 +12,20 @@
 #include <string>
 #include <iostream>
 
+#include "Engine/Utility/MathUtils.h"
+#include "Game/GameObjects/PhysicsObjects/Collectibles/Banana/BananaCollectible.h"
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/Player/Player.h"
 
 constexpr int PLAYER_HEALTH = 100;
+constexpr int BANANA_COLLECTIBLE_SPAWN_RATE = 4; // is equal to 1 / BANANA_COLLECTIBLE_SPAWN_RATE;
 
 MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m_fragBall(nullptr)
 {
 	
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
-	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
+	const PhysicsProperties grenadePhysicsProperties(3.f, 0.3f);
 	const PhysicsProperties fragBallPhysicsProperties(1.5f, 0.8f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
@@ -48,8 +51,6 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	playerShape.setOrigin(playerShape.getRadius(), playerShape.getRadius());
 	playerShape.setTexture(&m_textureCalvin);
 
-
-
 	sf::CircleShape grenadeShape(15);
 	grenadeShape.setFillColor(GameColors::iron);
 	grenadeShape.setOutlineColor(sf::Color::Black);
@@ -62,20 +63,31 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	fragBallShape.setOutlineThickness(1);
 	fragBallShape.setOrigin(fragBallShape.getRadius(), fragBallShape.getRadius());
 
+	sf::CircleShape bananaShape(20);
+	bananaShape.setFillColor(GameColors::banana);
+	bananaShape.setOutlineColor(GameColors::orange);
+	bananaShape.setOutlineThickness(2);
+	bananaShape.setOrigin(bananaShape.getRadius(), bananaShape.getRadius());
+
 	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
-	grenade->setLaunchForce(14.f);
+	grenade->setLaunchForce(10.f);
 	grenade->setDamages(15.f);
 	m_grenade = grenade.get();
 
 	auto fragBall = 
 		Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties, 15);
-	fragBall->setLaunchForce(9.f);
+	fragBall->setLaunchForce(8.f);
 	fragBall->setDamages(10.f);
 	fragBall->setFragmentsForceMinMax(7.f, 12.f);
 	fragBall->setFragmentsDamage(3.f);
 	fragBall->setFragmentsDurationBeforeExplosion(4.f);
 	fragBall->setFragsSpawnXAngleIncertitude(15);
 	m_fragBall = fragBall.get();
+
+	auto bananaCollectible = 
+		Engine::GameObjectFactory::create<BananaCollectible>(bananaShape);
+	m_bananaCollectible = bananaCollectible.get();
+	m_bananaCollectible->m_onCollectCallback = [this]{ updateButtonsSKillInfo(); };
 
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
@@ -85,12 +97,14 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
+	m_terrain = terrain.get();
 
 	m_physicsWorld.addRigidBody(*m_wormPlayer1);
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
 	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*m_fragBall);
-	m_physicsWorld.addRigidBody(*terrain);
+	m_physicsWorld.addRigidBody(*m_terrain);
+	m_physicsWorld.addRigidBody(*m_bananaCollectible);
 
 	// ---- Adding gameObjects in order
 	addGameObjects(std::move(terrain));
@@ -98,14 +112,11 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 	addGameObjects(std::move(wormPlayer2));
 	addGameObjects(std::move(grenade));
 	addGameObjects(std::move(fragBall));
-
-
-
+	addGameObjects(std::move(bananaCollectible));
 
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
-
 
 	auto grenadeButton = Engine::GameObjectFactory::create<Button>(350, 25, 325, 50, "->Grenade", 30.f,
 				sf::Color(225, 0, 0), sf::Color(255, 0, 0), sf::Color(195, 0, 0),
@@ -240,7 +251,7 @@ void MainGameScene::initOst()
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	m_grenade->shot(position, direction * m_fragBall->getLaunchForce());
+	m_grenade->shot(position, direction * m_grenade->getLaunchForce());
 	updateButtonsSKillInfo();
 	m_hasPlayed = true;
 }
@@ -272,6 +283,23 @@ void MainGameScene::spawnBlackHole(const  sf::Vector2f& position)
 		m_currentPlayer->setSkillState(GRENADE);
 	m_hasPlayed = true;
 
+}
+
+void MainGameScene::spawnRandomBananaCollectible() const
+{
+	if (m_bananaCollectible->isActive())
+		return; // Already spawned
+
+	const auto& terrainEdges = m_terrain->getFloorEdges();
+
+	constexpr int SPAWN_POINT_FROM_CENTER = 6;
+	int spawnPointFromCenterIntertitude = MathUtils::getRandomNumber(0, SPAWN_POINT_FROM_CENTER) - SPAWN_POINT_FROM_CENTER / 2;
+	spawnPointFromCenterIntertitude = std::clamp(spawnPointFromCenterIntertitude, 0, static_cast<int>(terrainEdges.size()));
+
+	sf::Vector2f randomSpawnPoint = terrainEdges[terrainEdges.size() / 2 + spawnPointFromCenterIntertitude];
+	randomSpawnPoint = sf::Vector2f(randomSpawnPoint.x, randomSpawnPoint.y - 70.f);
+
+	m_bananaCollectible->show(randomSpawnPoint);
 }
 
 void MainGameScene::unselectPreviousButton()
@@ -341,6 +369,13 @@ void MainGameScene::updateTimeLeftForPlayers()
 		m_changeTurn = true;
 		m_hasPlayed = false;
 		m_clock.restart();
+
+		const int chanceToSpawnBanana = MathUtils::getRandomNumber(1, BANANA_COLLECTIBLE_SPAWN_RATE); // Random doesn't work with constexpr
+		if (chanceToSpawnBanana == 1)
+		{
+			spawnRandomBananaCollectible();
+		}
+
 	}
 	makeTransition();
 	printPlayerToPlay();
@@ -348,7 +383,6 @@ void MainGameScene::updateTimeLeftForPlayers()
 
 void MainGameScene::makeTransition()
 {
-
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
 	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
 	{

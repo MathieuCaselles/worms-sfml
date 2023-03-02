@@ -5,11 +5,13 @@
 
 #include "SFML/Audio/Music.hpp"
 
+class BananaCollectible;
 class FragmentationBall;
 class Grenade;
 class PhysicsWorld;
 class Player;
 class Button;
+class Terrain;
 
 class MainGameScene : public Engine::IScene
 {
@@ -28,6 +30,7 @@ public:
     void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
     void spawnFragBall(const sf::Vector2f& position, const sf::Vector2f& direction);
     void spawnBlackHole(const  sf::Vector2f& position);
+    void spawnRandomBananaCollectible() const;
 
     void unselectPreviousButton();
 
@@ -50,6 +53,7 @@ private:
     // ---- Grenade
     Grenade* m_grenade;
     FragmentationBall* m_fragBall;
+    BananaCollectible* m_bananaCollectible;
 
     // ---- Drawings
     sf::RectangleShape m_background;
@@ -71,6 +75,8 @@ private:
     sf::Text m_wind;
     sf::Text m_timeLeft;
     sf::Font m_font;
+
+    Terrain* m_terrain;
 
     sf::Music m_ost;
 
