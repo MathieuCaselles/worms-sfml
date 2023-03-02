@@ -1,15 +1,15 @@
 #pragma once
 
-#include <functional>
 #include <Engine/GameObject/GameObject.h>
 #include <Engine/Scene/Scene.h>
 
-#include <Game/GameObjects/UI/Buttons/Button.h>
 
 #include <Game/Components/InputComponents/ICVoid.h>
 #include <Game/Components/PhysicsComponents/PCVoid.h>
 #include <Game/Components/GraphicsComponents/GCVoid.h>
 
+class MainGameScene;
+class Button;
 
 class HUD : public Engine::GameObject<PCVoid, GCVoid, ICVoid> {
 public:
@@ -20,6 +20,13 @@ public:
 	~HUD();
 
 	void onBeginPlay(Engine::IScene& scene) override;
+
+protected:
+	MainGameScene* p_scene;
+
+	std::unique_ptr<Button> p_ButtonGrenade;
+	std::unique_ptr<Button> p_ButtonBanana;
+	std::unique_ptr<Button> p_ButtonBlackHole;
 };
 
 

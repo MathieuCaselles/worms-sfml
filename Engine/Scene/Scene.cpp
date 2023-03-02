@@ -34,7 +34,7 @@ namespace Engine {
 	void IScene::onBeginPlay() {
 		for (const auto& pGameObject : m_gameObjects)
 		{
-			pGameObject->onBeginPlay(*this);
+			pGameObject->traverse([&](auto* gameObject) {static_cast<IGameObject*>(gameObject)->onBeginPlay(*this); });
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace Engine {
 	void IScene::onEndPlay() {
 		for (const auto& pGameObject : m_gameObjects)
 		{
-			pGameObject->onEndPlay(*this);
+			pGameObject->traverse([&](auto* gameObject) {static_cast<IGameObject*>(gameObject)->onEndPlay(*this); });
 		}
 	}
 

@@ -48,7 +48,7 @@ namespace Tools {
             return m_sons;
         }
 
-        using TraverseCallbackType = std::function<void(const Composite*)>;
+        using TraverseCallbackType = std::function<void(Composite*)>;
         void traverse(TraverseCallbackType fn)
         {
             for (auto& son : m_sons)
