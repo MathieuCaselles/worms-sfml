@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 
+#include "Engine/Utility/MathUtils.h"
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/Player/Player.h"
 
@@ -85,6 +86,10 @@ MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
+	m_wormPlayer1 = wormPlayer1.get();
+	m_wormPlayer2 = wormPlayer2.get();
+	m_physicsWorld.addRigidBody(*wormPlayer1);
+	m_physicsWorld.addRigidBody(*wormPlayer2);
 
 	m_physicsWorld.addRigidBody(*m_wormPlayer1);
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
@@ -182,12 +187,12 @@ void MainGameScene::onBeginPlay()
 	IScene::onBeginPlay();
 	initTitle();
 	initInformations();
-	initOst();
+	initAllSounds();
 	initTime();
 	m_wormPlayer1->setCanPlay(true);
 	m_currentPlayer = m_wormPlayer1;
 	m_timeByTurn = 60;
-	m_timeBetweenTransition = 3;
+	m_timeBetweenTransition = 5;
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -202,7 +207,6 @@ void MainGameScene::initTitle()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
 	}
 	m_title.setFont(m_font);
-	m_title.setString("Shoot and Destroy");
 	m_title.setFillColor(sf::Color(40, 40, 40));
 	m_title.setCharacterSize(35);
 	m_title.setPosition(730, 350);
@@ -230,13 +234,35 @@ void MainGameScene::initBackground()
 	m_background.setSize({ 1920.f, 1080.f });
 	m_background.setTexture(&m_backgroundTexture);
 }
-void MainGameScene::initOst()
+void MainGameScene::initAllSounds()
 {
-	//if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
-	//	throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
-	//m_ost.setLoop(true);
-	//m_ost.play();
+	if (!m_ost.openFromFile("Assets/Musics/MapOST.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_shootSound.openFromFile("Assets/Musics/Shoot.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_explosionSound.openFromFile("Assets/Musics/Explosion.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_hitSound.openFromFile("Assets/Musics/Hit.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	m_ost.setLoop(true);
+	m_ost.play();
 }
+
+void MainGameScene::playExplosionSound()
+{
+	m_explosionSound.play();
+}
+
+void MainGameScene::playShootSound()
+{
+	m_shootSound.play();
+}
+
+void MainGameScene::playHitSound()
+{
+	m_hitSound.play();
+}
+
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
@@ -376,19 +402,20 @@ void MainGameScene::makeTransition()
 
 void MainGameScene::update(const float& deltaTime)
 {
-	IScene::update(deltaTime);
 
+	IScene::update(deltaTime);
 	updateTimeLeftForPlayers();
 }
 
 void MainGameScene::render()
 {
 	m_window.draw(m_background);
+	
+	IScene::render();
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
-	
-	IScene::render();
+
 }
 
 Player* MainGameScene::getCurrentPlayer()
