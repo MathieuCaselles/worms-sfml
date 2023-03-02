@@ -244,6 +244,8 @@ void MainGameScene::initAllSounds()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	if (!m_hitSound.openFromFile("Assets/Musics/Hit.wav"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_blackHoleSound.openFromFile("Assets/Musics/BlackHole.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	m_ost.setLoop(true);
 	m_ost.play();
 }
@@ -261,6 +263,11 @@ void MainGameScene::playShootSound()
 void MainGameScene::playHitSound()
 {
 	m_hitSound.play();
+}
+
+void MainGameScene::playBlackHoleSound()
+{
+	m_blackHoleSound.play();
 }
 
 
@@ -374,7 +381,6 @@ void MainGameScene::updateTimeLeftForPlayers()
 
 void MainGameScene::makeTransition()
 {
-
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
 	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
 	{
@@ -400,10 +406,35 @@ void MainGameScene::makeTransition()
 	
 }
 
+bool MainGameScene::checkIfAPlayerIsDead()
+{
+	if (m_wormPlayer1->getIsDead())
+	{
+		m_wormPlayer1->setIsActive(false);
+		m_title.setString("Joueur 2 a gagné !");
+		return true;
+	}
+	else if (m_wormPlayer2->getIsDead())
+	{
+		m_wormPlayer2->setIsActive(false);
+		m_title.setString("Joueur 1 a gagné !");
+		return true;
+	}
+	else if (m_wormPlayer2->getIsDead() && m_wormPlayer1->getIsDead())
+	{
+		m_wormPlayer1->setIsActive(false);
+		m_wormPlayer2->setIsActive(false);
+		m_title.setString("C'est une égalité !");
+		return true;
+	}
+	return false;
+}
+
 void MainGameScene::update(const float& deltaTime)
 {
 
 	IScene::update(deltaTime);
+	if (checkIfAPlayerIsDead()) return;
 	updateTimeLeftForPlayers();
 }
 

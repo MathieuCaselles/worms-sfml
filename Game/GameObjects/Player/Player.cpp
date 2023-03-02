@@ -32,12 +32,12 @@ void Player::setHealth(int newHealth)
 	m_health = newHealth;
 }
 
-void Player::removeHealth(int healthRemoved)
+void Player::removeHealth(float healthRemoved)
 {
 	m_health -= healthRemoved;
 	if (m_health <= 0)
 	{
-		std::cout << "Worm Dead" << std::endl;
+		m_isDead = true;
 	}
 }
 
@@ -71,9 +71,14 @@ const int Player::getNumberBlackHole() const
 	return m_numberBlackHole;
 }
 
+const bool Player::getIsDead() const
+{
+	return m_isDead;
+}
+
 
 Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties,
-	const sf::Vector2f& initialPosition)
+               const sf::Vector2f& initialPosition)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
 	CircleRigidBody(circleShape, properties),
 	m_playerShape(circleShape), m_health(health),

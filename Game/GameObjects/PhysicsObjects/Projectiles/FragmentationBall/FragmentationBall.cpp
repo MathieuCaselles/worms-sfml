@@ -45,6 +45,11 @@ void FragmentationBall::onBeginPlay(Engine::IScene& scene)
 	}
 }
 
+void FragmentationBall::onCollisionEnter(IRigidBody* rb)
+{
+	m_circleExplosion->setDamage(m_damages);
+}
+
 void FragmentationBall::startExplosion()
 {
 	Grenade::startExplosion();

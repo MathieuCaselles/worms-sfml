@@ -58,6 +58,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 							currentScene.spawnBlackHole(
 								static_cast<sf::Vector2f>(scene.getMousePositionWindow())
 							);
+							currentScene.playBlackHoleSound();
 						}
 					} break;
 
