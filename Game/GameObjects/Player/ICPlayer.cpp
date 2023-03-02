@@ -9,23 +9,23 @@ ICPlayer::ICPlayer()
 
 void ICPlayer::processInputImplementation(Engine::IGameObject& gameObject, sf::Event& inputEvent, Engine::IScene& scene)
 {
-	Player& button = reinterpret_cast<Player&>(gameObject);
+	Player& player = reinterpret_cast<Player&>(gameObject);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		button.setButtonState(BUTTON_LEFT);
+		player.setButtonState(LEFT);
 	}else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		button.setButtonState(BUTTON_RIGHT);
+		player.setButtonState(RIGHT);
 	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		button.setButtonState(BUTTON_JUMP);
+		player.setButtonState(JUMP);
 	} else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		button.setButtonState(BUTTON_LEFTCLICK);
+		player.setButtonState(CLICK);
 	} else
 	{
-		button.setButtonState(BUTTON);
+		player.setButtonState(IDLE);
 	}
 	
 }

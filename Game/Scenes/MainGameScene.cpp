@@ -16,6 +16,8 @@
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/Player/Player.h"
 
+constexpr int PLAYER_HEALTH = 100;
+
 MainGameScene::MainGameScene()
 {
 	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
@@ -80,13 +82,18 @@ MainGameScene::MainGameScene()
 	fragBall->setFragsSpawnXAngleIncertitude(15);
 	m_fragBall = fragBall.get();
 
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
+	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
+	m_wormPlayer1 = wormPlayer1.get();
+	m_wormPlayer2 = wormPlayer2.get();
+
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
 
-	m_physicsWorld.addRigidBody(*wormPlayer1);
+	m_physicsWorld.addRigidBody(*m_wormPlayer1);
+	m_physicsWorld.addRigidBody(*m_wormPlayer2);
 	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*m_fragBall);
 	m_physicsWorld.addRigidBody(*blackHole);
@@ -96,6 +103,7 @@ MainGameScene::MainGameScene()
 	addGameObjects(std::move(terrain));
 	addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(wormPlayer1));
+	addGameObjects(std::move(wormPlayer2));
 	addGameObjects(std::move(grenade));
 	addGameObjects(std::move(fragBall));
 
@@ -110,12 +118,16 @@ void MainGameScene::onBeginPlay()
 	initTitle();
 	initInformations();
 	initOst();
+	initTime();
+	m_wormPlayer1->setCanPlay(true);
+	m_currentPlayer = m_wormPlayer1;
+	m_timeByTurn = 60;
+	m_timeBetweenTransition = 3;
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
 	// ---- Background
 	initBackground();
-
 
 	{
 
@@ -151,7 +163,7 @@ void MainGameScene::initInformations()
 
 	m_wind.setFont(m_font);
 	//m_wind.setString("Wind: " + std::to_string(m_windForce->getForce().y));
-	m_wind.setString("Wind:		TODO");
+	m_wind.setString("Vent:		TODO");
 	m_wind.setFillColor(sf::Color(255, 255, 255));
 	m_wind.setCharacterSize(20);
 	m_wind.setPosition(80, 25);
@@ -178,9 +190,80 @@ void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2
 	m_fragBall->shot(position, direction * m_fragBall->getLaunchForce());
 }
 
+void MainGameScene::initTime()
+{
+	m_timeLeft.setFont(m_font);
+	m_timeLeft.setString("Temps: " + std::to_string(static_cast<int>(round(m_clock.getElapsedTime().asSeconds()))));
+	m_timeLeft.setFillColor(sf::Color(255, 255, 255));
+	m_timeLeft.setCharacterSize(30);
+	m_timeLeft.setPosition(80, 150);
+}
+
+void MainGameScene::printPlayerToPlay()
+{
+	if (m_elapsed < m_timeBetweenTransition && m_changeTurn)
+	{
+		if (m_currentPlayer == m_wormPlayer1)
+		{
+			m_title.setString("Joueur 2 Préparez vous !");
+		}
+		else
+		{
+			m_title.setString("Joueur 1 Préparez vous !");
+		}
+	} else
+	{
+		m_title.setString("");
+	}
+}
+
+void MainGameScene::updateTimeLeftForPlayers()
+{
+	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
+	if (m_elapsed >= m_timeByTurn || m_hasPlayed)
+	{
+		m_wormPlayer1->setCanPlay(false);
+		m_wormPlayer2->setCanPlay(false);
+		m_changeTurn = true;
+		m_hasPlayed = false;
+		m_clock.restart();
+	}
+	makeTransition();
+	printPlayerToPlay();
+}
+
+void MainGameScene::makeTransition()
+{
+	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
+	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
+	{
+		m_currentPlayer = (m_currentPlayer == m_wormPlayer1) ? m_wormPlayer2 : m_wormPlayer1;
+		m_changeTurn = false;
+		m_clock.restart();
+		if (m_currentPlayer == m_wormPlayer1)
+		{
+			m_wormPlayer1->setCanPlay(true);
+		}
+		else
+		{
+			m_wormPlayer2->setCanPlay(true);
+		}
+	}
+
+	// ---- Display
+	if (m_wormPlayer1->getCanPlay())
+		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(m_timeByTurn - m_elapsed));
+	else if (m_wormPlayer2->getCanPlay())
+		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(m_timeByTurn - m_elapsed));
+	else
+		m_timeLeft.setString("Transition: " + std::to_string(m_timeBetweenTransition - m_elapsed));
+}
+
 void MainGameScene::update(const float& deltaTime)
 {
 	IScene::update(deltaTime);
+
+	updateTimeLeftForPlayers();
 }
 
 void MainGameScene::render()
@@ -188,7 +271,8 @@ void MainGameScene::render()
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
-
+	m_window.draw(m_timeLeft);
+	
 	IScene::render();
 }
 
