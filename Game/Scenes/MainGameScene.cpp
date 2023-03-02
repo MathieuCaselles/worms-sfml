@@ -105,7 +105,6 @@ void MainGameScene::onBeginPlay()
 
 	m_spriteExplosionFX.setTexture(m_explosionFX);
 	m_spriteExplosionFX.setTextureRect(m_rectSourceSprite);
-	//m_sprite.setPosition({ 960,240 });
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
