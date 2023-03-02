@@ -26,33 +26,18 @@ public:
 	void addForce(const sf::Vector2f& force);
 	void translate(const sf::Vector2f& movementVector);
 
+	void setPosition(const sf::Vector2f& position) { m_rbPosition = position; }
+	void setRotation(float rotation)			   { m_rbRotation = rotation; }
 	void setVelocity(const sf::Vector2f& velocity) { m_rbVelocity = velocity; }
 	void setAngularVelocity(float angularVelocity) { m_rbAngularVelocity = angularVelocity; }
 
 	[[nodiscard]] sf::Vector2f getPosition() const { return m_rbPosition; }
 	[[nodiscard]] sf::Vector2f getVelocity() const { return m_rbVelocity; }
 	[[nodiscard]] float getAngularVelocity() const { return m_rbAngularVelocity; }
-	[[nodiscard]] PhysicsProperties& getProperties() { return m_rbProperties; }
+	[[nodiscard]] PhysicsProperties& getPhysicsProperties() { return m_rbProperties; }
 
-	void tryOnCollisionEnter(IRigidBody* rb)
-	{
-		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
-		if(foundRbPtr == m_rbsCollidingWith.end()) // If not found
-		{
-			m_rbsCollidingWith.push_back(rb);
-			onCollisionEnter();
-		}
-	}
-
-	void tryOnCollisionExit(IRigidBody* rb)
-	{
-		const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
-		if (foundRbPtr != m_rbsCollidingWith.end()) // If found
-		{
-			m_rbsCollidingWith.erase(foundRbPtr);
-			onCollisionExit();
-		}
-	}
+	void tryOnCollisionEnter(IRigidBody* rb);
+	void tryOnCollisionExit(IRigidBody* rb);
 
 	bool operator==(const IRigidBody& other) const
 	{
@@ -61,8 +46,10 @@ public:
 
 protected:
 	explicit IRigidBody(const PhysicsProperties& properties);
-	virtual void onCollisionEnter() {  }
-	virtual void onCollisionExit() { }
+	IRigidBody(const IRigidBody& rigidBody);
+
+	virtual void onCollisionEnter(IRigidBody* rb) {  }
+	virtual void onCollisionExit(IRigidBody* rb) { }
 
 	sf::Vector2f m_rbPosition;
 	sf::Vector2f m_rbVelocity;

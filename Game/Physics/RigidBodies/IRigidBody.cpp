@@ -5,7 +5,7 @@
 
 void IRigidBody::step(const float& deltaTime)
 {
-	if (!m_rbProperties.m_isStatic)
+	if (m_rbProperties.m_isActive && !m_rbProperties.m_isStatic)
 	{
 		m_rbVelocity += PhysicsWorld::GRAVITY_FORCE * deltaTime;
 
@@ -39,5 +39,29 @@ void IRigidBody::translate(const sf::Vector2f& movementVector)
 	}
 }
 
+void IRigidBody::tryOnCollisionEnter(IRigidBody* rb)
+{
+	const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+	if (foundRbPtr == m_rbsCollidingWith.end()) // If not found
+	{
+		m_rbsCollidingWith.push_back(rb);
+		onCollisionEnter(rb);
+	}
+}
+
+void IRigidBody::tryOnCollisionExit(IRigidBody* rb)
+{
+	const auto foundRbPtr = std::ranges::find(m_rbsCollidingWith, rb);
+	if (foundRbPtr != m_rbsCollidingWith.end()) // If found
+	{
+		m_rbsCollidingWith.erase(foundRbPtr);
+		onCollisionExit(rb);
+	}
+}
+
 IRigidBody::IRigidBody(const PhysicsProperties& properties)
 	: m_rbProperties(properties) { }
+
+IRigidBody::IRigidBody(const IRigidBody& rigidBody)
+	: m_rbProperties(rigidBody.m_rbProperties)
+{ }

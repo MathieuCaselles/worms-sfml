@@ -2,9 +2,9 @@
 
 #include "Engine/GameObject/GameObject.h"
 
-struct GCFallingCircle : Engine::IGraphicsComponent
+struct GCCircleExplosion : Engine::IGraphicsComponent
 {
-	GCFallingCircle() = default;
+	GCCircleExplosion() = default;
 
 	void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };

@@ -2,9 +2,9 @@
 
 #include "Engine/GameObject/GameObject.h"
 
-struct GCFallingBox : Engine::IGraphicsComponent
+struct GCGrenade : Engine::IGraphicsComponent
 {
-	GCFallingBox() = default;
+	GCGrenade() = default;
 
 	void renderImplementation(Engine::IGameObject& gameObject, sf::RenderWindow& window) override;
 };
