@@ -35,7 +35,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 			{
 				// TODO: Make shoot
 				currentScene.m_hasPlayed = true;
-
+				currentScene.playShootSound();
 				const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
 
 				currentScene.spawnGrenade(
@@ -45,9 +45,6 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 
 				break;
 			}
-			// TODO: Make shoot
-			currentScene.playShootSound();
-			break;
 
 		default:
 			break;

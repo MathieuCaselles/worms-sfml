@@ -95,7 +95,6 @@ MainGameScene::MainGameScene()
 	m_wormPlayer2 = wormPlayer2.get();
 	m_physicsWorld.addRigidBody(*wormPlayer1);
 	m_physicsWorld.addRigidBody(*wormPlayer2);
-	//m_physicsWorld.addRigidBody(*blackHole);
 
 	m_physicsWorld.addRigidBody(*m_wormPlayer1);
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
@@ -180,13 +179,7 @@ void MainGameScene::onBeginPlay()
 	m_wormPlayer1->setCanPlay(true);
 	m_currentPlayer = m_wormPlayer1;
 	m_timeByTurn = 60;
-	m_timeBetweenTransition = 3;
-	m_rectSourceSprite = { 0, 0, 105, 155 };
-
-	m_explosionFX.loadFromFile("Assets/Textures/VFXExplosion.png");
-
-	m_spriteExplosionFX.setTexture(m_explosionFX);
-	m_spriteExplosionFX.setTextureRect(m_rectSourceSprite);
+	m_timeBetweenTransition = 5;
 
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
@@ -213,7 +206,6 @@ void MainGameScene::initTitle()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD FONT");
 	}
 	m_title.setFont(m_font);
-	m_title.setString("Shoot and Destroy");
 	m_title.setFillColor(sf::Color(40, 40, 40));
 	m_title.setCharacterSize(35);
 	m_title.setPosition(730, 350);
@@ -268,31 +260,6 @@ void MainGameScene::playShootSound()
 void MainGameScene::playHitSound()
 {
 	m_hitSound.play();
-}
-
-void MainGameScene::playExplosionFX()
-{
-	if (clock.getElapsedTime().asSeconds() > 0.2f && canPlayExplosionFX) {
-		if (m_rectSourceSprite.left == 400)
-		{
-			m_rectSourceSprite.left = 0;
-			canPlayExplosionFX = false;
-		}
-		else if (m_rectSourceSprite.left == 100)
-			m_rectSourceSprite.left += 150;
-		else if (m_rectSourceSprite.left == 250)
-			m_rectSourceSprite.left += 150;
-		else
-		{
-			m_rectSourceSprite.left += 100;
-			// TODO: detect coords of projectile
-		}
-		m_spriteExplosionFX.setTextureRect(m_rectSourceSprite);
-		clock.restart();
-	} else
-	{
-		m_spriteExplosionFX.setPosition(3000.f, 3000.f);
-	}
 }
 
 
@@ -374,19 +341,20 @@ void MainGameScene::makeTransition()
 
 void MainGameScene::update(const float& deltaTime)
 {
-	IScene::update(deltaTime);
 
+	IScene::update(deltaTime);
+	updateTimeLeftForPlayers();
 }
 
 void MainGameScene::render()
 {
 	m_window.draw(m_background);
+	
+	IScene::render();
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
-	m_window.draw(m_spriteExplosionFX);
-	
-	IScene::render();
+
 }
 
 Player* MainGameScene::getCurrentPlayer()

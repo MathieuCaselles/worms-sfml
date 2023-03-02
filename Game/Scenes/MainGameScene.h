@@ -31,8 +31,6 @@ public:
     void playExplosionSound();
     void playHitSound();
 
-    void playExplosionFX();
-
 private:
     void initBackground();
     void initInformations();
@@ -70,7 +68,6 @@ private:
     sf::Music m_hitSound;
 
     sf::Clock m_clock;
-    sf::Clock clock;
     int m_elapsed;
 
     bool m_changeTurn = false;
@@ -79,10 +76,5 @@ private:
 
     sf::Texture m_backgroundTexture;
     sf::Texture m_textureCalvin;
-    sf::Texture m_explosionFX;
-
-    sf::IntRect m_rectSourceSprite;
-
-    bool canPlayExplosionFX;
-    sf::Sprite m_spriteExplosionFX;
+    
 };
