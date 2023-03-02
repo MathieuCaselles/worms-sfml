@@ -41,6 +41,7 @@ public:
     void playShootSound();
     void playExplosionSound();
     void playHitSound();
+    void playBlackHoleSound();
 
 private:
     void initBackground();
@@ -53,6 +54,8 @@ private:
 
     void updateTimeLeftForPlayers();
     void makeTransition();
+
+	bool checkIfAPlayerIsDead();
 
     // ---- Grenade
     Grenade* m_grenade;
@@ -87,6 +90,7 @@ private:
     sf::Music m_explosionSound;
     sf::Music m_shootSound;
     sf::Music m_hitSound;
+    sf::Music m_blackHoleSound;
 
     sf::Clock m_clock;
     int m_elapsed;
