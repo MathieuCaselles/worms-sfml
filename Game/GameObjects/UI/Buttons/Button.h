@@ -13,6 +13,7 @@ enum button_states { BUTTON_IDLE = 0, BUTTON_HOVER, BUTTON_PRESSED };
 
 class Button: public Engine::GameObject<ICButton, PCButton, GCButton> {
 	friend struct Tools::Factory<Engine::AvailableGameObjectsTypes, true>;
+	friend PCButton;
 public:
 	DECLARE_RTTI(Button, Engine::IGameObject)
 
@@ -21,6 +22,8 @@ private:
 	Button(float x, float y, float width, float height, std::function<void(Button* button)> const& onLeftClick, std::function<void(Button* button)> const& onRightClick);
 	Button(float x, float y, float width, float height, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
 	Button(float x, float y, float width, float height, std::string text, float sizeText, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick);
+	Button(float x, float y, float width, float height, std::string text, float sizeText, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, std::function<void(Button* button)> const& onLeftClick, 
+		std::function<void(Button* button)> const& onMouseEnter, std::function<void(Button* button)> const& onMouseExit);
 
 public:
 	~Button() = default;
@@ -39,11 +42,14 @@ public:
 
 	void useOnLeftClick();
 	void useOnRightClick();
+	void useOnMouseEnter();
+	void useOnMouseExit();
 
 protected:
 	void initShape(float x, float y, float width, float height);
 
 	button_states m_buttonState;
+	button_states m_buttonPreviousState;
 
 	sf::RectangleShape m_shape;
 	sf::Text m_text;
@@ -56,6 +62,8 @@ protected:
 
 	std::function<void(Button* button)> m_callbackOnLeftClick;
 	std::function<void(Button* button)> m_callbackOnRightClick;
+	std::function<void(Button* button)> m_callbackOnMouseEnter;
+	std::function<void(Button* button)> m_callbackOnMouseExit;
 };
 
 

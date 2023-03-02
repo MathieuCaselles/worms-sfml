@@ -34,7 +34,7 @@ namespace Engine {
 	void IScene::onBeginPlay() {
 		for (const auto& pGameObject : m_gameObjects)
 		{
-			pGameObject->onBeginPlay(*this);
+			pGameObject->traverse([&](auto* gameObject) {static_cast<IGameObject*>(gameObject)->onBeginPlay(*this); });
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace Engine {
 	void IScene::onEndPlay() {
 		for (const auto& pGameObject : m_gameObjects)
 		{
-			pGameObject->onEndPlay(*this);
+			pGameObject->traverse([&](auto* gameObject) {static_cast<IGameObject*>(gameObject)->onEndPlay(*this); });
 		}
 	}
 
@@ -57,7 +57,7 @@ namespace Engine {
 
 	void IScene::update(const float& deltaTime)
 	{
-		for (auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ) {
+		for (	auto it = m_gameObjects.begin(); it != m_gameObjects.end(); ) {
 			IGameObject* gameObject = (*it).get();
 
 			if (gameObject == nullptr || gameObject->isWaitingToBeDestroyed()) {

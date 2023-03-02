@@ -51,19 +51,26 @@ namespace Engine {
 		void processInput(sf::Event& inputEvent, IScene& scene) override
 		{
 			if (m_isActive)
-				this->processInputImplementation(*this, inputEvent, scene);
+				this->traverse([&](auto* gameObject) {
+						static_cast<decltype(this)>(gameObject)->processInputImplementation(*this, inputEvent, scene);
+					});
+
 		}
 
 		void update(const float& deltaTime, IScene& scene) override
 		{
 			if (m_isActive)
-				this->updateImplementation(deltaTime, *this, scene);
+				this->traverse([&](auto* gameObject) {
+					static_cast<decltype(this)>(gameObject)->updateImplementation(deltaTime, *this, scene);
+				});
 		}
 
 		void render(sf::RenderWindow& window) override
 		{
 			if (m_isActive && m_isVisible)
-				this->renderImplementation(*this, window);
+				this->traverse([&](auto* gameObject) {
+					static_cast<decltype(this)>(gameObject)->renderImplementation(*this, window);
+				});
 		}
 	};
 

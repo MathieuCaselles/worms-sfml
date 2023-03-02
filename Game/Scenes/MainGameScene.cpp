@@ -10,8 +10,7 @@
 #include "Game/GameObjects/PhysicsObjects/Terrain/Terrain.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
 #include "Game/GameObjects/PhysicsObjects/BlackHole/BlackHole.h"
-
-#include "Game/GameObjects/UI/HUD.h"
+#include "Game/GameObjects/UI/Buttons/Button.h"
 
 
 #include <utility>
@@ -85,6 +84,54 @@ MainGameScene::MainGameScene()
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Quitter", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
+
+	addGameObjects(Engine::GameObjectFactory::create<Button>(400, 25, 200, 50, "Grenade", 30.f,
+		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) {
+			if (m_changeTurn)
+				return;
+
+			m_currentPlayer->setSkillState(GRENADE);
+		},
+		[&](Button* button) {
+			m_currentPlayer->setCanPlay(false);
+		}
+		,
+			[&](Button* button) {
+			m_currentPlayer->setCanPlay(true);
+		})
+	);
+
+	addGameObjects(Engine::GameObjectFactory::create<Button>(700, 25, 200, 50, "Banane", 30.f,
+		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) {
+			if (isChangeTurn())
+				return;
+
+	        getCurrentPlayer()->setSkillState(BANANA);
+		},
+		[&](Button* button) {
+			m_currentPlayer->setCanPlay(false);
+		}
+			,
+			[&](Button* button) {
+			m_currentPlayer->setCanPlay(true);
+		}));
+
+	addGameObjects(Engine::GameObjectFactory::create<Button>(1000, 25, 200, 50, "Trou noir", 30.f,
+		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+		[&](Button* button) {
+			if (isChangeTurn())
+				return;
+
+	        getCurrentPlayer()->setSkillState(BLACK_HOLE);
+		},
+		[&](Button* button) {
+			m_currentPlayer->setCanPlay(false);
+		},
+			[&](Button* button) {
+			m_currentPlayer->setCanPlay(true);
+		}));
 }
 
 void MainGameScene::onBeginPlay()
@@ -206,6 +253,7 @@ void MainGameScene::updateTimeLeftForPlayers()
 
 void MainGameScene::makeTransition()
 {
+
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
 	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
 	{
@@ -223,12 +271,13 @@ void MainGameScene::makeTransition()
 	}
 
 	// ---- Display
-	if (m_wormPlayer1->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(m_timeByTurn - m_elapsed));
-	else if (m_wormPlayer2->getCanPlay())
-		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(m_timeByTurn - m_elapsed));
-	else
+	if (m_changeTurn)
 		m_timeLeft.setString("Transition: " + std::to_string(m_timeBetweenTransition - m_elapsed));
+	else if (m_currentPlayer == m_wormPlayer1)
+		m_timeLeft.setString("Temps Joueur 1: " + std::to_string(m_timeByTurn - m_elapsed));
+	else if (m_currentPlayer == m_wormPlayer2)
+		m_timeLeft.setString("Temps Joueur 2: " + std::to_string(m_timeByTurn - m_elapsed));
+	
 }
 
 
@@ -249,6 +298,16 @@ void MainGameScene::render()
 	m_window.draw(m_timeLeft);
 	
 	IScene::render();
+}
+
+Player* MainGameScene::getCurrentPlayer()
+{
+	return m_currentPlayer;
+}
+
+const bool MainGameScene::isChangeTurn() const
+{
+	return m_changeTurn;
 }
 
 

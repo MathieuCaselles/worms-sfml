@@ -63,4 +63,10 @@ void Player::removeHealth(int healthRemoved)
 	}
 }
 
+void Player::setSkillState(skill_states newState)
+{
+	m_skillState = newState;
+}
+
+
 

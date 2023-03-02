@@ -26,6 +26,10 @@ public:
     void update(const float& deltaTime) override;
 	void render() override;
 
+    Player* getCurrentPlayer();
+
+    const bool isChangeTurn() const;
+
     bool m_hasPlayed = false;
 
 private:
