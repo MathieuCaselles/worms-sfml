@@ -36,12 +36,12 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 				// TODO: Make shoot
 				currentScene.m_hasPlayed = true;
 
-				//const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
+				const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
 
-				//currentScene.spawnGrenade(
-				//	grenadeSpawnPoint,
-				//	VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - grenadeSpawnPoint)
-				//);
+				currentScene.spawnGrenade(
+					grenadeSpawnPoint,
+					VectorUtils::Normalize(static_cast<sf::Vector2f>(scene.getMousePositionScreen()) - grenadeSpawnPoint)
+				);
 
 				break;
 			}
