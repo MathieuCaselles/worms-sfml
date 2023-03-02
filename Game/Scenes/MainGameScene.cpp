@@ -91,13 +91,18 @@ MainGameScene::MainGameScene()
 			if (m_changeTurn)
 				return;
 
+	std::cout<< "click" << std::endl;
+
 			m_currentPlayer->setSkillState(GRENADE);
 		},
 		[&](Button* button) {
+			std::cout << "mouse enter" << std::endl;
+
 			m_currentPlayer->setCanPlay(false);
 		}
 		,
 			[&](Button* button) {
+			std::cout << "mouse exit" << std::endl;
 			m_currentPlayer->setCanPlay(true);
 		})
 	);

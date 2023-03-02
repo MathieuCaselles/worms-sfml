@@ -22,7 +22,7 @@ void PCButton::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	{
 		button.useOnMouseEnter();
 	}
-	if (button.getButtonState() == BUTTON_IDLE)
+	if (button.getButtonState() == BUTTON_IDLE && button.m_buttonPreviousState != BUTTON_IDLE)
 	{
 		button.useOnMouseExit();
 	}
