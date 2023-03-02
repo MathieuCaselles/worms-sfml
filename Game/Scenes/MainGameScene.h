@@ -5,6 +5,7 @@
 
 #include "SFML/Audio/Music.hpp"
 
+class FragmentationBall;
 class Grenade;
 class PhysicsWorld;
 
@@ -28,6 +29,7 @@ private:
 
     // ---- Grenade
     Grenade* m_grenade;
+    FragmentationBall* m_fragBall;
 
     // ---- Drawings
     sf::RectangleShape m_background;

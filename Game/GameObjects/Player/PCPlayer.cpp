@@ -39,7 +39,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	case BUTTON_LEFTCLICK:
 		// TODO: Make shoot
 		{
-			const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 50.f);
+			const auto grenadeSpawnPoint = sf::Vector2f(player.getPosition().x, player.getPosition().y - 80.f);
 
 			currentScene.spawnGrenade(
 				grenadeSpawnPoint,

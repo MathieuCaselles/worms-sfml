@@ -14,6 +14,8 @@
 #include <iostream>
 
 #include "Game/GameObjects/Player/Player.h"
+#include "Game/GameObjects/PhysicsObjects/Projectiles/Grenade/Grenade.h"
+#include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 
 MainGameScene::MainGameScene()
 {
@@ -21,6 +23,7 @@ MainGameScene::MainGameScene()
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
+	const PhysicsProperties fragBallPhysicsProperties(1.5f, 0.8f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
@@ -57,8 +60,20 @@ MainGameScene::MainGameScene()
 	grenadeShape.setOutlineThickness(2);
 	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
 
+	sf::CircleShape fragBallShape(10);
+	fragBallShape.setFillColor(GameColors::banana);
+	fragBallShape.setOutlineColor(sf::Color::Black);
+	fragBallShape.setOutlineThickness(1);
+	fragBallShape.setOrigin(fragBallShape.getRadius(), fragBallShape.getRadius());
+
 	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
+	grenade->setLaunchForce(14.f);
 	m_grenade = grenade.get();
+
+	auto fragBall = Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties);
+	fragBall->setLaunchForce(9.f);
+	fragBall->setFragmentsForceMinMax(3.f, 6.f);
+	m_fragBall = fragBall.get();
 
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
@@ -68,6 +83,7 @@ MainGameScene::MainGameScene()
 
 	m_physicsWorld.addRigidBody(*wormPlayer1);
 	m_physicsWorld.addRigidBody(*m_grenade);
+	m_physicsWorld.addRigidBody(*m_fragBall);
 	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
@@ -76,6 +92,7 @@ MainGameScene::MainGameScene()
 	addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(wormPlayer1));
 	addGameObjects(std::move(grenade));
+	addGameObjects(std::move(fragBall));
 
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
@@ -153,7 +170,7 @@ void MainGameScene::initOst()
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	m_grenade->shot(position, direction);
+	m_fragBall->shot(position, direction);
 }
 
 void MainGameScene::update(const float& deltaTime)

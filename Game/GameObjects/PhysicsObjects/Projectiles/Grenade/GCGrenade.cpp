@@ -6,5 +6,5 @@ void GCGrenade::renderImplementation(Engine::IGameObject& gameObject, sf::Render
 {
 	const auto& grenade = reinterpret_cast<Grenade&>(gameObject);
 
-	window.draw(grenade.m_circleShape);
+	window.draw(grenade.m_grenadeShape);
 }

@@ -9,8 +9,8 @@ void PCGrenade::updateImplementation(const float& deltaTime, Engine::IGameObject
 	auto& grenade = reinterpret_cast<Grenade&>(gameObject);
 	auto& currentScene = reinterpret_cast<MainGameScene&>(scene);
 
-	grenade.m_circleShape.setPosition(grenade.m_rbPosition);
-	grenade.m_circleShape.setRotation(grenade.m_rbRotation);
+	grenade.m_grenadeShape.setPosition(grenade.m_rbPosition);
+	grenade.m_grenadeShape.setRotation(grenade.m_rbRotation);
 
 	grenade.m_circleExplosion->setPosition(grenade.m_rbPosition);
 	grenade.m_circleExplosion->setRotation(grenade.m_rbRotation);
