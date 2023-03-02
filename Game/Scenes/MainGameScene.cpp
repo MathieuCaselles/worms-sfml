@@ -18,9 +18,9 @@
 
 constexpr int PLAYER_HEALTH = 100;
 
-MainGameScene::MainGameScene()
+MainGameScene::MainGameScene() : m_currentPlayer(nullptr), m_grenade(nullptr), m_fragBall(nullptr)
 {
-	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true};
+	
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
@@ -49,11 +49,7 @@ MainGameScene::MainGameScene()
 	playerShape.setOrigin(playerShape.getRadius(), playerShape.getRadius());
 	playerShape.setTexture(&m_textureCalvin);
 
-	sf::CircleShape blackHoleShape(150, 40);
-	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
-	blackHoleShape.setFillColor(sf::Color(GameColors::nightPurple.r, GameColors::nightPurple.g, GameColors::nightPurple.b, 100));
-	blackHoleShape.setOutlineColor(GameColors::nightPurple);
-	blackHoleShape.setOutlineThickness(6);
+
 
 	sf::CircleShape grenadeShape(15);
 	grenadeShape.setFillColor(GameColors::iron);
@@ -87,7 +83,6 @@ MainGameScene::MainGameScene()
 	m_wormPlayer1 = wormPlayer1.get();
 	m_wormPlayer2 = wormPlayer2.get();
 
-	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, sf::Vector2f(20, 20), PhysicsWorld::GRAVITY_FORCE.y * 1);
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
@@ -100,73 +95,91 @@ MainGameScene::MainGameScene()
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
 	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*m_fragBall);
-	m_physicsWorld.addRigidBody(*blackHole);
 	m_physicsWorld.addRigidBody(*terrain);
 
 	// ---- Adding gameObjects in order
 	addGameObjects(std::move(terrain));
-	addGameObjects(std::move(blackHole));
 	addGameObjects(std::move(wormPlayer1));
 	addGameObjects(std::move(wormPlayer2));
 	addGameObjects(std::move(grenade));
 	addGameObjects(std::move(fragBall));
 
+
+
+
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1700, 25, 200, 50, "Options", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
 		[&](Button* button) {m_window.close(); }));
 
-	addGameObjects(Engine::GameObjectFactory::create<Button>(400, 25, 200, 50, "Grenade", 30.f,
-		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
+
+	auto grenadeButton = Engine::GameObjectFactory::create<Button>(350, 25, 325, 50, "->Grenade", 30.f,
+				sf::Color(225, 0, 0), sf::Color(255, 0, 0), sf::Color(195, 0, 0),
+				[&](Button* button) {
+					if (m_changeTurn)
+						return;
+					m_currentPlayer->setSkillState(GRENADE);
+					updateButtonsSKillInfo();
+				},
+				[&](Button* button) {
+					if (m_changeTurn)
+						return;
+					m_currentPlayer->setCanPlay(false);
+				}
+						,
+				[&](Button* button) {
+				if (m_changeTurn)
+					return;
+				m_currentPlayer->setCanPlay(true);
+			}
+		);
+
+	auto fragBallButton = Engine::GameObjectFactory::create<Button>(700, 25, 325, 50, "Banane (x1)", 30.f,
+		sf::Color(156, 181, 44), sf::Color(186, 201, 74), sf::Color(126, 151, 14),
+		[&](Button* button) {
+			if (m_changeTurn || m_currentPlayer->getNumberBanana() <= 0)
+				return;
+			m_currentPlayer->setSkillState(BANANA);
+			updateButtonsSKillInfo();
+		},
 		[&](Button* button) {
 			if (m_changeTurn)
 				return;
-
-	std::cout<< "click" << std::endl;
-
-			m_currentPlayer->setSkillState(GRENADE);
-		},
-		[&](Button* button) {
-			std::cout << "mouse enter" << std::endl;
-
-			m_currentPlayer->setCanPlay(false);
-		}
-		,
-			[&](Button* button) {
-			std::cout << "mouse exit" << std::endl;
-			m_currentPlayer->setCanPlay(true);
-		})
-	);
-
-	addGameObjects(Engine::GameObjectFactory::create<Button>(700, 25, 200, 50, "Banane", 30.f,
-		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
-		[&](Button* button) {
-			if (isChangeTurn())
-				return;
-
-	        getCurrentPlayer()->setSkillState(BANANA);
-		},
-		[&](Button* button) {
 			m_currentPlayer->setCanPlay(false);
 		}
 			,
 			[&](Button* button) {
-			m_currentPlayer->setCanPlay(true);
-		}));
-
-	addGameObjects(Engine::GameObjectFactory::create<Button>(1000, 25, 200, 50, "Trou noir", 30.f,
-		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
-		[&](Button* button) {
-			if (isChangeTurn())
+			if (m_changeTurn)
 				return;
+			m_currentPlayer->setCanPlay(true);
+		});
 
-	        getCurrentPlayer()->setSkillState(BLACK_HOLE);
+	auto blackHoleButton = Engine::GameObjectFactory::create<Button>(1050, 25, 325, 50, "Trou noir (x1)", 30.f,
+		sf::Color(30, 30, 30), sf::Color(60, 60, 60), sf::Color(0, 0, 0),
+		[&](Button* button) {
+			if (m_changeTurn || m_currentPlayer->getNumberBlackHole() <= 0)
+				return;
+			m_currentPlayer->setSkillState(BLACK_HOLE);
+			updateButtonsSKillInfo();
 		},
 		[&](Button* button) {
+			if (m_changeTurn)
+				return;
 			m_currentPlayer->setCanPlay(false);
 		},
 			[&](Button* button) {
+			if (m_changeTurn)
+				return;
 			m_currentPlayer->setCanPlay(true);
-		}));
+		});
+
+
+	m_buttonGrenade = grenadeButton.get();
+	m_buttonFragBall = fragBallButton.get();
+	m_buttonBlackHole = blackHoleButton.get();
+
+	addGameObjects(std::move(grenadeButton));
+	addGameObjects(std::move(fragBallButton));
+	addGameObjects(std::move(blackHoleButton));
 }
 
 void MainGameScene::onBeginPlay()
@@ -186,18 +199,6 @@ void MainGameScene::onBeginPlay()
 	// ---- Background
 	initBackground();
 
-	{
-
-		// Exemple d'utilisation  de findGameObject attention à bien check si c'est pas nullptr en cas d'objet non trouvé !
-		const Button* go = static_cast<Button*>(
-			findGameObject([](const Engine::IGameObject* gameObj) {
-				return 	gameObj->getInstanceRTTI() == Button::getClassRTTI();
-				})
-			);
-
-		std::cout << static_cast<std::string>(go->getText().getString()) << std::endl;
-
-	}
 }
 
 void MainGameScene::initTitle()
@@ -265,7 +266,68 @@ void MainGameScene::playHitSound()
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
+	m_grenade->shot(position, direction * m_fragBall->getLaunchForce());
+	updateButtonsSKillInfo();
+	m_hasPlayed = true;
+}
+
+void MainGameScene::spawnFragBall(const sf::Vector2f& position, const sf::Vector2f& direction)
+{
 	m_fragBall->shot(position, direction * m_fragBall->getLaunchForce());
+	updateButtonsSKillInfo();
+	if (m_currentPlayer->getNumberBanana() == 0)
+		m_currentPlayer->setSkillState(GRENADE);
+	m_hasPlayed = true;
+
+}
+
+void MainGameScene::spawnBlackHole(const  sf::Vector2f& position)
+{
+	const PhysicsProperties blackHolePhysicsProperties{ 1.f, 0, true, false, true };
+	sf::CircleShape blackHoleShape(150, 40);
+	blackHoleShape.setOrigin(blackHoleShape.getRadius(), blackHoleShape.getRadius());
+	blackHoleShape.setFillColor(sf::Color(GameColors::nightPurple.r, GameColors::nightPurple.g, GameColors::nightPurple.b, 100));
+	blackHoleShape.setOutlineColor(GameColors::nightPurple);
+	blackHoleShape.setOutlineThickness(6);
+
+	auto blackHole = Engine::GameObjectFactory::create<BlackHole>(blackHoleShape, blackHolePhysicsProperties, position, PhysicsWorld::GRAVITY_FORCE.y * 1);
+	m_physicsWorld.addRigidBody(*blackHole);
+	addNewGameObjects(std::move(blackHole));
+	updateButtonsSKillInfo();
+	if (m_currentPlayer->getNumberBlackHole() == 0)
+		m_currentPlayer->setSkillState(GRENADE);
+	m_hasPlayed = true;
+
+}
+
+void MainGameScene::unselectPreviousButton()
+{
+
+	Button* previousSelected = static_cast<Button*>(
+		findGameObject([](const Engine::IGameObject* gameObj) {
+				if(gameObj->getInstanceRTTI() != Button::getClassRTTI())
+					return false;
+				return static_cast<const Button*>(gameObj)->getText().getString().substring(0, 2) == "->";
+			})
+		);
+	if (previousSelected != nullptr)
+		previousSelected->setText(previousSelected->getText().getString().substring(2, previousSelected->getText().getString().getSize()));
+
+}
+
+void MainGameScene::updateButtonsSKillInfo()
+{
+	unselectPreviousButton();
+
+	m_buttonGrenade->setText((m_currentPlayer->getSkillState() == GRENADE ? "->" : "") + m_buttonGrenade->getText().getString());
+
+	const std::string bananaTextButton = m_buttonFragBall->getText().getString().substring(0, m_buttonFragBall->getText().getString().getSize() - 2);
+	m_buttonFragBall->setText((m_currentPlayer->getSkillState() == BANANA ? "->" : "") + bananaTextButton + std::to_string(m_currentPlayer->getNumberBanana()) + ")");
+
+	const std::string blackTextHoleButton = m_buttonBlackHole->getText().getString().substring(0, m_buttonBlackHole->getText().getString().getSize() - 2);
+	m_buttonBlackHole->setText((m_currentPlayer->getSkillState() == BLACK_HOLE ? "->" : "") + blackTextHoleButton + std::to_string(m_currentPlayer->getNumberBlackHole()) + ")");
+
+
 }
 
 void MainGameScene::initTime()
@@ -319,14 +381,13 @@ void MainGameScene::makeTransition()
 		m_currentPlayer = (m_currentPlayer == m_wormPlayer1) ? m_wormPlayer2 : m_wormPlayer1;
 		m_changeTurn = false;
 		m_clock.restart();
+
 		if (m_currentPlayer == m_wormPlayer1)
-		{
 			m_wormPlayer1->setCanPlay(true);
-		}
 		else
-		{
 			m_wormPlayer2->setCanPlay(true);
-		}
+
+		updateButtonsSKillInfo();
 	}
 
 	// ---- Display

@@ -2,14 +2,10 @@
 
 #include "Game/Physics/PhysicsProperties.h"
 
-BlackHole::BlackHole()
-	: BlackHole(sf::CircleShape(), {}, {}, 0.f)
-{ }
-
-BlackHole::BlackHole(sf::CircleShape circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float centerAttractionForce)
+BlackHole::BlackHole(const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, float centerAttractionForce)
 	: GameObject<PCBlackHole, GCBlackHole, ICVoid>(),
-	CircleRigidBody(m_blackHoleShape, properties),
-	m_blackHoleShape(std::move(circleShape)),
+	CircleRigidBody(circleShape, properties),
+	m_blackHoleShape(circleShape),
 	m_centerAttractionForce(centerAttractionForce)
 {
 	CircleRigidBody::updateMass();

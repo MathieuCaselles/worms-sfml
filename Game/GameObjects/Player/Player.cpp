@@ -46,12 +46,38 @@ void Player::setSkillState(skill_states newState)
 	m_skillState = newState;
 }
 
+const skill_states Player::getSkillState() const
+{
+	return m_skillState;
+}
+
+void Player::setNumberBanana(int number)
+{
+	m_numberBanana = number;
+}
+
+void Player::setNumberBlackHole(int number)
+{
+	m_numberBlackHole = number;
+}
+
+const int Player::getNumberBanana() const
+{
+	return m_numberBanana;
+}
+
+const int Player::getNumberBlackHole() const
+{
+	return m_numberBlackHole;
+}
+
 
 Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties,
 	const sf::Vector2f& initialPosition)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
 	CircleRigidBody(circleShape, properties),
-	m_playerShape(circleShape), m_health(health)
+	m_playerShape(circleShape), m_health(health),
+	m_numberBanana(1), m_numberBlackHole(1), m_inputState(IDLE), m_skillState(GRENADE)
 {
 	CircleRigidBody::updateMass();
 
