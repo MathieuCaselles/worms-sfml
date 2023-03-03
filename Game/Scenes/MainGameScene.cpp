@@ -413,8 +413,8 @@ void MainGameScene::updateTimeLeftForPlayers()
 		{
 			spawnRandomBananaCollectible();
 		}
-
 	}
+
 	makeTransition();
 	printPlayerToPlay();
 }
@@ -434,6 +434,9 @@ void MainGameScene::makeTransition()
 			m_wormPlayer2->setCanPlay(true);
 
 		updateButtonsSKillInfo();
+
+		// Reposition mouse to center for other player
+		sf::Mouse::setPosition(sf::Vector2i(static_cast<int>(m_window.getSize().x) / 2, static_cast<int>(m_window.getSize().y) / 2));
 	}
 
 	// ---- Display
