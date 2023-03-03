@@ -6,6 +6,8 @@
 #include "Game/Scenes/MainGameScene.h"
 
 constexpr float GRENADE_EXPLOSION_RADIUS = 100;
+constexpr int MIN_ANGULAR_VELOCITY_AT_SPAWN = 200;
+constexpr int MAX_ANGULAR_VELOCITY_AT_SPAWN = 500;
 
 Grenade::Grenade(sf::CircleShape circleShape, const PhysicsProperties& properties)
 	: Engine::GameObject<PCGrenade, GCGrenade, ICVoid>(),
@@ -49,6 +51,10 @@ void Grenade::shot(const sf::Vector2f& position, const sf::Vector2f& direction)
 	setVelocity(direction);
 	setPosition(position);
 
+	auto randAngularVelocity = MathUtils::getRandomNumber(MIN_ANGULAR_VELOCITY_AT_SPAWN, MAX_ANGULAR_VELOCITY_AT_SPAWN);
+	randAngularVelocity = MathUtils::getRandomNumber(1, 2) == 1 ? randAngularVelocity : -randAngularVelocity;
+
+	setAngularVelocity(randAngularVelocity);
 	updateGrenadeActivation(true, false);
 }
 
