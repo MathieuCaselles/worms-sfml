@@ -47,6 +47,9 @@ public:
 
     void changeRandomWindForce();
 
+    void desactivateSkillsButtons();
+    void activateSkillsButtons();
+
 private:
     void initBackground();
     void initInformations();

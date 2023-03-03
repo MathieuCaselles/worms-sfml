@@ -302,6 +302,18 @@ void MainGameScene::changeRandomWindForce()
 	m_windForce->setForce({ static_cast<float>(MathUtils::getRandomNumber(0, 300)) -150.f, 0.f });
 	m_wind.setString("Force du vent: " + std::to_string(static_cast<int>(std::abs(m_windForce->getForce().x))) + (m_windForce->getForce().x < 0 ? "\n        <------  " : "\n       ------>  " ));
 }
+void MainGameScene::desactivateSkillsButtons()
+{
+	m_buttonGrenade->setIsActive(false);
+	m_buttonFragBall->setIsActive(false);
+	m_buttonBlackHole->setIsActive(false);
+}
+void MainGameScene::activateSkillsButtons()
+{
+	m_buttonGrenade->setIsActive(true);
+	m_buttonFragBall->setIsActive(true);
+	m_buttonBlackHole->setIsActive(true);
+}
 void MainGameScene::playBlackHoleSound()
 {
 	m_blackHoleSound.play();
@@ -434,6 +446,8 @@ void MainGameScene::updateTimeLeftForPlayers()
 		{
 			spawnRandomBananaCollectible();
 		}
+
+		desactivateSkillsButtons();
 	}
 
 	makeTransition();
@@ -457,8 +471,7 @@ void MainGameScene::makeTransition()
 		updateButtonsSKillInfo();
 		changeRandomWindForce();
 
-		// Reposition mouse to center for other player
-		sf::Mouse::setPosition(sf::Vector2i(static_cast<int>(m_window.getSize().x) / 2, static_cast<int>(m_window.getSize().y) / 2));
+		activateSkillsButtons();
 	}
 
 	// ---- Display
