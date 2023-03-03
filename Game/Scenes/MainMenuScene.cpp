@@ -82,4 +82,5 @@ void MainMenuScene::initOst()
 	if (!m_ost.openFromFile("Assets/Musics/OST_MainMenu.wav"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 
+	m_ost.setVolume(m_ost.getVolume() / 3);
 }

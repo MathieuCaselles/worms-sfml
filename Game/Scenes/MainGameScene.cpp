@@ -39,7 +39,7 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
 	const PhysicsProperties grenadePhysicsProperties(3.f, 0.3f);
-	const PhysicsProperties fragBallPhysicsProperties(1.5f, 0.8f);
+	const PhysicsProperties fragBallPhysicsProperties(2.f, 0.8f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
@@ -299,7 +299,7 @@ void MainGameScene::playHitSound()
 
 void MainGameScene::changeRandomWindForce()
 {
-	m_windForce->setForce({ static_cast<float>(MathUtils::getRandomNumber(0, 300)) -150.f, 0.f });
+	m_windForce->setForce({ static_cast<float>(MathUtils::getRandomNumber(0, 200)) -100.f, 0.f });
 	m_wind.setString("Force du vent: " + std::to_string(static_cast<int>(std::abs(m_windForce->getForce().x))) + (m_windForce->getForce().x < 0 ? "\n        <------  " : "\n       ------>  " ));
 }
 void MainGameScene::desactivateSkillsButtons()
@@ -516,9 +516,8 @@ bool MainGameScene::checkIfAPlayerIsDead()
 
 void MainGameScene::update(const float& deltaTime)
 {
-
-
 	IScene::update(deltaTime);
+
 	if (checkIfAPlayerIsDead()) return;
 	m_cursor.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
 	updateTimeLeftForPlayers();
@@ -529,6 +528,7 @@ void MainGameScene::render()
 	m_window.draw(m_background);
 	
 	IScene::render();
+
 	m_window.draw(m_title);
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
