@@ -22,6 +22,7 @@ namespace Engine {
         void addScenes(Args... scenes);
 
         void setCurrentScene(const size_t index);
+        void deleteSceneByIndex(const size_t index);
 
         void clearScenes();
 

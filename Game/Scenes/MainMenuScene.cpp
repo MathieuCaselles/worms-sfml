@@ -7,8 +7,8 @@
 MainMenuScene::MainMenuScene()
 {
 	initBackground();
-	initTitle();
 	initOst();
+	initTitle();
 
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1400, 400, 230, 80, "Jouer", 40.f,
 		sf::Color(252, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
@@ -44,6 +44,17 @@ void MainMenuScene::render()
 	IScene::render();
 }
 
+void MainMenuScene::onBeginPlay()
+{
+	m_ost.setLoop(true);
+	m_ost.play();
+}
+
+void MainMenuScene::onEndPlay()
+{
+	m_ost.stop();
+}
+
 void MainMenuScene::initBackground()
 {
 	if (!m_backgroundTexture.loadFromFile("Assets/Textures/BackgroundWorms.jpg"))
@@ -68,8 +79,7 @@ void MainMenuScene::initTitle()
 
 void MainMenuScene::initOst()
 {
-	if (!m_ost.openFromFile("Assets/Musics/MainMenuOST.wav"))
+	if (!m_ost.openFromFile("Assets/Musics/OST_MainMenu.wav"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
-	m_ost.setLoop(true);
-	m_ost.play();
+
 }

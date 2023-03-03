@@ -11,6 +11,7 @@ class Grenade;
 class PhysicsWorld;
 class Player;
 class Button;
+class ForceVolume;
 class Terrain;
 
 class MainGameScene : public Engine::IScene
@@ -20,6 +21,7 @@ public:
     ~MainGameScene() override = default;
 
     void onBeginPlay() override;
+    void onEndPlay() override;
     void update(const float& deltaTime) override;
 	void render() override;
 
@@ -42,6 +44,11 @@ public:
     void playExplosionSound();
     void playHitSound();
     void playBlackHoleSound();
+
+    void changeRandomWindForce();
+
+    void desactivateSkillsButtons();
+    void activateSkillsButtons();
 
 private:
     void initBackground();
@@ -77,6 +84,7 @@ private:
     Button* m_buttonBlackHole;
 
     // ---- Game
+    ForceVolume* m_windForce;
     sf::CircleShape m_cursor;
 
     sf::Text m_title;
@@ -95,7 +103,7 @@ private:
     sf::Clock m_clock;
     int m_elapsed;
 
-    bool m_changeTurn = false;
+    bool m_changeTurn = true;
     int m_timeByTurn;
     int m_timeBetweenTransition;
 
