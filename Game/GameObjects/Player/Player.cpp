@@ -32,7 +32,7 @@ void Player::setHealth(int newHealth)
 	m_health = newHealth;
 }
 
-void Player::removeHealth(float healthRemoved)
+void Player::removeHealth(int healthRemoved)
 {
 	m_health -= healthRemoved;
 	if (m_health <= 0)
@@ -78,7 +78,7 @@ const bool Player::getIsDead() const
 
 
 Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties,
-               const sf::Vector2f& initialPosition)
+               const sf::Vector2f& initialPosition, sf::Color& playerColor)
 	: GameObject<PCPlayer, GCPlayer, ICPlayer>(),
 	CircleRigidBody(circleShape, properties),
 	m_playerShape(circleShape), m_health(health), m_maxHealth(health),
@@ -99,4 +99,7 @@ Player::Player(int health, const sf::CircleShape& circleShape, const PhysicsProp
 	m_currentHealthText.setFillColor(sf::Color(0, 255, 0));
 	m_currentHealthText.setCharacterSize(35);
 	m_currentHealthText.setString(std::to_string(m_health));
+
+	m_currentHealthText.setOutlineThickness(2.f);
+	m_currentHealthText.setOutlineColor(playerColor);
 }

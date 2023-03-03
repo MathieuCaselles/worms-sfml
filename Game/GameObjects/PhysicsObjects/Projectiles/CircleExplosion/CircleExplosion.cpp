@@ -83,6 +83,6 @@ void CircleExplosion::onCollisionEnter(IRigidBody* rb)
 	if(const auto player = dynamic_cast<Player*>(rb); player != nullptr) // Very optimized way to get reference to the player
 	{
 		// TODO : Decrease players health
-		player->removeHealth(getDamage());
+		player->removeHealth( static_cast<int>(getDamage()));
 	}
 }

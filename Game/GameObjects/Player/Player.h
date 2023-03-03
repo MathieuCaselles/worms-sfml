@@ -32,7 +32,7 @@ public:
 
 	int getHealth();
 	void setHealth(int newHealth);
-	void removeHealth(float healthRemoved);
+	void removeHealth(int healthRemoved);
 
 	void setSkillState(skill_states newState);
 	const skill_states getSkillState() const;
@@ -46,7 +46,7 @@ public:
 	const bool getIsDead() const;
 
 private:
-	Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition);
+	Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition, sf::Color& playerColor);
 
 	sf::CircleShape m_playerShape;
 	bool m_canPlay = false;

@@ -105,8 +105,8 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	m_bananaCollectible = bananaCollectible.get();
 	m_bananaCollectible->m_onCollectCallback = [this]{ updateButtonsSKillInfo(); };
 
-	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
-	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
+	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100), sf::Color::Blue);
+	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100), sf::Color::Magenta);
 	m_wormPlayer1 = wormPlayer1.get();
 	m_wormPlayer2 = wormPlayer2.get();
 
@@ -228,8 +228,8 @@ void MainGameScene::onBeginPlay()
 	initInformations();
 	changeRandomWindForce();
 	initTime();
-	m_wormPlayer1->setCanPlay(true);
-	m_currentPlayer = m_wormPlayer1;
+	m_wormPlayer1->setCanPlay(false);
+	m_currentPlayer = m_wormPlayer2;
 	m_timeByTurn = 60;
 	m_timeBetweenTransition = 5;
 
@@ -410,11 +410,11 @@ void MainGameScene::printPlayerToPlay()
 	{
 		if (m_currentPlayer == m_wormPlayer1)
 		{
-			m_title.setString("Joueur 2 Pr�parez vous !");
+			m_title.setString("Joueur 2 Preparez vous !");
 		}
 		else
 		{
-			m_title.setString("Joueur 1 Pr�parez vous !");
+			m_title.setString("Joueur 1 Preparez vous !");
 		}
 	} else
 	{
@@ -466,12 +466,18 @@ void MainGameScene::makeTransition()
 	}
 
 	// ---- Display
-	if (m_changeTurn)
+	if (m_changeTurn) {
 		m_timeLeft.setString("Transition: " + std::to_string(m_timeBetweenTransition - m_elapsed));
-	else if (m_currentPlayer == m_wormPlayer1)
+		m_timeLeft.setColor(sf::Color::White);
+	}
+	else if (m_currentPlayer == m_wormPlayer1) {
 		m_timeLeft.setString("Joueur 1 \n    " + std::to_string(m_timeByTurn - m_elapsed));
-	else if (m_currentPlayer == m_wormPlayer2)
+		m_timeLeft.setColor(sf::Color::Blue);
+	}
+	else if (m_currentPlayer == m_wormPlayer2) {
 		m_timeLeft.setString("Joueur 2 \n    " + std::to_string(m_timeByTurn - m_elapsed));
+		m_timeLeft.setColor(sf::Color::Magenta);
+	}
 	
 }
 
@@ -480,20 +486,20 @@ bool MainGameScene::checkIfAPlayerIsDead()
 	if (m_wormPlayer1->getIsDead())
 	{
 		m_wormPlayer1->setIsActive(false);
-		m_title.setString("Joueur 2 a gagn� !");
+		m_title.setString("Joueur 2 a gagne !");
 		return true;
 	}
 	else if (m_wormPlayer2->getIsDead())
 	{
 		m_wormPlayer2->setIsActive(false);
-		m_title.setString("Joueur 1 a gagn� !");
+		m_title.setString("Joueur 1 a gagne !");
 		return true;
 	}
 	else if (m_wormPlayer2->getIsDead() && m_wormPlayer1->getIsDead())
 	{
 		m_wormPlayer1->setIsActive(false);
 		m_wormPlayer2->setIsActive(false);
-		m_title.setString("C'est une �galit� !");
+		m_title.setString("C'est une egalite !");
 		return true;
 	}
 	return false;
