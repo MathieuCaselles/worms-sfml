@@ -280,6 +280,8 @@ void MainGameScene::initAllSounds()
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 	if (!m_hitSound.openFromFile("Assets/Musics/Hit.wav"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
+	if (!m_blackHoleSound.openFromFile("Assets/Musics/BlackHole.wav"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD MUSIC");
 }
 
 void MainGameScene::playExplosionSound()
