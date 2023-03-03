@@ -11,6 +11,10 @@ FragmentationBall::FragmentationBall(sf::CircleShape circleShape, const PhysicsP
 	m_numFragments(numFragments)
 {
 	m_childrenFragments.resize(m_numFragments);
+	if (!m_grenadeTexture.loadFromFile("Assets/Textures/Fragmentation.png"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
+	m_grenadeShape.setTexture(&m_grenadeTexture);
+	m_grenadeShape.setScale(2.0f, 2.0f);
 }
 
 void FragmentationBall::updateImplementation(const float& deltaTime, IGameObject& gameObject, Engine::IScene& scene)
