@@ -72,6 +72,7 @@ void Grenade::onCollisionEnter(IRigidBody* rb)
 		return;
 
 	startExplosion();
+	m_circleExplosion->setDamage(m_damages);
 }
 
 void Grenade::updateGrenadeActivation(bool showGrenade, bool showExplosion)

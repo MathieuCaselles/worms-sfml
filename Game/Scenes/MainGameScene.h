@@ -5,12 +5,14 @@
 
 #include "SFML/Audio/Music.hpp"
 
+class BananaCollectible;
 class FragmentationBall;
 class Grenade;
 class PhysicsWorld;
 class Player;
 class Button;
 class ForceVolume;
+class Terrain;
 
 class MainGameScene : public Engine::IScene
 {
@@ -30,6 +32,7 @@ public:
     void spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction);
     void spawnFragBall(const sf::Vector2f& position, const sf::Vector2f& direction);
     void spawnBlackHole(const  sf::Vector2f& position);
+    void spawnRandomBananaCollectible() const;
 
     void unselectPreviousButton();
 
@@ -40,6 +43,7 @@ public:
     void playShootSound();
     void playExplosionSound();
     void playHitSound();
+    void playBlackHoleSound();
 
     void changeRandomWindForce();
 
@@ -55,9 +59,12 @@ private:
     void updateTimeLeftForPlayers();
     void makeTransition();
 
+	bool checkIfAPlayerIsDead();
+
     // ---- Grenade
     Grenade* m_grenade;
     FragmentationBall* m_fragBall;
+    BananaCollectible* m_bananaCollectible;
 
     // ---- Drawings
     sf::RectangleShape m_background;
@@ -75,15 +82,20 @@ private:
 
     // ---- Game
     ForceVolume* m_windForce;
+    sf::CircleShape m_cursor;
+
     sf::Text m_title;
     sf::Text m_wind;
     sf::Text m_timeLeft;
     sf::Font m_font;
 
+    Terrain* m_terrain;
+
     sf::Music m_ost;
     sf::Music m_explosionSound;
     sf::Music m_shootSound;
     sf::Music m_hitSound;
+    sf::Music m_blackHoleSound;
 
     sf::Clock m_clock;
     int m_elapsed;

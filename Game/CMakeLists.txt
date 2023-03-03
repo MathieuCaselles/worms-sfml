@@ -58,4 +58,9 @@ target_sources(Worms PRIVATE
  "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/GCCircleExplosion.h" "GameObjects/PhysicsObjects/Projectiles/CircleExplosion/GCCircleExplosion.cpp"
  
  "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/ExplosionFragments/ExplosionFragment.h"
- "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/ExplosionFragments/ExplosionFragment.cpp")
+ "GameObjects/PhysicsObjects/Projectiles/FragmentationBall/ExplosionFragments/ExplosionFragment.cpp"
+
+"GameObjects/PhysicsObjects/Collectibles/Banana/BananaCollectible.h" "GameObjects/PhysicsObjects/Collectibles/Banana/BananaCollectible.cpp"
+"GameObjects/PhysicsObjects/Collectibles/Banana/GCBananaCollectible.h" "GameObjects/PhysicsObjects/Collectibles/Banana/GCBananaCollectible.cpp"
+
+)

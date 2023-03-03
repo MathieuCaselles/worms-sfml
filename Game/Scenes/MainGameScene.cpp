@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "Engine/Utility/MathUtils.h"
+#include "Game/GameObjects/PhysicsObjects/Collectibles/Banana/BananaCollectible.h"
 #include "Game/GameObjects/PhysicsObjects/Projectiles/FragmentationBall/FragmentationBall.h"
 #include "Game/GameObjects/PhysicsObjects/ForceVolume/ForceVolume.h"
 #include "Game/GameObjects/Player/Player.h"
@@ -21,6 +22,7 @@
 #include <Engine/Utility/MathUtils.h>
 
 constexpr int PLAYER_HEALTH = 100;
+constexpr int BANANA_COLLECTIBLE_SPAWN_RATE = 3; // is equal to 1 / BANANA_COLLECTIBLE_SPAWN_RATE;
 
 MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBetweenTransition(0), m_timeByTurn(0), m_grenade(nullptr), m_fragBall(nullptr)
 {
@@ -36,13 +38,16 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 
 	const PhysicsProperties playerPhysicsProperties{ 0.5f, 0.5f, false, false };
 	const PhysicsProperties terrainPhysicsProperties{ 7.3f, .5f, true };
-	const PhysicsProperties grenadePhysicsProperties(4.f, 0.3f);
+	const PhysicsProperties grenadePhysicsProperties(3.f, 0.3f);
 	const PhysicsProperties fragBallPhysicsProperties(1.5f, 0.8f);
 
 	if (!m_textureCalvin.loadFromFile("Assets/Textures/calvin.png"))
 		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
 
-	// ---- Entities
+	m_cursor.setRadius(8);
+	m_cursor.setOrigin(m_cursor.getRadius(), m_cursor.getRadius());
+	m_cursor.setFillColor(sf::Color::Red);
+
 	sf::CircleShape defaultCircleShape;
 	defaultCircleShape.setRadius(20);
 	defaultCircleShape.setOrigin(defaultCircleShape.getRadius(), defaultCircleShape.getRadius());
@@ -62,8 +67,6 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	playerShape.setOrigin(playerShape.getRadius(), playerShape.getRadius());
 	playerShape.setTexture(&m_textureCalvin);
 
-
-
 	sf::CircleShape grenadeShape(15);
 	grenadeShape.setFillColor(GameColors::iron);
 	grenadeShape.setOutlineColor(sf::Color::Black);
@@ -76,20 +79,31 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	fragBallShape.setOutlineThickness(1);
 	fragBallShape.setOrigin(fragBallShape.getRadius(), fragBallShape.getRadius());
 
+	sf::CircleShape bananaShape(20);
+	bananaShape.setFillColor(GameColors::banana);
+	bananaShape.setOutlineColor(GameColors::orange);
+	bananaShape.setOutlineThickness(2);
+	bananaShape.setOrigin(bananaShape.getRadius(), bananaShape.getRadius());
+
 	auto grenade = Engine::GameObjectFactory::create<Grenade>(grenadeShape, grenadePhysicsProperties);
-	grenade->setLaunchForce(14.f);
+	grenade->setLaunchForce(10.f);
 	grenade->setDamages(15.f);
 	m_grenade = grenade.get();
 
 	auto fragBall = 
 		Engine::GameObjectFactory::create<FragmentationBall>(fragBallShape, fragBallPhysicsProperties, 15);
-	fragBall->setLaunchForce(9.f);
+	fragBall->setLaunchForce(8.f);
 	fragBall->setDamages(10.f);
 	fragBall->setFragmentsForceMinMax(7.f, 12.f);
 	fragBall->setFragmentsDamage(3.f);
 	fragBall->setFragmentsDurationBeforeExplosion(4.f);
 	fragBall->setFragsSpawnXAngleIncertitude(15);
 	m_fragBall = fragBall.get();
+
+	auto bananaCollectible = 
+		Engine::GameObjectFactory::create<BananaCollectible>(bananaShape);
+	m_bananaCollectible = bananaCollectible.get();
+	m_bananaCollectible->m_onCollectCallback = [this]{ updateButtonsSKillInfo(); };
 
 	auto wormPlayer1 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH, playerShape, playerPhysicsProperties, sf::Vector2f(500, 100));
 	auto wormPlayer2 = Engine::GameObjectFactory::create<Player>(PLAYER_HEALTH,playerShape, playerPhysicsProperties, sf::Vector2f(1300, 100));
@@ -99,6 +113,8 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 
 	// ---- Terrain and physics world
 	auto terrain = Engine::GameObjectFactory::create<Terrain>(terrainPhysicsProperties);
+	m_terrain = terrain.get();
+
 	m_wormPlayer1 = wormPlayer1.get();
 	m_wormPlayer2 = wormPlayer2.get();
 	m_physicsWorld.addRigidBody(*wormPlayer1);
@@ -108,7 +124,8 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	m_physicsWorld.addRigidBody(*m_wormPlayer2);
 	m_physicsWorld.addRigidBody(*m_grenade);
 	m_physicsWorld.addRigidBody(*m_fragBall);
-	m_physicsWorld.addRigidBody(*terrain);
+	m_physicsWorld.addRigidBody(*m_terrain);
+	m_physicsWorld.addRigidBody(*m_bananaCollectible);
 
 	auto windForce = Engine::GameObjectFactory::create<ForceVolume>(m_physicsWorld.getAllRigidBodies());
 	m_windForce = windForce.get();
@@ -123,9 +140,7 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 	addGameObjects(std::move(wormPlayer2));
 	addGameObjects(std::move(grenade));
 	addGameObjects(std::move(fragBall));
-
-
-
+	addGameObjects(std::move(bananaCollectible));
 
 	addGameObjects(Engine::GameObjectFactory::create<Button>(1500, 25, 400, 50, "Menu Principal", 30.f,
 		sf::Color(250, 79, 36), sf::Color(255, 120, 70), sf::Color(200, 79, 36),
@@ -135,7 +150,6 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 			Engine::GameInstance::GetInstance()->addScenes(new MainGameScene);
 		
 		}));
-
 
 	auto grenadeButton = Engine::GameObjectFactory::create<Button>(350, 25, 325, 50, "->Grenade", 30.f,
 				sf::Color(225, 0, 0), sf::Color(255, 0, 0), sf::Color(195, 0, 0),
@@ -222,7 +236,7 @@ void MainGameScene::onBeginPlay()
 	const auto windowSize = static_cast<sf::Vector2f>(m_window.getSize());
 
 
-
+	m_ost.setVolume(m_ost.getVolume() / 2.f);
 	m_ost.setLoop(true);
 	m_ost.play();
 
@@ -292,11 +306,15 @@ void MainGameScene::changeRandomWindForce()
 	m_windForce->setForce({ static_cast<float>(MathUtils::getRandomNumber(0, 300)) -150.f, 0.f });
 	m_wind.setString("Force du vent: " + std::to_string(static_cast<int>(std::abs(m_windForce->getForce().x))) + (m_windForce->getForce().x < 0 ? "\n        <------  " : "\n       ------>  " ));
 }
+void MainGameScene::playBlackHoleSound()
+{
+	m_blackHoleSound.play();
+}
 
 
 void MainGameScene::spawnGrenade(const sf::Vector2f& position, const sf::Vector2f& direction)
 {
-	m_grenade->shot(position, direction * m_fragBall->getLaunchForce());
+	m_grenade->shot(position, direction * m_grenade->getLaunchForce());
 	updateButtonsSKillInfo();
 	m_hasPlayed = true;
 }
@@ -328,6 +346,23 @@ void MainGameScene::spawnBlackHole(const  sf::Vector2f& position)
 		m_currentPlayer->setSkillState(GRENADE);
 	m_hasPlayed = true;
 
+}
+
+void MainGameScene::spawnRandomBananaCollectible() const
+{
+	if (m_bananaCollectible->isActive())
+		return; // Already spawned
+
+	const auto& terrainEdges = m_terrain->getFloorEdges();
+
+	constexpr int SPAWN_POINT_FROM_CENTER = 6;
+	int spawnPointFromCenterIntertitude = MathUtils::getRandomNumber(0, SPAWN_POINT_FROM_CENTER) - SPAWN_POINT_FROM_CENTER / 2;
+	spawnPointFromCenterIntertitude = std::clamp(spawnPointFromCenterIntertitude, 0, static_cast<int>(terrainEdges.size()));
+
+	sf::Vector2f randomSpawnPoint = terrainEdges[terrainEdges.size() / 2 + spawnPointFromCenterIntertitude];
+	randomSpawnPoint = sf::Vector2f(randomSpawnPoint.x, randomSpawnPoint.y - 70.f);
+
+	m_bananaCollectible->show(randomSpawnPoint);
 }
 
 void MainGameScene::unselectPreviousButton()
@@ -375,11 +410,11 @@ void MainGameScene::printPlayerToPlay()
 	{
 		if (m_currentPlayer == m_wormPlayer1)
 		{
-			m_title.setString("Joueur 2 Préparez vous !");
+			m_title.setString("Joueur 2 Prï¿½parez vous !");
 		}
 		else
 		{
-			m_title.setString("Joueur 1 Préparez vous !");
+			m_title.setString("Joueur 1 Prï¿½parez vous !");
 		}
 	} else
 	{
@@ -397,6 +432,13 @@ void MainGameScene::updateTimeLeftForPlayers()
 		m_changeTurn = true;
 		m_hasPlayed = false;
 		m_clock.restart();
+
+		const int chanceToSpawnBanana = MathUtils::getRandomNumber(1, BANANA_COLLECTIBLE_SPAWN_RATE); // Random doesn't work with constexpr
+		if (chanceToSpawnBanana == 1)
+		{
+			spawnRandomBananaCollectible();
+		}
+
 	}
 	makeTransition();
 	printPlayerToPlay();
@@ -404,7 +446,6 @@ void MainGameScene::updateTimeLeftForPlayers()
 
 void MainGameScene::makeTransition()
 {
-
 	m_elapsed = static_cast<int>(round(m_clock.getElapsedTime().asSeconds()));
 	if (m_elapsed >= m_timeBetweenTransition && m_changeTurn)
 	{
@@ -431,10 +472,37 @@ void MainGameScene::makeTransition()
 	
 }
 
+bool MainGameScene::checkIfAPlayerIsDead()
+{
+	if (m_wormPlayer1->getIsDead())
+	{
+		m_wormPlayer1->setIsActive(false);
+		m_title.setString("Joueur 2 a gagnï¿½ !");
+		return true;
+	}
+	else if (m_wormPlayer2->getIsDead())
+	{
+		m_wormPlayer2->setIsActive(false);
+		m_title.setString("Joueur 1 a gagnï¿½ !");
+		return true;
+	}
+	else if (m_wormPlayer2->getIsDead() && m_wormPlayer1->getIsDead())
+	{
+		m_wormPlayer1->setIsActive(false);
+		m_wormPlayer2->setIsActive(false);
+		m_title.setString("C'est une ï¿½galitï¿½ !");
+		return true;
+	}
+	return false;
+}
+
 void MainGameScene::update(const float& deltaTime)
 {
 
+
 	IScene::update(deltaTime);
+	if (checkIfAPlayerIsDead()) return;
+	m_cursor.setPosition(static_cast<sf::Vector2f>(getMousePositionWindow()));
 	updateTimeLeftForPlayers();
 }
 
@@ -447,6 +515,7 @@ void MainGameScene::render()
 	m_window.draw(m_wind);
 	m_window.draw(m_timeLeft);
 
+	m_window.draw(m_cursor);
 }
 
 Player* MainGameScene::getCurrentPlayer()

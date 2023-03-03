@@ -27,7 +27,8 @@ private:
 
 	void onBeginPlay(Engine::IScene& scene) override;
 
-	void onCollisionEnter(IRigidBody* rb) override { };
+	void onCollisionEnter(IRigidBody* rb) override;
+
 	void startExplosion() override;
 
 	float m_fragsMinForce { 0.f };

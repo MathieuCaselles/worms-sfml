@@ -58,6 +58,7 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 							currentScene.spawnBlackHole(
 								static_cast<sf::Vector2f>(scene.getMousePositionWindow())
 							);
+							currentScene.playBlackHoleSound();
 						}
 					} break;
 
@@ -90,10 +91,9 @@ void PCPlayer::updateImplementation(const float& deltaTime, Engine::IGameObject&
 	if (player.m_health < twoThirdOfLife)
 	{
 		if (player.m_health < thirdOfLife)
-			player.m_currentHealthText.setFillColor(sf::Color(255, 181, 54));
-		else
 			player.m_currentHealthText.setFillColor(sf::Color(255, 0, 0));
-
+		else
+			player.m_currentHealthText.setFillColor(sf::Color(255, 181, 54));
 	}
 
 	player.m_currentHealthText.setPosition(player.m_rbPosition + sf::Vector2f(-35.f, -80.f ));

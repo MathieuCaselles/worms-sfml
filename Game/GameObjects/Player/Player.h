@@ -32,7 +32,7 @@ public:
 
 	int getHealth();
 	void setHealth(int newHealth);
-	void removeHealth(int healthRemoved);
+	void removeHealth(float healthRemoved);
 
 	void setSkillState(skill_states newState);
 	const skill_states getSkillState() const;
@@ -42,6 +42,8 @@ public:
 
 	const int getNumberBanana() const;
 	const int getNumberBlackHole() const;
+
+	const bool getIsDead() const;
 
 private:
 	Player(int health, const sf::CircleShape& circleShape, const PhysicsProperties& properties, const sf::Vector2f& initialPosition);
@@ -58,6 +60,7 @@ private:
 
 	sf::Font m_font;
 	sf::Text m_currentHealthText;
+	bool m_isDead = false;
 
 	int m_numberBanana;
 	int m_numberBlackHole;

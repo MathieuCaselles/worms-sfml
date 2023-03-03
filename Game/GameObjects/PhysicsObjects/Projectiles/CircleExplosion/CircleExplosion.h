@@ -22,7 +22,11 @@ public:
 
 	void tryToPlayExplosionFX();
 
-	bool m_canPlayExplosionFX;
+	float getDamage();
+	void setDamage(float damage);
+
+	bool getCanPlayExplosionFX();
+
 private:
 	CircleExplosion();
 	CircleExplosion(const sf::CircleShape& circleShape);
@@ -32,6 +36,10 @@ private:
 
 	float m_durationExplosion{ 0.1f };
 	float m_currentTime{ 0.f };
+
+	float m_damage;
+
+	bool m_canPlayExplosionFX;
 
 	sf::Texture m_explosionFX;
 

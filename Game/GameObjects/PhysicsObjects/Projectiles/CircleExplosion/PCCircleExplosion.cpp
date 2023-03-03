@@ -24,6 +24,6 @@ void PCCircleExplosion::updateImplementation(const float& deltaTime, Engine::IGa
 		circleExplosion.getPhysicsProperties().m_isActive = false;
 	}
 	circleExplosion.tryToPlayExplosionFX();
-	if (circleExplosion.m_canPlayExplosionFX)
+	if (circleExplosion.getCanPlayExplosionFX())
 		currentScene.playExplosionSound();
 }
