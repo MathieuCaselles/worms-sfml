@@ -14,8 +14,12 @@ Grenade::Grenade(sf::CircleShape circleShape, const PhysicsProperties& propertie
 {
 	CircleRigidBody::updateMass();
 
-	m_grenadeShape.setPosition(m_rbPosition);
+	if (!m_grenadeTexture.loadFromFile("Assets/Textures/Grenade.png"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
 
+	m_grenadeShape.setPosition(m_rbPosition);
+	m_grenadeShape.setTexture(&m_grenadeTexture);
+	m_grenadeShape.setScale(2.0f, 2.0f);
 }
 
 void Grenade::onBeginPlay(Engine::IScene& scene)

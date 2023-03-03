@@ -4,7 +4,11 @@
 
 ExplosionFragment::ExplosionFragment(sf::CircleShape circleShape, const PhysicsProperties& properties)
 	: Grenade(circleShape, properties)
-{ }
+{
+	if (!m_grenadeTexture.loadFromFile("Assets/Textures/Fragmentation.png"))
+		throw("ERROR::MAINMENUSCENE::COULD NOT LOAD TEXTURE");
+	m_grenadeShape.setTexture(&m_grenadeTexture);
+}
 
 void ExplosionFragment::onBeginPlay(Engine::IScene& scene)
 {

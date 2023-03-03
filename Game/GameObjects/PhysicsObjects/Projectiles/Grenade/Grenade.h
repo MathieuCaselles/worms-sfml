@@ -50,6 +50,7 @@ protected:
 	CircleExplosion* m_circleExplosion;
 
 	sf::CircleShape m_grenadeShape;
+	sf::Texture m_grenadeTexture;
 
 	float m_damages{ 0.f };
 

@@ -69,14 +69,10 @@ MainGameScene::MainGameScene(): m_currentPlayer(nullptr), m_elapsed(0), m_timeBe
 
 	sf::CircleShape grenadeShape(15);
 	grenadeShape.setFillColor(GameColors::iron);
-	grenadeShape.setOutlineColor(sf::Color::Black);
-	grenadeShape.setOutlineThickness(2);
 	grenadeShape.setOrigin(grenadeShape.getRadius(), grenadeShape.getRadius());
 
 	sf::CircleShape fragBallShape(12);
 	fragBallShape.setFillColor(GameColors::banana);
-	fragBallShape.setOutlineColor(sf::Color::Black);
-	fragBallShape.setOutlineThickness(1);
 	fragBallShape.setOrigin(fragBallShape.getRadius(), fragBallShape.getRadius());
 
 	sf::CircleShape bananaShape(20);
